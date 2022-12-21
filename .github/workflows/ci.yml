@@ -1,0 +1,30 @@
+name: Unit Testing
+on:
+  pull_request:
+    branches: [ main ]
+  push:
+    branches: [ main ]
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash -l {0}
+    strategy:
+      matrix:
+        compiler: [ gcc-10, clang-12 ]
+    name: "${{ matrix.compiler }}"
+    env:
+      CC: ${{ matrix.compiler }}
+    steps:
+      - name: Setup Github actions
+        uses: actions/checkout@v3
+      - name: Build x86 emulator
+        id: build_emulator
+        run: |
+          cmake -B build &&
+          cmake --build build
+      - name: Run the tests
+        id: run_tests
+        run: |
+          ctest --test-dir build --parallel
