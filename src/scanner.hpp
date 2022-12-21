@@ -1,11 +1,11 @@
-#include <string>
 #include <fstream>
+#include <string>
 
 class Scanner {
-private:
+  private:
     std::ifstream file;
 
-public:
+  public:
     Scanner(const std::string &file_path);
 
     ~Scanner();

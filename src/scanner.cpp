@@ -10,9 +10,7 @@ Scanner::Scanner(const std::string &file_path) {
     this->file >> std::hex;
 }
 
-Scanner::~Scanner() {
-    this->file.close();
-}
+Scanner::~Scanner() { this->file.close(); }
 
 uint16_t Scanner::next() {
     uint16_t nextByte;
