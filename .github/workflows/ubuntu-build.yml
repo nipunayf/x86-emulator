@@ -26,5 +26,23 @@ jobs:
           cmake --build build
       - name: Run the tests
         id: run_tests
+        run: ctest --test-dir build --parallel
+  coverage:
+    needs: ci
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    env:
+      CC: gcc-10
+    steps:
+      - name: Install lcov
+        id: install_lcov
+        run: sudo apt install lcov
+      - name: Generate coverage report
+        id: generate_cov
         run: |
-          ctest --test-dir build --parallel
+          lcov --directory . --capture --output-file coverage.info
+      - name: Generate Codecov Report
+        uses: codecov/codecov-action@v1
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: ./coverage.info
