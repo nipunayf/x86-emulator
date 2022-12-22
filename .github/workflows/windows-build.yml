@@ -23,5 +23,4 @@ jobs:
           cmake --build build
       - name: Run the tests
         id: run_tests
-        run: |
-          ctest --test-dir build --parallel
+        run: ctest --test-dir build --parallel
