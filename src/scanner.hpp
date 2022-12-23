@@ -2,13 +2,13 @@
 #include <string>
 
 class Scanner {
-  private:
-    std::ifstream file;
+private:
+  std::ifstream file;
 
-  public:
-    Scanner(const std::string &file_path);
+public:
+  Scanner(const std::string &file_path);
 
-    ~Scanner();
+  ~Scanner();
 
-    uint16_t next();
+  uint16_t next();
 };

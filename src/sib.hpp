@@ -1,3 +1,3 @@
 #include "register_bank.hpp"
 
-int processSIB(int byte, RegisterBank regBank);
+uint32_t processSIB(const uint8_t &sib, RegisterBank &regBank);
