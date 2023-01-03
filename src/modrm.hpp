@@ -11,6 +11,6 @@
 #define REGISTER_DIRECT        3
 
 void process_modmr(const uint8_t &byte, RegisterBank &reg_bank, Memory &memory,
-                  uint32_t &operand_rm, uint32_t &operand_reg);
+                   uint32_t &operand_rm, uint32_t &operand_reg);
 
 #endif

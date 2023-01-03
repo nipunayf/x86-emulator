@@ -13,7 +13,7 @@ struct Argument {
   unsigned int prefixes_count : MAX_PREFIX_COUNT;
 };
 
-using handler = void (*)(Argument *args, Scanner *scanner,
-                         RegisterBank *register_bank, Memory *memory);
+using handler = void (*)(Argument &args, Scanner &scanner,
+                         RegisterBank &register_bank, Memory &memory);
 
 #endif

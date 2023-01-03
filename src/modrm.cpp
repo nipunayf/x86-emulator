@@ -7,7 +7,7 @@ uint32_t register_direct(const uint8_t &reg, RegisterBank &reg_bank) {
 }
 
 uint32_t register_indirect(const uint8_t &reg, RegisterBank &reg_bank,
-                          Memory &memory) {
+                           Memory &memory) {
   uint32_t memory_addr;
   if (reg == ESP) {
     // TODO: Replace retrieving next byte of the input
@@ -23,8 +23,9 @@ uint32_t register_indirect(const uint8_t &reg, RegisterBank &reg_bank,
   return memory.read(memory_addr);
 }
 
-uint32_t indirect_one_byte_displacement(const uint8_t &reg, RegisterBank &reg_bank,
-                                     Memory &memory) {
+uint32_t indirect_one_byte_displacement(const uint8_t &reg,
+                                        RegisterBank &reg_bank,
+                                        Memory &memory) {
   uint32_t memory_addr;
   if (reg == ESP) {
     // TODO: Replace with retrieving the next byte of the input
@@ -40,8 +41,9 @@ uint32_t indirect_one_byte_displacement(const uint8_t &reg, RegisterBank &reg_ba
   return memory.read(memory_addr);
 }
 
-uint32_t indirect_four_byte_displacement(const uint8_t &reg, RegisterBank &reg_bank,
-                                      Memory &memory) {
+uint32_t indirect_four_byte_displacement(const uint8_t &reg,
+                                         RegisterBank &reg_bank,
+                                         Memory &memory) {
   uint32_t memory_addr;
   if (reg == ESP) {
     // TODO: Replace retrieving next four bytes of the input
@@ -58,7 +60,7 @@ uint32_t indirect_four_byte_displacement(const uint8_t &reg, RegisterBank &reg_b
 }
 
 void process_modmr(const uint8_t &byte, RegisterBank &reg_bank, Memory &memory,
-                  uint32_t &operand_rm, uint32_t &operand_reg) {
+                   uint32_t &operand_rm, uint32_t &operand_reg) {
   const uint8_t mode = byte >> 6;
   const uint8_t rm = byte & 0x07;
   const uint8_t reg = (byte >> 3) & 0x07;
