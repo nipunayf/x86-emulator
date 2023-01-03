@@ -10,7 +10,7 @@
 #define FOUR_BYTE_DISPLACEMENT 2
 #define REGISTER_DIRECT        3
 
-void processModRM(const uint8_t &byte, RegisterBank &regBank, Memory &memory,
-                  uint32_t &operandRM, uint32_t &operandReg);
+void process_modmr(const uint8_t &byte, RegisterBank &reg_bank, Memory &memory,
+                  uint32_t &operand_rm, uint32_t &operand_reg);
 
 #endif
