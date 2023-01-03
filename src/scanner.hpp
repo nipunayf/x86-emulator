@@ -1,3 +1,6 @@
+#ifndef SCANNER_H
+#define SCANNER_H
+
 #include <fstream>
 #include <string>
 
@@ -10,5 +13,7 @@ public:
 
   ~Scanner();
 
-  uint16_t next();
+  uint8_t next();
 };
+
+#endif
