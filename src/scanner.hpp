@@ -6,10 +6,10 @@
 
 class Scanner {
 private:
-  std::ifstream file;
+  std::ifstream m_file;
 
 public:
-  Scanner(const std::string &file_path);
+  explicit Scanner(const std::string &file_path);
 
   ~Scanner();
 
