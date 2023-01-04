@@ -1,9 +1,9 @@
 #include "register_bank.hpp"
 
 #define MASK_32 4294967295 << 32
-#define MASK_16 MASK_32 | (65535 << 16)
-#define MASK_L8 MASK_16 | (255 << 8)
-#define MASK_H8 MASK_16 | 255
+#define MASK_16 (MASK_32 | (65535 << 16))
+#define MASK_L8 (MASK_16 | (255 << 8))
+#define MASK_H8 (MASK_16 | 255)
 
 RegisterBank::RegisterBank() {
   registers[RAX] = Register({0xbf8db144, "ah", "ax", "eax", "rax"});
@@ -27,6 +27,7 @@ std::string RegisterBank::name16(const uint32_t &index) {
 std::string RegisterBank::name32(const uint32_t &index) {
   return registers[index].name32;
 }
+
 std::string RegisterBank::name64(const uint32_t &index) {
   return registers[index].name64;
 }
