@@ -13,7 +13,13 @@ TEST(OpcodeTest, InvalidOneByte) {
 TEST(OpcodeTest, InvalidTwoBytes) {
   Scanner scanner(OPCODE_TEST_PATH + "invalid_2bytes.txt");
   ASSERT_DEATH({ parse(scanner); },
-               "Invalid opcode: 0x99 is not yet supported");
+               "Invalid opcode bytes: 2 is not yet supported");
+}
+
+TEST(OpcodeTest, InvalidThreeBytes) {
+  Scanner scanner(OPCODE_TEST_PATH + "invalid_3bytes.txt");
+  ASSERT_DEATH({ parse(scanner); },
+               "Invalid opcode bytes: 3 is not yet supported");
 }
 
 TEST(OpcodeTest, InvalidSecondByteOfFourBytes) {
@@ -21,28 +27,7 @@ TEST(OpcodeTest, InvalidSecondByteOfFourBytes) {
   ASSERT_DEATH({ parse(scanner); }, "Expected 0xf after 0x66");
 }
 
-TEST(OpcodeTest, InvalidThreeBytes) {
-  Scanner scanner(OPCODE_TEST_PATH + "invalid_3bytes.txt");
-  ASSERT_DEATH({ parse(scanner); },
-               "Invalid opcode: 0x99 is not yet supported");
-}
-
 TEST(OpcodeTest, ValidOneByte) {
   Scanner scanner(OPCODE_TEST_PATH + "valid_1byte.txt");
-  ASSERT_FALSE(parse(scanner));
-}
-
-TEST(OpcodeTest, ValidTwoBytes) {
-  Scanner scanner(OPCODE_TEST_PATH + "valid_2bytes.txt");
-  ASSERT_FALSE(parse(scanner));
-}
-
-TEST(OpcodeTest, ValidThreeBytes) {
-  Scanner scanner(OPCODE_TEST_PATH + "valid_3bytes.txt");
-  ASSERT_FALSE(parse(scanner));
-}
-
-TEST(OpcodeTest, ValidFourBytes) {
-  Scanner scanner(OPCODE_TEST_PATH + "valid_3bytes.txt");
   ASSERT_FALSE(parse(scanner));
 }

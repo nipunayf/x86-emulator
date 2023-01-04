@@ -3,7 +3,6 @@
 
 #include "../handler.hpp"
 
-void inc4x(Argument &args, Scanner &scanner, RegisterBank &register_bank,
-           Memory &memory);
+void inc4x(Argument &args);
 
 #endif
