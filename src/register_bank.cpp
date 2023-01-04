@@ -11,6 +11,6 @@ RegisterBank::RegisterBank() {
   registers[EDI] = Register({"edi", 0x0});
 }
 
-uint32_t RegisterBank::load(const uint32_t &index) {
+uint64_t RegisterBank::load64(const uint32_t &index) {
   return registers[index].value;
 }
