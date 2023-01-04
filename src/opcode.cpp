@@ -2,7 +2,7 @@
 #include "utils.hpp"
 #include <iostream>
 
-std::map<uint8_t, handler> handler_map{
+std::map<uint8_t, Handler> handler_map{
   {0x40, inc4x}, {0x41, inc4x}, {0x42, inc4x}, {0x43, inc4x},
   {0x44, inc4x}, {0x45, inc4x}, {0x46, inc4x}, {0x47, inc4x}};
 
@@ -16,7 +16,8 @@ static void set_prefix(Argument &args, int &index, uint8_t &next_byte,
 int parse(Scanner &scanner) {
   Memory memory;
   RegisterBank register_bank;
-  Argument args{};
+  Argument args{scanner, register_bank, memory};
+
   uint8_t next_byte = scanner.next_byte();
   int prefix_index = 0;
 
@@ -47,11 +48,19 @@ int parse(Scanner &scanner) {
       }
     }
     args.opcode = next_byte;
-    args.prefixes_count = prefix_index + 1;
+    args.prefixes_count = prefix_index;
+
+    if (args.prefixes_count > 0) {
+      char err_msg[45];
+      sprintf(err_msg, "Invalid opcode bytes: %i is not yet supported",
+              prefix_index + 1);
+      std::cerr << err_msg << std::endl;
+      exit(1);
+    }
 
     // Invoke the corresponding handler
     if (handler_map.count(args.opcode) > 0) {
-      handler_map[args.opcode](args, scanner, register_bank, memory);
+      handler_map[args.opcode](args);
     } else {
       char err_msg[38];
       sprintf(err_msg, "Invalid opcode: %s is not yet supported",
