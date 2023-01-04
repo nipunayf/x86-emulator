@@ -38,7 +38,7 @@ struct Register {
 
 class RegisterBank {
 private:
-  Register registers[8];
+  Register m_registers[8];
 
 public:
   RegisterBank();
