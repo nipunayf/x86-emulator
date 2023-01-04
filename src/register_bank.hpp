@@ -29,8 +29,11 @@ enum Register64 {
 };
 
 struct Register {
-  std::string name;
   uint64_t value;
+  std::string name8;
+  std::string name16;
+  std::string name32;
+  std::string name64;
 };
 
 class RegisterBank {
@@ -47,6 +50,10 @@ public:
   void set16(const uint32_t &index, const uint16_t value);
   void set32(const uint32_t &index, const uint32_t value);
   void set64(const uint32_t &index, const uint64_t value);
+  std::string name8(const uint32_t &index);
+  std::string name16(const uint32_t &index);
+  std::string name32(const uint32_t &index);
+  std::string name64(const uint32_t &index);
 };
 
 #endif

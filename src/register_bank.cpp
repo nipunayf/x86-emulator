@@ -6,17 +6,32 @@
 #define MASK_H8 MASK_16 | 255
 
 RegisterBank::RegisterBank() {
-  registers[RAX] = Register({"rax", 0xbf8db144});
-  registers[RCX] = Register({"rcx", 0x88c5cffb});
-  registers[RDX] = Register({"rdx", 0x1});
-  registers[RBX] = Register({"rbx", 0xae5ff4});
-  registers[RSP] = Register({"rsp", 0xbf8db0bc});
-  registers[RBP] = Register({"rbp", 0xbf8db118});
-  registers[RSI] = Register({"rsi", 0x9a0ca0});
-  registers[RDI] = Register({"rdi", 0x0});
+  registers[RAX] = Register({0xbf8db144, "ah", "ax", "eax", "rax"});
+  registers[RCX] = Register({0x88c5cffb, "al", "cx", "ecx", "rcx"});
+  registers[RDX] = Register({0x1, "ch", "dx", "edx", "rdx"});
+  registers[RBX] = Register({0xae5ff4, "cl", "bx", "ebx", "rbx"});
+  registers[RSP] = Register({0xbf8db0bc, "dh", "sp", "esp", "rsp"});
+  registers[RBP] = Register({0xbf8db118, "dl", "bp", "ebp", "rbp"});
+  registers[RSI] = Register({0x9a0ca0, "bh", "si", "esi", "rsi"});
+  registers[RDI] = Register({0x0, "bl", "di", "edi", "rdi"});
 }
 
-uint64_t RegisterBank::load64(const uint32_t &index) {
+std::string RegisterBank::name8(const uint32_t &index) {
+  return registers[index].name8;
+}
+
+std::string RegisterBank::name16(const uint32_t &index) {
+  return registers[index].name16;
+}
+
+std::string RegisterBank::name32(const uint32_t &index) {
+  return registers[index].name32;
+}
+std::string RegisterBank::name64(const uint32_t &index) {
+  return registers[index].name64;
+}
+
+uint16_t RegisterBank::load16(const uint32_t &index) {
   return registers[index].value;
 }
 
@@ -24,7 +39,7 @@ uint32_t RegisterBank::load32(const uint32_t &index) {
   return registers[index].value;
 }
 
-uint16_t RegisterBank::load16(const uint32_t &index) {
+uint64_t RegisterBank::load64(const uint32_t &index) {
   return registers[index].value;
 }
 
