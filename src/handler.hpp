@@ -11,7 +11,7 @@
 
 struct Snapshot {
   std::string instruction;
-  std::string register_change;
+  std::string reg_change;
   std::string flag_change;
 };
 
