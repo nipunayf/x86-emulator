@@ -8,7 +8,7 @@ TEST(ScannerTest, BasicScanning) {
 
   uint8_t byte;
   for (uint8_t i : expected_arr) {
-    byte = scanner.next();
+    byte = scanner.next_byte();
     ASSERT_EQ(byte, i);
   }
 }

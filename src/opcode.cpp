@@ -10,14 +10,14 @@ static void set_prefix(Argument &args, int &index, uint8_t &next_byte,
                        Scanner &scanner) {
   args.prefixes[index] = next_byte;
   index = index + 1;
-  next_byte = scanner.next();
+  next_byte = scanner.next_byte();
 }
 
 int parse(Scanner &scanner) {
   Memory memory;
   RegisterBank register_bank;
   Argument args{};
-  uint8_t next_byte = scanner.next();
+  uint8_t next_byte = scanner.next_byte();
   int prefix_index = 0;
 
   // Repeat until the end of the file is reached
@@ -60,7 +60,7 @@ int parse(Scanner &scanner) {
       exit(1);
     }
 
-    next_byte = scanner.next();
+    next_byte = scanner.next_byte();
   }
 
   return 0;

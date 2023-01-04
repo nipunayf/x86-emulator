@@ -3,13 +3,13 @@
 
 #include <string>
 
-enum x86_8bit_registers { AH, AL, CH, CL, DH, DL, BH, BL };
+enum Register8 { AH, AL, CH, CL, DH, DL, BH, BL };
 
-enum x86_16bit_registers { AX, CX, DX, BX, SP, BP, SI, DI };
+enum Register16 { AX, CX, DX, BX, SP, BP, SI, DI };
 
-enum x86_32bit_registers { EAX, ECX, EDX, EBX, ESP, EBP, ESI, EDI };
+enum Register32 { EAX, ECX, EDX, EBX, ESP, EBP, ESI, EDI };
 
-enum x86_64bit_registers {
+enum Register64 {
   RAX,
   RCX,
   RDX,
