@@ -4,6 +4,6 @@
 #include "handler.hpp"
 #include "opcodes/inc.hpp"
 
-int parse(Scanner &scanner);
+int parse(Argument &args);
 
 #endif
