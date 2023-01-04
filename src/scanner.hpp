@@ -13,7 +13,8 @@ public:
 
   ~Scanner();
 
-  uint8_t next();
+  uint8_t next_byte();
+  uint32_t next_four_bytes();
 };
 
 #endif
