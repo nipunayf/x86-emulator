@@ -9,10 +9,8 @@ void inc4x(Argument &args) {
   Register32 reg = reg_map[args.opcode];
   args.reg_bank.set32(reg, args.reg_bank.load32(reg) + 1);
 
-  char instruction[8];
-  sprintf(instruction, "inc\t%%%s", args.reg_bank.name32(reg).c_str());
-  Snapshot snapshot{
-    .instruction = instruction, .register_change = "", .flag_change = ""};
+  Snapshot snapshot{format_instruction("inc", args.reg_bank.name32(reg)), ""
+                                                                          ""};
 
   args.snapshots.push_back(snapshot);
 }

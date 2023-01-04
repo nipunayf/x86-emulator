@@ -4,6 +4,7 @@
 #include "memory.hpp"
 #include "register_bank.hpp"
 #include "scanner.hpp"
+#include "utils.hpp"
 #include <list>
 
 #define MAX_PREFIX_COUNT 4
