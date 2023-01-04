@@ -3,7 +3,7 @@
 
 #include <string>
 
-enum x86_8bit_registers { AL, CL, DL, BL, AH, CH, DH, BH };
+enum x86_8bit_registers { AH, AL, CH, CL, DH, DL, BH, BL };
 
 enum x86_16bit_registers { AX, CX, DX, BX, SP, BP, SI, DI };
 

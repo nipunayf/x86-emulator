@@ -3,7 +3,7 @@
 #include <string>
 
 uint32_t register_direct(const uint8_t &reg, RegisterBank &reg_bank) {
-  return reg_bank.load(reg);
+  return reg_bank.load32(reg);
 }
 
 uint32_t register_indirect(const uint8_t &reg, RegisterBank &reg_bank,
@@ -18,7 +18,7 @@ uint32_t register_indirect(const uint8_t &reg, RegisterBank &reg_bank,
     uint32_t displacement = 0xEFEFEFEF;
     memory_addr = displacement;
   } else {
-    memory_addr = reg_bank.load(reg);
+    memory_addr = reg_bank.load32(reg);
   }
   return memory.read(memory_addr);
 }
@@ -36,7 +36,7 @@ uint32_t indirect_one_byte_displacement(const uint8_t &reg,
   } else {
     // TODO: Replace with retrieving the next byte of the input
     uint8_t displacement = 0xEF;
-    memory_addr = reg_bank.load(reg) + displacement;
+    memory_addr = reg_bank.load32(reg) + displacement;
   }
   return memory.read(memory_addr);
 }
@@ -54,7 +54,7 @@ uint32_t indirect_four_byte_displacement(const uint8_t &reg,
   } else {
     // TODO: Replace retrieving the next four bytes of the input
     uint32_t displacement = 0xEFEFEFEF;
-    memory_addr = reg_bank.load(reg) + displacement;
+    memory_addr = reg_bank.load32(reg) + displacement;
   }
   return memory.read(memory_addr);
 }
