@@ -27,4 +27,8 @@ struct Argument {
 
 using Handler = void (*)(Argument &args);
 
+void set_snapshot(Argument &args, const std::string &instruction,
+                  const std::string &reg_change = "",
+                  const std::string &flag_change = "");
+
 #endif

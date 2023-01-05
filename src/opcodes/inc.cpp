@@ -12,8 +12,7 @@ void inc4x(Argument &args) {
 
   args.reg_bank.set32(reg, reg_value + 1);
 
-  Snapshot snapshot{
-    format_instruction("inc", args.reg_bank.name32(reg)),
-    format_register_change(reg_name, reg_value, args.reg_bank.load32(reg))};
-  args.snapshots.push_back(snapshot);
+  set_snapshot(
+    args, format_instruction("inc", args.reg_bank.name32(reg)),
+    format_register_change(reg_name, reg_value, args.reg_bank.load32(reg)));
 }
