@@ -30,7 +30,6 @@ enum Register64 {
 
 struct Register {
   uint64_t value;
-  std::string name8;
   std::string name16;
   std::string name32;
   std::string name64;
