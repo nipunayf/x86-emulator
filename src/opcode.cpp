@@ -22,9 +22,8 @@ int parse(Argument &args) {
     prefix_index = 0;
 
     // Check for additional prefixes for opcodes > 1-byte
-    if (next_byte == 0x66 || next_byte == 0xf2 || next_byte == 0xf3) {
+    if (next_byte == 0x66 || next_byte == 0xf2 || next_byte == 0xf3)
       set_prefix(args, prefix_index, next_byte);
-    }
 
     if (prefix_index > 0 && next_byte != 0x0f) {
       char err_msg[17];
@@ -39,9 +38,8 @@ int parse(Argument &args) {
       set_prefix(args, prefix_index, next_byte);
 
       // Check for 3-byte opcode
-      if (next_byte == 0x38 || next_byte == 0x3a) {
+      if (next_byte == 0x38 || next_byte == 0x3a)
         set_prefix(args, prefix_index, next_byte);
-      }
     }
     args.opcode = next_byte;
     args.prefixes_count = prefix_index;
@@ -55,9 +53,9 @@ int parse(Argument &args) {
     }
 
     // Invoke the corresponding handler
-    if (handler_map.count(args.opcode) > 0) {
+    if (handler_map.count(args.opcode) > 0)
       handler_map[args.opcode](args);
-    } else {
+    else {
       char err_msg[38];
       sprintf(err_msg, "Invalid opcode: %s is not yet supported",
               format_hex_string(args.opcode).c_str());
