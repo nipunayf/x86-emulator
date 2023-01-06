@@ -1,9 +1,7 @@
 #ifndef MODRM_H
 #define MODRM_H
 
-#include "memory.hpp"
-#include "register_bank.hpp"
-#include "scanner.hpp"
+#include "handler.hpp"
 
 enum AddressingMode {
   REGISTER_INDIRECT,
@@ -12,8 +10,17 @@ enum AddressingMode {
   REGISTER_DIRECT
 };
 
-void process_modmr(const uint8_t &byte, Scanner &scanner,
-                   RegisterBank &reg_bank, Memory &memory, uint32_t &operand_rm,
-                   uint32_t &operand_reg);
+enum RegisterType { REGISTER_8, REGISTER_16, REGISTER_32, REGISTER_64 };
+
+struct ModmrAttribute {
+  uint32_t &reg_ptr;
+  uint32_t &rm_ptr;
+  RegisterType reg_type;
+  RegisterType rm_type;
+  std::string reg_name;
+  std::string rm_name;
+};
+
+void process_modmr(State &state, ModmrAttribute &args);
 
 #endif

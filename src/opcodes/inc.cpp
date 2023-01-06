@@ -1,5 +1,4 @@
 #include "inc.hpp"
-#include <iostream>
 
 std::map<uint8_t, Register32> reg_map = {{0x40, EAX}, {0x41, ECX}, {0x42, EDX},
                                          {0x43, EBX}, {0x44, ESP}, {0x45, EBP},
