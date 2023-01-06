@@ -3,6 +3,6 @@
 
 #include "../handler.hpp"
 
-void inc4x(Argument &args);
+void inc4x(State &state);
 
 #endif

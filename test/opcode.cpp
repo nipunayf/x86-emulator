@@ -23,6 +23,6 @@ TEST(OpcodeTest, ValidOneByte) {
   Scanner scanner(OPCODE_TEST_PATH + "valid_1byte.txt");
   RegisterBank reg_bank;
   Memory memory;
-  Argument args{scanner, reg_bank, memory};
-  ASSERT_FALSE(parse(args));
+  State state{scanner, reg_bank, memory};
+  ASSERT_FALSE(parse(state));
 }

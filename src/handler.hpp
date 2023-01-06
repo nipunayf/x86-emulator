@@ -16,20 +16,24 @@ struct Snapshot {
 };
 
 struct Argument {
-  Scanner &scanner;
-  RegisterBank &reg_bank;
-  Memory &memory;
   uint8_t opcode;
   uint8_t prefixes[MAX_PREFIX_COUNT];
   unsigned int prefixes_count : MAX_PREFIX_COUNT;
+};
+
+struct State {
+  Scanner &scanner;
+  RegisterBank &reg_bank;
+  Memory &memory;
+  Argument args;
   std::list<Snapshot> snapshots;
 };
 
-using Handler = void (*)(Argument &args);
+using Handler = void (*)(State &args);
 
-void set_snapshot(Argument &args, const std::string &ins_name,
+void set_snapshot(State &state, const std::string &ins_name,
                   uint32_t reg_before, uint32_t reg_after,
-                  const std::string &sink_arg,
-                  const std::string &source_reg = "");
+                  const std::string &first_reg,
+                  const std::string &second_reg = "");
 
 #endif
