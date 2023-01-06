@@ -6,8 +6,8 @@ int main(int argc, char *argv[]) {
   Scanner scanner(file_name);
   RegisterBank reg_bank;
   Memory memory;
-  Argument args{scanner, reg_bank, memory};
-  parse(args);
+  State state{scanner, reg_bank, memory};
+  parse(state);
 
   return 0;
 }

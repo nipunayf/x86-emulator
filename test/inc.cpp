@@ -8,10 +8,10 @@ TEST(OpcodeTest, Inc40x) {
   Scanner scanner(INC_TEST_PATH + "inc40.txt");
   RegisterBank reg_bank;
   Memory memory;
-  Argument args{scanner, reg_bank, memory};
+  State state{scanner, reg_bank, memory};
 
   RegisterBank original_reg_bank = reg_bank;
-  parse(args);
+  parse(state);
 
   ASSERT_EQ(reg_bank.load32(EAX), original_reg_bank.load32(EAX) + 1);
   ASSERT_EQ(reg_bank.load32(EDX), original_reg_bank.load32(EDX) + 3);
@@ -22,5 +22,5 @@ TEST(OpcodeTest, Inc40x) {
   ASSERT_EQ(reg_bank.load32(ESI), original_reg_bank.load32(ESI) + 1);
   ASSERT_EQ(reg_bank.load32(ESP), original_reg_bank.load32(ESP) + 1);
 
-  ASSERT_EQ(args.snapshots.size(), 11);
+  ASSERT_EQ(state.snapshots.size(), 11);
 }

@@ -10,8 +10,8 @@
     Scanner scanner(OPCODE_TEST_PATH + path);                                  \
     RegisterBank reg_bank;                                                     \
     Memory memory;                                                             \
-    Argument args{scanner, reg_bank, memory};                                  \
-    ASSERT_DEATH({ parse(args); }, err_msg);                                   \
+    State state{scanner, reg_bank, memory};                                    \
+    ASSERT_DEATH({ parse(state); }, err_msg);                                  \
   }
 
 #endif

@@ -1,6 +1,6 @@
 #include "handler.hpp"
 
-void set_snapshot(Argument &args, const std::string &ins_name,
+void set_snapshot(State &state, const std::string &ins_name,
                   uint32_t reg_before, uint32_t reg_after,
                   const std::string &first_reg, const std::string &second_reg) {
 
@@ -10,5 +10,5 @@ void set_snapshot(Argument &args, const std::string &ins_name,
 
   Snapshot snapshot{instruction,
                     format_register_change(first_reg, reg_before, reg_after)};
-  args.snapshots.push_back(snapshot);
+  state.snapshots.push_back(snapshot);
 }
