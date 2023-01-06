@@ -14,7 +14,7 @@ public:
   ~Scanner();
 
   uint8_t next_byte();
-  uint32_t next_four_bytes();
+  uint32_t next_nbytes(unsigned short num_bytes);
 };
 
 #endif

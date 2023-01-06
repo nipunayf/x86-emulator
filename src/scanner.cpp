@@ -19,9 +19,9 @@ uint8_t Scanner::next_byte() {
   return 0;
 }
 
-uint32_t Scanner::next_four_bytes() {
+uint32_t Scanner::next_nbytes(unsigned short num_bytes) {
   uint32_t val = 0;
-  for (size_t i = 0; i < 4; i++)
+  for (size_t i = 0; i < num_bytes; i++)
     val |= next_byte() << (8 * i);
   return val;
 }
