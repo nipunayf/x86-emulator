@@ -12,15 +12,21 @@ enum AddressingMode {
 
 enum RegisterType { REGISTER_8, REGISTER_16, REGISTER_32, REGISTER_64 };
 
-struct ModmrAttribute {
-  uint32_t &reg_ptr;
-  uint32_t &rm_ptr;
-  RegisterType reg_type;
+struct ModRMAttribute {
+  uint32_t &rm_val;
+  uint32_t &reg_val;
   RegisterType rm_type;
-  std::string reg_name;
+  RegisterType reg_type;
+  uint32_t rm_addr;
+  uint32_t reg_addr;
   std::string rm_name;
+  std::string reg_name;
+  bool is_reg = false;
 };
 
-void process_modmr(State &state, ModmrAttribute &args);
+void process_modrm(State &state, ModRMAttribute &args);
+
+void set_value(State &state, RegisterType type, uint32_t addr, uint32_t value,
+               bool is_reg = false);
 
 #endif

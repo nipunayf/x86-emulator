@@ -33,7 +33,7 @@ using Handler = void (*)(State &args);
 
 void set_snapshot(State &state, const std::string &ins_name,
                   uint32_t reg_before, uint32_t reg_after,
-                  const std::string &first_reg,
-                  const std::string &second_reg = "");
+                  const std::string &dest_reg,
+                  const std::string &source_reg = "");
 
 #endif
