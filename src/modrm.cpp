@@ -3,94 +3,82 @@
 #include <iostream>
 #include <string>
 
-uint32_t register_direct(RegisterBank &reg_bank, const uint8_t &reg,
-                         RegisterType reg_type, std::string &reg_name) {
-  switch (reg_type) {
-    // TODO: Uncomment after implementation of register 8
-    //  case REGISTER_8:
-    //    reg_name = reg_bank.name8(reg);
-    //    return reg_bank.load8(reg);
-  case REGISTER_16:
-    reg_name = reg_bank.name16(reg);
-    return reg_bank.load16(reg);
-  case REGISTER_32:
-    reg_name = reg_bank.name32(reg);
-    return reg_bank.load32(reg);
-  case REGISTER_64:
-    reg_name = reg_bank.name64(reg);
-    return reg_bank.load64(reg);
+#define SET_REGISTER_NAME(reg_name)                                            \
+  {                                                                            \
+    if (set_name)                                                              \
+      args.name = reg_name;                                                    \
   }
-}
 
 uint32_t register_direct(RegisterBank &reg_bank, const uint8_t &reg,
-                         RegisterType reg_type) {
-  switch (reg_type) {
+                         ModRMAttribute &args, const bool set_name = false) {
+  args.addr = reg;
+  switch (args.type) {
     // TODO: Uncomment after implementation of register 8
     //  case REGISTER_8:
+    //    SET_REGISTER_NAME(reg_bank.name8(reg))
     //    return reg_bank.load8(reg);
   case REGISTER_16:
+    SET_REGISTER_NAME(reg_bank.name16(reg))
     return reg_bank.load16(reg);
   case REGISTER_32:
+    SET_REGISTER_NAME(reg_bank.name32(reg))
     return reg_bank.load32(reg);
   case REGISTER_64:
+    SET_REGISTER_NAME(reg_bank.name64(reg))
     return reg_bank.load64(reg);
   }
 }
 
 uint32_t register_indirect(State &state, const uint8_t &reg,
-                           RegisterType reg_type, std::string &reg_name,
-                           uint32_t &memory_addr) {
+                           ModRMAttribute args) {
   if (reg == ESP) {
     uint8_t sib = state.scanner.next_byte();
-    memory_addr = process_sib(sib, state.reg_bank);
+    args.addr = process_sib(sib, state.reg_bank);
   } else if (reg == EBP) {
     uint32_t displacement = state.scanner.next_nbytes(4);
-    memory_addr = displacement;
+    args.addr = displacement;
   } else {
-    memory_addr = register_direct(state.reg_bank, reg, reg_type);
+    args.addr = register_direct(state.reg_bank, reg, args);
   }
-  //TODO: Format the operand name
-  reg_name = format_displacement(memory_addr);
-  return state.memory.read(memory_addr);
+  // TODO: Format the operand name
+  args.name = format_displacement(args.addr);
+  return state.memory.read(args.addr);
 }
 
 uint32_t indirect_one_byte_displacement(State &state, const uint8_t &reg,
-                                        RegisterType reg_type,
-                                        std::string &reg_name,
-                                        uint32_t &memory_addr) {
+                                        ModRMAttribute args) {
   uint8_t displacement;
   if (reg == ESP) {
     uint8_t sib = state.scanner.next_byte();
     displacement = state.scanner.next_byte();
-    memory_addr = process_sib(sib, state.reg_bank) + displacement;
+    args.addr = process_sib(sib, state.reg_bank) + displacement;
   } else {
     displacement = state.scanner.next_byte();
-    memory_addr = register_direct(state.reg_bank, reg, reg_type) + displacement;
+    args.addr = register_direct(state.reg_bank, reg, args) + displacement;
   }
-  //TODO: Format the operand name
-  reg_name = format_displacement(memory_addr);
-  return state.memory.read(memory_addr);
+  // TODO: Format the operand name
+  args.name = format_displacement(args.addr);
+  return state.memory.read(args.addr);
 }
 
 uint32_t indirect_four_byte_displacement(State &state, const uint8_t &reg,
-                                         RegisterType reg_type,
-                                         std::string &reg_name,
-                                         uint32_t &memory_addr) {
+                                         ModRMAttribute args) {
   uint32_t displacement;
   if (reg == ESP) {
     uint8_t sib = state.scanner.next_byte();
     displacement = state.scanner.next_nbytes(4);
-    memory_addr = process_sib(sib, state.reg_bank) + displacement;
+    args.addr = process_sib(sib, state.reg_bank) + displacement;
   } else {
     displacement = state.scanner.next_nbytes(4);
-    memory_addr = register_direct(state.reg_bank, reg, reg_type) + displacement;
+    args.addr = register_direct(state.reg_bank, reg, args) + displacement;
   }
-  //TODO: Format the operand name
-  reg_name = format_displacement(memory_addr);
-  return state.memory.read(memory_addr);
+  // TODO: Format the operand name
+  args.name = format_displacement(args.addr);
+  return state.memory.read(args.addr);
 }
 
-void process_modrm(State &state, ModRMAttribute &args) {
+void process_modrm(State &state, ModRMAttribute &rm_args,
+                   ModRMAttribute &reg_args) {
   const uint8_t byte = state.scanner.next_byte();
   const auto mode = static_cast<const AddressingMode>(byte >> 6);
   const uint8_t rm = byte & 0x07;
@@ -98,43 +86,35 @@ void process_modrm(State &state, ModRMAttribute &args) {
 
   switch (mode) {
   case REGISTER_INDIRECT:
-    args.rm_val =
-      register_indirect(state, rm, args.rm_type, args.rm_name, args.rm_addr);
+    rm_args.val = register_indirect(state, rm, rm_args);
     break;
   case ONE_BYTE_DISPLACEMENT:
-    args.rm_val = indirect_one_byte_displacement(state, rm, args.rm_type,
-                                                 args.rm_name, args.rm_addr);
+    rm_args.val = indirect_one_byte_displacement(state, rm, rm_args);
     break;
   case FOUR_BYTE_DISPLACEMENT:
-    args.rm_val = indirect_four_byte_displacement(state, rm, args.rm_type,
-                                                  args.rm_name, args.rm_addr);
+    rm_args.val = indirect_four_byte_displacement(state, rm, rm_args);
     break;
   case REGISTER_DIRECT:
-    args.is_reg = true;
-    args.rm_addr = rm;
-    args.rm_val =
-      register_direct(state.reg_bank, rm, args.rm_type, args.rm_name);
+    rm_args.is_reg = true;
+    rm_args.val = register_direct(state.reg_bank, rm, rm_args, true);
     break;
   }
-  args.reg_addr = reg;
-  args.reg_val =
-    register_direct(state.reg_bank, reg, args.reg_type, args.reg_name);
+  reg_args.val = register_direct(state.reg_bank, reg, reg_args, true);
 }
 
-void set_value(State &state, RegisterType type, uint32_t addr, uint32_t value,
-               bool is_reg) {
-  if (is_reg) {
-    switch (type) {
+void set_value(State &state, ModRMAttribute &args, uint32_t value) {
+  if (args.is_reg) {
+    switch (args.type) {
     case REGISTER_8:
-      state.reg_bank.set8(addr, value);
+      state.reg_bank.set8(args.addr, value);
     case REGISTER_16:
-      state.reg_bank.set16(addr, value);
+      state.reg_bank.set16(args.addr, value);
     case REGISTER_32:
-      state.reg_bank.set32(addr, value);
+      state.reg_bank.set32(args.addr, value);
     case REGISTER_64:
-      state.reg_bank.set64(addr, value);
+      state.reg_bank.set64(args.addr, value);
     }
   } else {
-    state.memory.store(addr, value);
+    state.memory.store(args.addr, value);
   }
 }

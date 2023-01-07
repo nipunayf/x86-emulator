@@ -1,20 +1,13 @@
 #include "add.hpp"
-#include <iostream>
 
 void add03(State &state) {
-  uint32_t rm, reg;
-  ModRMAttribute args{rm, reg, REGISTER_32, REGISTER_32};
-  process_modrm(state, args);
+  ModRMAttribute rm_args{REGISTER_32}, reg_args{REGISTER_32};
+  process_modrm(state, rm_args, reg_args);
 
-  uint32_t output = args.rm_val + args.reg_val;
-  set_value(state, args.reg_type, args.reg_addr, output, true);
+  uint32_t output = rm_args.val + reg_args.val;
+  set_value(state, reg_args, output);
 
-  set_snapshot(state, "add", args.reg_val, output, args.reg_name, args.rm_name);
-
-  for (const Snapshot &snapshot : state.snapshots) {
-    std::cout << snapshot.instruction << std::endl
-              << snapshot.reg_change << std::endl;
-  }
+  set_snapshot(state, "add", reg_args.val, output, reg_args.name, rm_args.name);
 }
 
 void add05(State &state) {
@@ -29,14 +22,13 @@ void add05(State &state) {
 }
 
 void add83(State &state) {
-  uint32_t rm, reg;
-  ModRMAttribute args{rm, reg, REGISTER_32, REGISTER_32};
-  process_modrm(state, args);
+  ModRMAttribute rm_args{REGISTER_32}, reg_args{REGISTER_32};
+  process_modrm(state, rm_args, reg_args);
   uint32_t displace = state.scanner.next_nbytes(1);
 
-  uint32_t output = args.rm_val + displace;
-  set_value(state, args.rm_type, args.rm_addr, output, args.is_reg);
+  uint32_t output = rm_args.val + displace;
+  set_value(state, rm_args, output);
 
-  set_snapshot(state, "add", args.rm_val, output, format_displacement(displace),
-               args.rm_name);
+  set_snapshot(state, "add", rm_args.val, output, format_displacement(displace),
+               rm_args.name);
 }

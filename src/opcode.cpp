@@ -4,11 +4,9 @@
 #include <iostream>
 
 std::map<uint8_t, Handler> handler_map{
-  {0x05, add05}, {0x03, add03}, {0x40, inc4x},
-  {0x41, inc4x}, {0x42, inc4x},
-  {0x43, inc4x}, {0x44, inc4x},
-  {0x45, inc4x}, {0x46, inc4x},
-  {0x47, inc4x}, {0x83, add83}};
+  {0x05, add05}, {0x03, add03}, {0x40, inc4x}, {0x41, inc4x},
+  {0x42, inc4x}, {0x43, inc4x}, {0x44, inc4x}, {0x45, inc4x},
+  {0x46, inc4x}, {0x47, inc4x}, {0x83, add83}};
 
 static void set_prefix(Argument &args, Scanner &scanner, int &index,
                        uint8_t &next_byte) {
