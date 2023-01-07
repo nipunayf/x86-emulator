@@ -9,16 +9,19 @@ std::string format_hex_string(uint32_t byte) {
 
 std::string format_instruction(const std::string &operand,
                                const std::string &first_param) {
-  char instruction[8];
-  sprintf(instruction, "%s\t%%%s", operand.c_str(), first_param.c_str());
+  const unsigned short len = operand.length() + first_param.length() + 1;
+  char instruction[len];
+  sprintf(instruction, "%s\t%s", operand.c_str(), first_param.c_str());
   return instruction;
 }
 
 std::string format_instruction(const std::string &operand,
                                const std::string &first_param,
                                const std::string &second_param) {
-  char instruction[14];
-  sprintf(instruction, "%s\t%%%s, %%%s", operand.c_str(), first_param.c_str(),
+  const unsigned short len =
+    operand.length() + first_param.length() + second_param.length() + 3;
+  char instruction[len];
+  sprintf(instruction, "%s\t%s, %s", operand.c_str(), first_param.c_str(),
           second_param.c_str());
   return instruction;
 }
@@ -26,9 +29,10 @@ std::string format_instruction(const std::string &operand,
 std::string format_register_change(const std::string &reg_name,
                                    uint32_t before_value,
                                    uint32_t after_value) {
-  char change[76];
-  sprintf(change, "%%%s(%u) -> (%u)", reg_name.c_str(), before_value,
-          after_value);
+  char change[77];
+  sprintf(change, "%s(%s) -> (%s)", reg_name.c_str(),
+          format_hex_string(before_value).c_str(),
+          format_hex_string(after_value).c_str());
   return change;
 }
 
