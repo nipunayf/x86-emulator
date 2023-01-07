@@ -9,7 +9,7 @@ uint32_t get_scaled_index(const uint8_t &scale, const uint8_t &index,
               << std::endl;
     exit(1);
   }
-  return reg_bank.load32(index) * pow(2, scale);
+  return (uint32_t)(reg_bank.load32(index) * pow(2, scale));
 }
 
 uint32_t process_sib(const uint8_t &sib, RegisterBank &reg_bank) {
