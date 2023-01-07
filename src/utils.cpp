@@ -31,3 +31,7 @@ std::string format_register_change(const std::string &reg_name,
           after_value);
   return change;
 }
+
+std::string format_displacement(uint32_t memory_addr) {
+  return "$" + format_hex_string(memory_addr);
+}
