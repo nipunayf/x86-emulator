@@ -15,8 +15,16 @@ std::string format_instruction(const std::string &operand,
 std::string format_register_change(const std::string &reg_name,
                                    uint32_t before_value, uint32_t after_value);
 
-std::string format_displacement(uint32_t memory_addr);
-
 std::string format_immediate(uint32_t immediate);
+
+std::string format_sib(const std::string &base, const std::string &index,
+                       const uint8_t &scale, uint32_t displacement);
+
+std::string format_indirect_register(const std::string reg);
+
+std::string format_memory_address(uint32_t memory_addr);
+
+std::string format_indirect_with_displacement(const std::string reg,
+                                              uint32_t memory_addr);
 
 #endif
