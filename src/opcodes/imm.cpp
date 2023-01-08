@@ -1,18 +1,16 @@
-#include "add.hpp"
+#include "imm.hpp"
 #include <cmath>
-#include <iostream>
 
-uint32_t read_immediate(Scanner &scanner, RegisterType type) {
+uint32_t read_immediate(Scanner &scanner, OperandSize type) {
   return scanner.next_nbytes(pow(2, type));
 }
 
-void imm(State &state, RegisterType reg_type, RegisterType im_type) {
+void imm(State &state, OperandSize reg_type, OperandSize im_type) {
   ModRMAttribute rm_args{reg_type}, reg_args{im_type};
   process_modrm(state, rm_args, reg_args, true);
-  uint32_t immediate =  read_immediate(state.scanner, REGISTER_8);
+  uint32_t immediate =  read_immediate(state.scanner, OPERAND_8);
   std::string operation;
   uint32_t output;
-  std::cout << reg_args.val << std::endl;
   switch (reg_args.val) {
     case 0:
         operation = "ADD";
@@ -48,18 +46,17 @@ void imm(State &state, RegisterType reg_type, RegisterType im_type) {
         break;
   }
   set_value(state, rm_args, output);
-  std::cout << rm_args.val << operation << immediate << " = " << output << std::endl;
-  set_snapshot(state, operation, rm_args.val, output, rm_args.name, rm_args.name);
+  set_snapshot(state, operation, rm_args.val, output, format_immediate(immediate), rm_args.name);
 }
 
 void imm80(State &state) {
-  imm(state, REGISTER_8, REGISTER_8);
+  imm(state, OPERAND_8, OPERAND_8);
 }
 
 void imm81(State &state) {
-  imm(state, REGISTER_32, REGISTER_32);
+  imm(state, OPERAND_32, OPERAND_32);
 }
 
 void imm83(State &state) {
-  imm(state, REGISTER_32, REGISTER_8);
+  imm(state, OPERAND_32, OPERAND_8);
 }

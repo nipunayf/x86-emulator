@@ -1,7 +1,7 @@
 #include "add.hpp"
 
 void add03(State &state) {
-  ModRMAttribute rm_args{REGISTER_32}, reg_args{REGISTER_32};
+  ModRMAttribute rm_args{OPERAND_32}, reg_args{OPERAND_32};
   process_modrm(state, rm_args, reg_args);
 
   uint32_t output = rm_args.val + reg_args.val;
@@ -21,14 +21,3 @@ void add05(State &state) {
                state.reg_bank.name32(EAX));
 }
 
-void add83(State &state) {
-  ModRMAttribute rm_args{REGISTER_32}, reg_args{REGISTER_32};
-  process_modrm(state, rm_args, reg_args);
-  uint32_t displace = state.scanner.next_nbytes(1);
-
-  uint32_t output = rm_args.val + displace;
-  set_value(state, rm_args, output);
-
-  set_snapshot(state, "add", rm_args.val, output, format_displacement(displace),
-               rm_args.name);
-}

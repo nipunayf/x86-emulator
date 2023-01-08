@@ -22,7 +22,9 @@
 TEST(OpcodeTest, Add03){ADDITION("add03.txt", reg_bank.load32(EAX),
                                  original_reg_bank.load32(EAX) + 0x01a11001)}
 
-TEST(OpcodeTest, Add05) {
-  ADDITION("add05.txt", reg_bank.load32(EAX),
-           original_reg_bank.load32(EAX) + 0x10050301)
+TEST(OpcodeTest, Add05){ADDITION("add05.txt", reg_bank.load32(EAX),
+                                 original_reg_bank.load32(EAX) + 0x10050301)}
+
+TEST(OpcodeTest, Add80) {
+  ADDITION("add80.txt", reg_bank.load8(AL), original_reg_bank.load8(AL) + 0x01)
 }

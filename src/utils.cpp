@@ -39,3 +39,7 @@ std::string format_register_change(const std::string &reg_name,
 std::string format_displacement(uint32_t memory_addr) {
   return "$" + format_hex_string(memory_addr);
 }
+
+std::string format_immediate(uint32_t immediate) {
+  return std::to_string(immediate);
+}
