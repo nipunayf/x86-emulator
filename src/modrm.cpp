@@ -4,25 +4,23 @@
 #include <string>
 
 #define SET_REGISTER_NAME(reg_name)                                            \
-  {                                                                            \
-    if (set_name)                                                              \
-      args.name = reg_name;                                                    \
-  }
+  if (set_name)                                                                \
+    args.name = reg_name;
 
 uint32_t register_direct(RegisterBank &reg_bank, const uint8_t &reg,
                          ModRMAttribute &args, const bool set_name = false) {
   args.addr = reg;
   switch (args.type) {
-  case REGISTER_8:
+  case OPERAND_8:
     SET_REGISTER_NAME(reg_bank.name8(reg))
     return reg_bank.load8(reg);
-  case REGISTER_16:
+  case OPERAND_16:
     SET_REGISTER_NAME(reg_bank.name16(reg))
     return reg_bank.load16(reg);
-  case REGISTER_32:
+  case OPERAND_32:
     SET_REGISTER_NAME(reg_bank.name32(reg))
     return reg_bank.load32(reg);
-  case REGISTER_64:
+  case OPERAND_64:
     SET_REGISTER_NAME(reg_bank.name64(reg))
     return reg_bank.load64(reg);
   }
@@ -105,13 +103,13 @@ void process_modrm(State &state, ModRMAttribute &rm_args,
 void set_value(State &state, ModRMAttribute &args, uint32_t value) {
   if (args.is_reg) {
     switch (args.type) {
-    case REGISTER_8:
+    case OPERAND_8:
       state.reg_bank.set8(args.addr, value);
-    case REGISTER_16:
+    case OPERAND_16:
       state.reg_bank.set16(args.addr, value);
-    case REGISTER_32:
+    case OPERAND_32:
       state.reg_bank.set32(args.addr, value);
-    case REGISTER_64:
+    case OPERAND_64:
       state.reg_bank.set64(args.addr, value);
     }
   } else {

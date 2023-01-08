@@ -10,10 +10,10 @@ enum AddressingMode {
   REGISTER_DIRECT
 };
 
-enum RegisterType { REGISTER_8, REGISTER_16, REGISTER_32, REGISTER_64 };
+enum OperandSize { OPERAND_8, OPERAND_16, OPERAND_32, OPERAND_64 };
 
 struct ModRMAttribute {
-  RegisterType type;
+  OperandSize type;
   uint32_t val;
   uint32_t addr;
   std::string name;
