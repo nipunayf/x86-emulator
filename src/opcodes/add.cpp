@@ -17,7 +17,7 @@ void add05(State &state) {
   uint32_t output = reg + displace;
   state.reg_bank.set32(EAX, output);
 
-  set_snapshot(state, "add", reg, output, format_displacement(displace),
+  set_snapshot(state, "add", reg, output, format_immediate(displace),
                state.reg_bank.name32(EAX));
 }
 
