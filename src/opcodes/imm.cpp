@@ -11,7 +11,7 @@ void imm(State &state, OperandSize reg_type, OperandSize im_type) {
   uint32_t immediate =  read_immediate(state.scanner, OPERAND_8);
   std::string operation;
   uint32_t output;
-  switch (reg_args.val) {
+  switch (reg_args.addr) {
     case 0:
         operation = "add";
         output = rm_args.val + immediate;
