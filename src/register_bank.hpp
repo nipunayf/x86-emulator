@@ -3,7 +3,7 @@
 
 #include <string>
 
-enum Register8 { AH, AL, CH, CL, DH, DL, BH, BL };
+enum Register8 { AL, CL, DL, BL, AH, CH, DH, BH };
 
 enum Register16 { AX, CX, DX, BX, SP, BP, SI, DI };
 
@@ -50,9 +50,11 @@ enum FLAG {
 
 struct Register {
   uint64_t value;
-  std::string name16;
-  std::string name32;
   std::string name64;
+  std::string name32;
+  std::string name16;
+  std::string name8_h = "";
+  std::string name8_l = "";
 };
 
 class RegisterBank {

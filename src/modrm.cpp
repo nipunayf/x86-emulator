@@ -13,10 +13,9 @@ uint32_t register_direct(RegisterBank &reg_bank, const uint8_t &reg,
                          ModRMAttribute &args, const bool set_name = false) {
   args.addr = reg;
   switch (args.type) {
-    // TODO: Uncomment after implementation of register 8
-    //  case REGISTER_8:
-    //    SET_REGISTER_NAME(reg_bank.name8(reg))
-    //    return reg_bank.load8(reg);
+  case REGISTER_8:
+    SET_REGISTER_NAME(reg_bank.name8(reg))
+    return reg_bank.load8(reg);
   case REGISTER_16:
     SET_REGISTER_NAME(reg_bank.name16(reg))
     return reg_bank.load16(reg);
@@ -78,7 +77,7 @@ uint32_t indirect_four_byte_displacement(State &state, const uint8_t &reg,
 }
 
 void process_modrm(State &state, ModRMAttribute &rm_args,
-                   ModRMAttribute &reg_args) {
+                   ModRMAttribute &reg_args, bool has_extension) {
   const uint8_t byte = state.scanner.next_byte();
   const auto mode = static_cast<const AddressingMode>(byte >> 6);
   const uint8_t rm = byte & 0x07;
@@ -99,7 +98,8 @@ void process_modrm(State &state, ModRMAttribute &rm_args,
     rm_args.val = register_direct(state.reg_bank, rm, rm_args, true);
     break;
   }
-  reg_args.val = register_direct(state.reg_bank, reg, reg_args, true);
+  reg_args.val =
+    has_extension ? reg : register_direct(state.reg_bank, reg, reg_args, true);
 }
 
 void set_value(State &state, ModRMAttribute &args, uint32_t value) {

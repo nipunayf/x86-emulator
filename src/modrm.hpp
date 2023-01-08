@@ -21,7 +21,7 @@ struct ModRMAttribute {
 };
 
 void process_modrm(State &state, ModRMAttribute &rm_args,
-                   ModRMAttribute &reg_args);
+                   ModRMAttribute &reg_args, bool has_extension = false);
 
 void set_value(State &state, ModRMAttribute &args, uint32_t value);
 
