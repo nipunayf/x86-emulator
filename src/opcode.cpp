@@ -3,7 +3,6 @@
 #include "opcodes/imm.hpp"
 #include "opcodes/inc.hpp"
 #include "utils.hpp"
-#include <iostream>
 
 std::map<uint8_t, Handler> handler_map{
   {0x05, add05}, {0x03, add03}, {0x40, inc4x}, {0x41, inc4x}, {0x42, inc4x},

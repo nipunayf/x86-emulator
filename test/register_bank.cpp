@@ -1,6 +1,9 @@
 #include "register_bank.hpp"
+#include "opcode.hpp"
 #include "test_utils.hpp"
 #include <gtest/gtest.h>
+
+#define REGISTER_BANK_TEST_PATH (TEST_PATH + "register_bank/")
 
 TEST(RegisterBankTest, FlagTest) {
   RegisterBank reg_bank;
@@ -10,4 +13,19 @@ TEST(RegisterBankTest, FlagTest) {
   reg_bank.set_flag(AF, 1);
   ASSERT_EQ(reg_bank.load_flag(AF), 1);
   ASSERT_EQ(reg_bank.load_flag(CF), 0);
+}
+
+TEST(RegisterBankTest, AddFlags) {
+  Scanner scanner(REGISTER_BANK_TEST_PATH + "add_flags.txt");
+  RegisterBank reg_bank;
+  Memory memory;
+  State state{scanner, reg_bank, memory};
+
+  parse(state);
+
+  // Result is 01111111 11111111 11111111 11111111
+  ASSERT_EQ(reg_bank.get_flag(PF), 1);
+  ASSERT_EQ(reg_bank.get_flag(SF), 0);
+  ASSERT_EQ(reg_bank.get_flag(ZF), 0);
+  ASSERT_EQ(reg_bank.get_flag(OF), 1);
 }

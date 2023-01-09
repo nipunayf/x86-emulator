@@ -6,6 +6,5 @@
 
 void add03(State &state);
 void add05(State &state);
-void add83(State &state);
 
 #endif
