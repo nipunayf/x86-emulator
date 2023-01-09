@@ -36,4 +36,7 @@ void set_snapshot(State &state, const std::string &ins_name,
                   const std::string &dest_reg,
                   const std::string &source_reg = "");
 
+void set_common_arithmetic_flags(RegisterBank &reg_bank, OperandSize msb,
+                                 uint64_t op1, uint64_t op2, uint64_t res);
+
 #endif
