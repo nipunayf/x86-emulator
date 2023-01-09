@@ -1,12 +1,11 @@
 #include "scanner.hpp"
+#include "utils.hpp"
 #include <iostream>
 
 Scanner::Scanner(const std::string &file_path) {
   m_file.open(file_path);
-  if (!m_file) {
-    std::cerr << "Invalid file path: " << file_path << std::endl;
-    exit(1);
-  }
+  if (!m_file)
+    print_error_and_exit("Invalid file path: %s", file_path.c_str());
   m_file >> std::hex;
 }
 

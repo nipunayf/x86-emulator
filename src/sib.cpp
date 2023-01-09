@@ -4,11 +4,8 @@
 
 uint32_t get_scaled_index(const uint8_t &scale, const uint8_t &index,
                           RegisterBank &reg_bank) {
-  if (index == ESP) {
-    std::cerr << "Register esp cannot be the index of the SIB byte"
-              << std::endl;
-    exit(1);
-  }
+  if (index == ESP)
+    print_error_and_exit("Register esp cannot be the index of the SIB byte");
   return (uint32_t)(reg_bank.load32(index) * scale);
 }
 
