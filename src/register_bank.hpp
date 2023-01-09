@@ -28,6 +28,26 @@ enum Register64 {
   R15
 };
 
+enum FLAG {
+  CF,
+  PF = 2,
+  AF = 4,
+  ZF = 6,
+  SF,
+  TF,
+  IF,
+  DF,
+  OF,
+  IOPL,
+  NT,
+  RF = 16,
+  VM,
+  AC,
+  VIF,
+  VIP,
+  ID
+};
+
 struct Register {
   uint64_t value;
   std::string name16;
@@ -38,6 +58,7 @@ struct Register {
 class RegisterBank {
 private:
   Register m_registers[8];
+  uint32_t m_eflags = 0x246;
 
 public:
   RegisterBank();
@@ -53,6 +74,8 @@ public:
   std::string name16(const uint32_t &index);
   std::string name32(const uint32_t &index);
   std::string name64(const uint32_t &index);
+  void set_flag(const FLAG &flag, uint8_t val);
+  uint8_t get_flag(const FLAG &flag);
 };
 
 #endif
