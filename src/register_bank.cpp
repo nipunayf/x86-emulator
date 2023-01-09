@@ -36,6 +36,19 @@ std::string RegisterBank::name64(const uint32_t &index) {
   return m_registers[index].name64;
 }
 
+std::string RegisterBank::name(const uint32_t &index, const OperandSize &size) {
+  switch (size) {
+  case OPERAND_8:
+    return name8(index);
+  case OPERAND_16:
+    return name16(index);
+  case OPERAND_32:
+    return name32(index);
+  case OPERAND_64:
+    return name64(index);
+  }
+}
+
 uint8_t RegisterBank::load8(const uint32_t &index) {
   if (index > 3)
     return m_registers[index % 4].value >> 8;
@@ -53,6 +66,19 @@ uint32_t RegisterBank::load32(const uint32_t &index) {
 
 uint64_t RegisterBank::load64(const uint32_t &index) {
   return m_registers[index].value;
+}
+
+uint64_t RegisterBank::load(const uint32_t &index, const OperandSize &size) {
+  switch (size) {
+  case OPERAND_8:
+    return load8(index);
+  case OPERAND_16:
+    return load16(index);
+  case OPERAND_32:
+    return load32(index);
+  case OPERAND_64:
+    return load64(index);
+  }
 }
 
 void RegisterBank::set8(const uint32_t &index, const uint8_t value) {
@@ -73,6 +99,20 @@ void RegisterBank::set32(const uint32_t &index, const uint32_t value) {
 
 void RegisterBank::set64(const uint32_t &index, const uint64_t value) {
   m_registers[index].value = value;
+}
+
+void RegisterBank::set(const uint32_t &index, const uint64_t value,
+                       const OperandSize &size) {
+  switch (size) {
+  case OPERAND_8:
+    set8(index, value);
+  case OPERAND_16:
+    set16(index, value);
+  case OPERAND_32:
+    set32(index, value);
+  case OPERAND_64:
+    set64(index, value);
+  }
 }
 
 void RegisterBank::set_flag(const FLAG &flag, uint8_t val) {

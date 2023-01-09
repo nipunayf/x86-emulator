@@ -7,7 +7,7 @@ void add03(State &state) {
   uint32_t output = rm_args.val + reg_args.val;
   set_value(state, reg_args, output);
 
-  set_snapshot(state, "add", reg_args.val, output, reg_args.name, rm_args.name);
+  set_snapshot(state, "add", reg_args.val, output, reg_args.notation, rm_args.notation);
 }
 
 void add05(State &state) {

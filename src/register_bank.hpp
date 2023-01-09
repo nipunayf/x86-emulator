@@ -3,6 +3,8 @@
 
 #include <string>
 
+enum OperandSize { OPERAND_8, OPERAND_16, OPERAND_32, OPERAND_64 };
+
 enum Register8 { AL, CL, DL, BL, AH, CH, DH, BH };
 
 enum Register16 { AX, CX, DX, BX, SP, BP, SI, DI };
@@ -68,14 +70,18 @@ public:
   uint16_t load16(const uint32_t &index);
   uint32_t load32(const uint32_t &index);
   uint64_t load64(const uint32_t &index);
+  uint64_t load(const uint32_t &index, const OperandSize &size);
   void set8(const uint32_t &index, const uint8_t value);
   void set16(const uint32_t &index, const uint16_t value);
   void set32(const uint32_t &index, const uint32_t value);
   void set64(const uint32_t &index, const uint64_t value);
+  void set(const uint32_t &index, const uint64_t value,
+           const OperandSize &size);
   std::string name8(const uint32_t &index);
   std::string name16(const uint32_t &index);
   std::string name32(const uint32_t &index);
   std::string name64(const uint32_t &index);
+  std::string name(const uint32_t &index, const OperandSize &size);
   void set_flag(const FLAG &flag, uint8_t val);
   uint8_t get_flag(const FLAG &flag);
 };
