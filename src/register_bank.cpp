@@ -58,3 +58,11 @@ void RegisterBank::set32(const uint32_t &index, const uint32_t value) {
 void RegisterBank::set64(const uint32_t &index, const uint64_t value) {
   m_registers[index].value = value;
 }
+
+void RegisterBank::set_flag(const FLAG &flag, uint8_t val) {
+  m_eflags |= val << flag;
+}
+
+uint8_t RegisterBank::get_flag(const FLAG &flag) {
+  return (m_eflags >> flag) & 1;
+}
