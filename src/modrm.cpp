@@ -3,6 +3,56 @@
 #include <iostream>
 #include <string>
 
+void indirect_16bit_addressing(RegisterBank &reg_bank, uint32_t index,
+                               ModRMAttribute &args) {
+  switch (index) {
+  case 0:
+    args.mem_addr = reg_bank.load16(BX) + reg_bank.load16(SI);
+    args.notation = format_base_index(reg_bank.name16(BX), reg_bank.name16(SI));
+    break;
+  case 1:
+    args.mem_addr = reg_bank.load16(BX) + reg_bank.load16(DI);
+    args.notation = format_base_index(reg_bank.name16(BX), reg_bank.name16(DI));
+    break;
+  case 2:
+    args.mem_addr = reg_bank.load16(BP) + reg_bank.load16(SI);
+    args.notation = format_base_index(reg_bank.name16(BP), reg_bank.name16(SI));
+    break;
+  case 3:
+    args.mem_addr = reg_bank.load16(BP) + reg_bank.load16(DI);
+    args.notation = format_base_index(reg_bank.name16(BP), reg_bank.name16(DI));
+    break;
+  case 4:
+    args.mem_addr = reg_bank.load16(SI);
+    args.notation = format_indirect_register(reg_bank.name16(SI));
+    break;
+  case 5:
+    args.mem_addr = reg_bank.load16(DI);
+    args.notation = format_indirect_register(reg_bank.name16(DI));
+    break;
+  case 6:
+    args.mem_addr = reg_bank.load16(BP);
+    args.notation = format_indirect_register(reg_bank.name16(BP));
+    break;
+  case 7:
+    args.mem_addr = reg_bank.load16(BX);
+    args.notation = format_indirect_register(reg_bank.name16(BX));
+    break;
+  }
+}
+
+void indirect_32bit_addressing(State &state, uint32_t reg,
+                               ModRMAttribute &args) {
+  if (reg == ESP) {
+    uint8_t sib = state.scanner.next_byte();
+    args.mem_addr = process_sib(sib, state.reg_bank, args.notation);
+  } else {
+    args.mem_addr = state.reg_bank.load(reg, args.type);
+    args.notation =
+      format_indirect_register(state.reg_bank.name(reg, args.type));
+  }
+}
+
 uint32_t register_direct(RegisterBank &reg_bank, const uint8_t &reg,
                          ModRMAttribute &args) {
   args.reg = reg;
@@ -12,17 +62,22 @@ uint32_t register_direct(RegisterBank &reg_bank, const uint8_t &reg,
 
 uint32_t register_indirect(State &state, const uint8_t &reg,
                            ModRMAttribute args) {
-  if (reg == ESP) {
-    uint8_t sib = state.scanner.next_byte();
-    args.mem_addr = process_sib(sib, state.reg_bank, args.notation);
-  } else if (reg == EBP) {
-    uint32_t displacement = state.scanner.next_nbytes(4);
-    args.mem_addr = displacement;
-    args.notation = format_memory_address(displacement);
+  if (args.type == OPERAND_16) {
+    if (reg == 6) {
+      uint32_t displacement = state.scanner.next_nbytes(2);
+      args.mem_addr = displacement;
+      args.notation = format_memory_address(displacement);
+    } else {
+      indirect_16bit_addressing(state.reg_bank, reg, args);
+    }
   } else {
-    args.mem_addr = state.reg_bank.load(reg, args.type);
-    args.notation =
-      format_indirect_register(state.reg_bank.name(reg, args.type));
+    if (reg == EBP) {
+      uint32_t displacement = state.scanner.next_nbytes(4);
+      args.mem_addr = displacement;
+      args.notation = format_memory_address(displacement);
+    } else {
+      indirect_32bit_addressing(state, reg, args);
+    }
   }
   return state.memory.read(args.mem_addr);
 }
@@ -30,35 +85,32 @@ uint32_t register_indirect(State &state, const uint8_t &reg,
 uint32_t indirect_one_byte_displacement(State &state, const uint8_t &reg,
                                         ModRMAttribute args) {
   uint8_t displacement;
-  if (reg == ESP) {
-    uint8_t sib = state.scanner.next_byte();
+  if (args.type == OPERAND_16) {
+    indirect_16bit_addressing(state.reg_bank, reg, args);
     displacement = state.scanner.next_byte();
-    args.mem_addr =
-      process_sib(sib, state.reg_bank, args.notation, displacement);
   } else {
-    displacement = state.scanner.next_byte();
-    args.mem_addr = state.reg_bank.load(reg, args.type) + displacement;
-    args.notation = format_indirect_with_displacement(
-      state.reg_bank.name(reg, args.type), displacement);
+    indirect_32bit_addressing(state, reg, args);
+    uint8_t displacement = state.scanner.next_byte();
   }
-  return state.memory.read(args.mem_addr);
+  args.notation =
+    format_indirect_with_displacement(args.notation, displacement);
+  return state.memory.read(args.mem_addr + displacement);
 }
 
-uint32_t indirect_four_byte_displacement(State &state, const uint8_t &reg,
-                                         ModRMAttribute args) {
-  uint32_t displacement;
-  if (reg == ESP) {
-    uint8_t sib = state.scanner.next_byte();
-    displacement = state.scanner.next_nbytes(4);
-    args.mem_addr =
-      process_sib(sib, state.reg_bank, args.notation, displacement);
+uint32_t indirect_two_or_four_byte_displacement(State &state,
+                                                const uint8_t &reg,
+                                                ModRMAttribute args) {
+  uint8_t displacement;
+  if (args.type == OPERAND_16) {
+    indirect_16bit_addressing(state.reg_bank, reg, args);
+    displacement = state.scanner.next_nbytes(2);
   } else {
+    indirect_32bit_addressing(state, reg, args);
     displacement = state.scanner.next_nbytes(4);
-    args.mem_addr = state.reg_bank.load(reg, args.type) + displacement;
-    args.notation = format_indirect_with_displacement(
-      state.reg_bank.name(reg, args.type), displacement);
   }
-  return state.memory.read(args.mem_addr);
+  args.notation =
+    format_indirect_with_displacement(args.notation, displacement);
+  return state.memory.read(args.mem_addr + displacement);
 }
 
 void process_modrm(State &state, ModRMAttribute &rm_args,
@@ -76,7 +128,7 @@ void process_modrm(State &state, ModRMAttribute &rm_args,
     rm_args.val = indirect_one_byte_displacement(state, rm, rm_args);
     break;
   case FOUR_BYTE_DISPLACEMENT:
-    rm_args.val = indirect_four_byte_displacement(state, rm, rm_args);
+    rm_args.val = indirect_two_or_four_byte_displacement(state, rm, rm_args);
     break;
   case REGISTER_DIRECT:
     rm_args.val = register_direct(state.reg_bank, rm, rm_args);

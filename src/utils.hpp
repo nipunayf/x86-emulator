@@ -17,6 +17,9 @@ std::string format_register_change(const std::string &reg_name,
 
 std::string format_immediate(uint32_t immediate);
 
+std::string format_base_index(const std::string &base,
+                              const std::string &index);
+
 std::string format_sib(const std::string &base, const std::string &index,
                        const uint8_t &scale, uint32_t displacement);
 
