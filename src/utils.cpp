@@ -54,13 +54,22 @@ std::string format_sib(const std::string &base, const std::string &index,
   return addr;
 }
 
+std::string format_base_index(const std::string &base,
+                              const std::string &index) {
+  const unsigned short len = base.length() + index.length() + 4;
+  char addr[len];
+  sprintf(addr, "[%s+%s]", base.c_str(), index.c_str());
+  return addr;
+}
+
 std::string format_indirect_register(const std::string reg) {
   return "[" + reg + "]";
 }
 
 std::string format_indirect_with_displacement(const std::string reg,
                                               uint32_t memory_addr) {
-  return "[" + reg + "+" + format_hex_string(memory_addr) + "]";
+  return "[" + reg.substr(1, reg.size() - 2) + "+" +
+         format_hex_string(memory_addr) + "]";
 }
 
 std::string format_memory_address(uint32_t memory_addr) {
