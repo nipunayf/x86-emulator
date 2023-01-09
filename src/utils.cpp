@@ -1,4 +1,7 @@
 #include "utils.hpp"
+#include <cstdarg>
+#include <cstdio>
+#include <iostream>
 #include <sstream>
 
 std::string format_hex_string(uint32_t byte) {
@@ -65,4 +68,16 @@ std::string format_indirect_with_displacement(const std::string reg,
 
 std::string format_memory_address(uint32_t memory_addr) {
   return "[" + format_hex_string(memory_addr) + "]";
+}
+
+void print_error_and_exit(const std::string &format, ...) {
+  va_list args;
+  va_start(args, format);
+  int size = vsnprintf(nullptr, 0, format.c_str(), args) + 1;
+  va_start(args, format);
+  char msg[size];
+  vsnprintf(msg, size, format.c_str(), args);
+  std::cerr << msg << std::endl;
+  va_end(args);
+  exit(1);
 }

@@ -2,6 +2,7 @@
 #include "opcodes/add.hpp"
 #include "opcodes/imm.hpp"
 #include "opcodes/inc.hpp"
+#include "utils.hpp"
 #include <iostream>
 
 std::map<uint8_t, Handler> handler_map{
@@ -31,13 +32,10 @@ int parse(State &state) {
     if (next_byte == 0x66 || next_byte == 0xf2 || next_byte == 0xf3)
       set_prefix(args, state.scanner, prefix_index, next_byte);
 
-    if (prefix_index > 0 && next_byte != 0x0f) {
-      char err_msg[17];
-      sprintf(err_msg, "Expected %s after %s", format_hex_string(0x0f).c_str(),
-              format_hex_string(args.prefixes[0]).c_str());
-      std::cerr << err_msg << std::endl;
-      exit(1);
-    }
+    if (prefix_index > 0 && next_byte != 0x0f)
+      print_error_and_exit("Expected %s after %s",
+                           format_hex_string(0x0f).c_str(),
+                           format_hex_string(args.prefixes[0]).c_str());
 
     // Check for opcodes > 1-byte
     if (next_byte == 0x0f) {
@@ -51,24 +49,16 @@ int parse(State &state) {
     args.prefixes_count = prefix_index;
     state.args = args;
 
-    if (args.prefixes_count > 0) {
-      char err_msg[45];
-      sprintf(err_msg, "Invalid opcode bytes: %i is not yet supported",
-              prefix_index + 1);
-      std::cerr << err_msg << std::endl;
-      exit(1);
-    }
+    if (args.prefixes_count > 0)
+      print_error_and_exit("Invalid opcode bytes: %i is not yet supported",
+                           prefix_index + 1);
 
     // Invoke the corresponding handler
     if (handler_map.count(args.opcode) > 0)
       handler_map[args.opcode](state);
-    else {
-      char err_msg[38];
-      sprintf(err_msg, "Invalid opcode: %s is not yet supported",
-              format_hex_string(args.opcode).c_str());
-      std::cerr << err_msg << std::endl;
-      exit(1);
-    }
+    else
+      print_error_and_exit("Invalid opcode: %s is not yet supported",
+                           format_hex_string(args.opcode).c_str());
 
     next_byte = state.scanner.next_byte();
   }
