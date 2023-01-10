@@ -94,6 +94,9 @@ public:
   std::string name(const uint32_t &index, const OperandSize &size);
   void set_flag(const FLAG &flag, uint8_t val);
   uint8_t get_flag(const FLAG &flag);
+  uint16_t load_seg(const uint32_t &index);
+  void set_seg(const uint32_t &index, const uint16_t value);
+  std::string name_seg(const uint32_t &index);
 };
 
 #endif
