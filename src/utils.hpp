@@ -29,4 +29,6 @@ std::string format_indirect_with_displacement(const std::string reg,
 
 void print_error_and_exit(const std::string &format, ...);
 
+uint8_t read_msb(uint8_t op_size, uint64_t value);
+
 #endif
