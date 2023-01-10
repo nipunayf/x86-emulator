@@ -27,7 +27,7 @@ struct State {
   Scanner &scanner;
   RegisterBank &reg_bank;
   Memory &memory;
-  Instruction args;
+  Instruction ins;
   std::list<Snapshot> snapshots;
 };
 

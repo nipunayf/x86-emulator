@@ -18,46 +18,46 @@ static void set_prefix(Instruction &args, Scanner &scanner, int &index,
 
 int parse(State &state) {
 
-  Instruction args{};
+  Instruction ins{};
   uint8_t next_byte = state.scanner.next_byte();
   int prefix_index = 0;
 
   // Repeat until the end of the file is reached
   while (next_byte > 0) {
-    args = {};
+    ins = {};
     prefix_index = 0;
 
     // Check for additional prefixes for opcodes > 1-byte
     if (next_byte == 0x66 || next_byte == 0xf2 || next_byte == 0xf3)
-      set_prefix(args, state.scanner, prefix_index, next_byte);
+      set_prefix(ins, state.scanner, prefix_index, next_byte);
 
     if (prefix_index > 0 && next_byte != 0x0f)
       print_error_and_exit("Expected %s after %s",
                            format_hex_string(0x0f).c_str(),
-                           format_hex_string(args.prefixes[0]).c_str());
+                           format_hex_string(ins.prefixes[0]).c_str());
 
     // Check for opcodes > 1-byte
     if (next_byte == 0x0f) {
-      set_prefix(args, state.scanner, prefix_index, next_byte);
+      set_prefix(ins, state.scanner, prefix_index, next_byte);
 
       // Check for 3-byte opcode
       if (next_byte == 0x38 || next_byte == 0x3a)
-        set_prefix(args, state.scanner, prefix_index, next_byte);
+        set_prefix(ins, state.scanner, prefix_index, next_byte);
     }
-    args.opcode = next_byte;
-    args.prefixes_count = prefix_index;
-    state.args = args;
+    ins.opcode = next_byte;
+    ins.prefixes_count = prefix_index;
+    state.ins = ins;
 
-    if (args.prefixes_count > 0)
+    if (ins.prefixes_count > 0)
       print_error_and_exit("Invalid opcode bytes: %i is not yet supported",
                            prefix_index + 1);
 
     // Invoke the corresponding handler
-    if (handler_map.count(args.opcode) > 0)
-      handler_map[args.opcode](state);
+    if (handler_map.count(ins.opcode) > 0)
+      handler_map[ins.opcode](state);
     else
       print_error_and_exit("Invalid opcode: %s is not yet supported",
-                           format_hex_string(args.opcode).c_str());
+                           format_hex_string(ins.opcode).c_str());
 
     next_byte = state.scanner.next_byte();
   }
