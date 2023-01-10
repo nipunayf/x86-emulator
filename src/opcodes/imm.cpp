@@ -46,8 +46,7 @@ void imm(State &state, OperandSize reg_type, OperandSize im_type) {
     break;
   }
   set_value(state, rm_args, output);
-  set_snapshot(state, operation, rm_args.val, output,
-               format_immediate(immediate), rm_args.notation);
+  set_snapshot(state, operation, format_immediate(immediate), rm_args.notation);
 }
 
 void imm80(State &state) { imm(state, OPERAND_8, OPERAND_8); }

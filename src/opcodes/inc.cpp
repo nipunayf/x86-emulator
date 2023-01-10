@@ -9,8 +9,7 @@ void inc4x(State &state) {
   uint32_t reg_value = state.reg_bank.load32(reg);
   std::string reg_name = state.reg_bank.name32(reg);
 
-  state.reg_bank.set32(reg, reg_value + 1);
+  state.reg_bank.set32(state.args.snapshot.reg_transition, reg, reg_value + 1);
 
-  set_snapshot(state, "inc", reg_value, state.reg_bank.load32(reg),
-               state.reg_bank.name32(reg));
+  set_snapshot(state, "inc", state.reg_bank.name32(reg));
 }

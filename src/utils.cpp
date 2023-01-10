@@ -30,11 +30,10 @@ std::string format_instruction(const std::string &operand,
 }
 
 std::string format_register_change(const std::string &reg_name,
-                                   uint32_t before_value,
-                                   uint32_t after_value) {
+                                   uint32_t prev_value, uint32_t after_value) {
   char change[77];
   sprintf(change, "%s(%s) -> (%s)", reg_name.c_str(),
-          format_hex_string(before_value).c_str(),
+          format_hex_string(prev_value).c_str(),
           format_hex_string(after_value).c_str());
   return change;
 }

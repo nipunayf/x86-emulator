@@ -87,7 +87,8 @@ void process_modrm(State &state, ModRMAttribute &rm_args,
 
 void set_value(State &state, ModRMAttribute &args, uint32_t value) {
   if (args.reg != REG_UNSET)
-    state.reg_bank.set(args.reg, value, args.type);
+    state.reg_bank.set(state.args.snapshot.reg_transition, args.reg, value,
+                       args.type);
   else
-    state.memory.store(args.mem_addr, value);
+    state.memory.store(state.args.snapshot.mem_transition, args.mem_addr, value);
 }

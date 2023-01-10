@@ -10,7 +10,8 @@
     RegisterBank reg_bank;                                                     \
     Memory memory;                                                             \
     State state{scanner, reg_bank, memory};                                    \
-    memory.store(0x00010200, 0x01a11001);                                      \
+    std::string memory_change;                                                 \
+    memory.store(memory_change, 0x00010200, 0x01a11001);                       \
                                                                                \
     RegisterBank original_reg_bank = reg_bank;                                 \
     parse(state);                                                              \
