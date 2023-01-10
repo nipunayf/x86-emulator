@@ -30,6 +30,8 @@ enum Register64 {
   R15
 };
 
+enum RegisterSeg { CS, DS, SS, ES, FS, GS };
+
 enum FLAG {
   CF,
   PF = 2,
@@ -50,7 +52,7 @@ enum FLAG {
   ID
 };
 
-struct Register {
+struct GPRegister {
   uint64_t value;
   std::string name64;
   std::string name32;
@@ -59,10 +61,18 @@ struct Register {
   std::string name8_l = "";
 };
 
+struct SegRegister {
+  uint16_t value;
+  std::string name;
+};
+
+typedef uint32_t EFLAGSRegister;
+
 class RegisterBank {
 private:
-  Register m_registers[8];
-  uint32_t m_eflags = 0x246;
+  GPRegister m_gp_registers[8];
+  SegRegister m_seg_registers[6];
+  EFLAGSRegister m_eflags = 0x246;
 
 public:
   RegisterBank();
