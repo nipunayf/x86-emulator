@@ -124,12 +124,12 @@ void RegisterBank::set(const uint32_t &index, const uint64_t value,
   }
 }
 
-void RegisterBank::set_flag(const FLAG &flag, uint8_t val) {
-  m_eflags |= val << flag;
+uint8_t RegisterBank::load_flag(const FLAG &flag) {
+  return (m_eflags >> flag) & 1;
 }
 
-uint8_t RegisterBank::get_flag(const FLAG &flag) {
-  return (m_eflags >> flag) & 1;
+void RegisterBank::set_flag(const FLAG &flag, uint8_t val) {
+  m_eflags |= val << flag;
 }
 
 uint16_t RegisterBank::load_seg(const uint32_t &index) {
