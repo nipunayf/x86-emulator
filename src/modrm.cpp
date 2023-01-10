@@ -82,31 +82,15 @@ uint32_t register_indirect(State &state, const uint8_t &reg,
   return state.memory.read(args.mem_addr);
 }
 
-uint32_t indirect_one_byte_displacement(State &state, const uint8_t &reg,
-                                        ModRMAttribute args) {
-  uint8_t displacement;
+uint32_t indirect_nbyte_displacement(State &state, const uint8_t &mode,
+                                     const uint8_t &reg, ModRMAttribute args) {
+  uint32_t displacement = 0;
   if (args.type == OPERAND_16) {
     indirect_16bit_addressing(state.reg_bank, reg, args);
-    displacement = state.scanner.next_byte();
+    displacement = state.scanner.next_nbytes(mode);
   } else {
     indirect_32bit_addressing(state, reg, args);
-    uint8_t displacement = state.scanner.next_byte();
-  }
-  args.notation =
-    format_indirect_with_displacement(args.notation, displacement);
-  return state.memory.read(args.mem_addr + displacement);
-}
-
-uint32_t indirect_two_or_four_byte_displacement(State &state,
-                                                const uint8_t &reg,
-                                                ModRMAttribute args) {
-  uint8_t displacement;
-  if (args.type == OPERAND_16) {
-    indirect_16bit_addressing(state.reg_bank, reg, args);
-    displacement = state.scanner.next_nbytes(2);
-  } else {
-    indirect_32bit_addressing(state, reg, args);
-    displacement = state.scanner.next_nbytes(4);
+    displacement = state.scanner.next_nbytes(mode == 1 ? 1 : 4);
   }
   args.notation =
     format_indirect_with_displacement(args.notation, displacement);
@@ -125,10 +109,10 @@ void process_modrm(State &state, ModRMAttribute &rm_args,
     rm_args.val = register_indirect(state, rm, rm_args);
     break;
   case ONE_BYTE_DISPLACEMENT:
-    rm_args.val = indirect_one_byte_displacement(state, rm, rm_args);
+    rm_args.val = indirect_nbyte_displacement(state, mode, rm, rm_args);
     break;
-  case FOUR_BYTE_DISPLACEMENT:
-    rm_args.val = indirect_two_or_four_byte_displacement(state, rm, rm_args);
+  case TWO_OR_FOUR_BYTE_DISPLACEMENT:
+    rm_args.val = indirect_nbyte_displacement(state, mode, rm, rm_args);
     break;
   case REGISTER_DIRECT:
     rm_args.val = register_direct(state.reg_bank, rm, rm_args);
