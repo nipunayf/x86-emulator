@@ -2,11 +2,11 @@
 #include "test_utils.hpp"
 #include <gtest/gtest.h>
 
-#define REGISTER_BANK_TEST_PATH (TEST_PATH + "add/")
+#define ADD_TEST_PATH (TEST_PATH + "add/")
 
 #define ADDITION(file_name, dest, expected)                                    \
   {                                                                            \
-    Scanner scanner(REGISTER_BANK_TEST_PATH + file_name);                      \
+    Scanner scanner(ADD_TEST_PATH + file_name);                                \
     RegisterBank reg_bank;                                                     \
     Memory memory;                                                             \
     State state{scanner, reg_bank, memory};                                    \

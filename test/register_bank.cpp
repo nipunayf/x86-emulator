@@ -24,8 +24,8 @@ TEST(RegisterBankTest, AddFlags) {
   parse(state);
 
   // Result is 01111111 11111111 11111111 11111111
-  ASSERT_EQ(reg_bank.get_flag(PF), 1);
-  ASSERT_EQ(reg_bank.get_flag(SF), 0);
-  ASSERT_EQ(reg_bank.get_flag(ZF), 0);
-  ASSERT_EQ(reg_bank.get_flag(OF), 1);
+  ASSERT_EQ(reg_bank.load_flag(PF), 1);
+  ASSERT_EQ(reg_bank.load_flag(SF), 0);
+  ASSERT_EQ(reg_bank.load_flag(ZF), 0);
+  ASSERT_EQ(reg_bank.load_flag(OF), 1);
 }

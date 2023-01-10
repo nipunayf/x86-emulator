@@ -2,9 +2,15 @@
 
 int32_t perform_add(RegisterBank &reg_bank, OperandSize op_size, int32_t op1,
                     int32_t op2) {
-  int32_t result = op1 + op2;
-  set_common_arithmetic_flags(reg_bank, op_size, op1, op2, result);
-  return result;
+  int32_t res = op1 + op2;
+  set_common_arithmetic_flags(reg_bank, op_size, op1, op2, res);
+
+  // Set overflow flag (OF)
+  // When two positive integers or two negative integer operands produce a
+  // result with a complemented msb
+  reg_bank.set_flag(OF, read_msb(op_size, op1) == read_msb(op_size, op2) &&
+                          read_msb(op_size, res) != read_msb(op_size, op1));
+  return res;
 }
 
 void add03(State &state) {

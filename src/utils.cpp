@@ -81,3 +81,7 @@ void print_error_and_exit(const std::string &format, ...) {
   va_end(args);
   exit(1);
 }
+
+uint8_t read_msb(uint8_t op_size, uint64_t value) {
+  return (value & (1ull << (8 * (2 ^ op_size) - 1))) > 0;
+}
