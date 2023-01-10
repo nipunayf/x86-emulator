@@ -131,3 +131,15 @@ void RegisterBank::set_flag(const FLAG &flag, uint8_t val) {
 uint8_t RegisterBank::get_flag(const FLAG &flag) {
   return (m_eflags >> flag) & 1;
 }
+
+uint16_t RegisterBank::load_seg(const uint32_t &index) {
+  return m_seg_registers[index].value;
+}
+
+void RegisterBank::set_seg(const uint32_t &index, const uint16_t value) {
+  m_seg_registers[index].value = value;
+}
+
+std::string RegisterBank::name_seg(const uint32_t &index) {
+  return m_seg_registers[index].name;
+}
