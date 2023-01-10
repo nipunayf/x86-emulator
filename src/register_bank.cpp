@@ -5,6 +5,11 @@
 #define MASK_L8 (MASK_16 | (255 << 8))
 #define MASK_H8 (MASK_16 | 255)
 
+std::map<FLAG, std::string> flag_name_map = {
+  {CF, "CF"}, {PF, "PF"}, {AF, "AF"},   {ZF, "ZF"},     {SF, "SF"}, {TF, "TF"},
+  {IF, "IF"}, {DF, "DF"}, {OF, "OF"},   {IOPL, "IOPL"}, {NT, "NT"}, {RF, "RF"},
+  {VM, "VM"}, {AC, "AC"}, {VIF, "VIF"}, {VIP, "VIP"},   {ID, "ID"}};
+
 RegisterBank::RegisterBank() {
   m_gp_registers[RAX] =
     GPRegister({0xbf8db144, "%rax", "%eax", "%ax", "%ah", "%al"});
@@ -91,59 +96,82 @@ uint64_t RegisterBank::load(const uint32_t &index, const OperandSize &size) {
   }
 }
 
-void RegisterBank::set8(const uint32_t &index, const uint8_t value) {
+void RegisterBank::set8(std::string &transition, const uint32_t &index,
+                        const uint8_t value) {
+  uint8_t prev_value = load8(index);
   if (index > 3)
     m_gp_registers[index % 4].value =
       (m_gp_registers[index % 4].value & MASK_H8) | value;
   else
     m_gp_registers[index].value =
       (m_gp_registers[index].value & MASK_L8) | value;
+  transition = format_register_change(name8(index), prev_value, value);
 }
 
-void RegisterBank::set16(const uint32_t &index, const uint16_t value) {
+void RegisterBank::set16(std::string &transition, const uint32_t &index,
+                         const uint16_t value) {
+  uint8_t prev_value = load16(index);
   m_gp_registers[index].value = (m_gp_registers[index].value & MASK_16) | value;
+  transition = format_register_change(name16(index), prev_value, value);
 }
 
-void RegisterBank::set32(const uint32_t &index, const uint32_t value) {
+void RegisterBank::set32(std::string &transition, const uint32_t &index,
+                         const uint32_t value) {
+  uint8_t prev_value = load32(index);
   m_gp_registers[index].value = (m_gp_registers[index].value & MASK_32) | value;
+  transition = format_register_change(name32(index), prev_value, value);
 }
 
-void RegisterBank::set64(const uint32_t &index, const uint64_t value) {
+void RegisterBank::set64(std::string &transition, const uint32_t &index,
+                         const uint64_t value) {
+  uint8_t prev_value = load64(index);
   m_gp_registers[index].value = value;
+  transition = format_register_change(name64(index), prev_value, value);
 }
 
-void RegisterBank::set(const uint32_t &index, const uint64_t value,
-                       const OperandSize &size) {
+void RegisterBank::set(std::string &transition, const uint32_t &index,
+                       const uint64_t value, const OperandSize &size) {
   switch (size) {
   case OPERAND_8:
-    set8(index, value);
+    set8(transition, index, value);
   case OPERAND_16:
-    set16(index, value);
+    set16(transition, index, value);
   case OPERAND_32:
-    set32(index, value);
+    set32(transition, index, value);
   case OPERAND_64:
-    set64(index, value);
+    set64(transition, index, value);
   }
 }
+
+std::string name_flag(const FLAG &flag) { return flag_name_map[flag]; }
 
 uint8_t RegisterBank::load_flag(const FLAG &flag) {
   return (m_eflags >> flag) & 1ul;
 }
 
-void RegisterBank::set_flag(const FLAG &flag, uint8_t val) {
+void RegisterBank::set_flag(std::list<std::string> &transitions,
+                            const FLAG &flag, uint8_t val) {
+  uint8_t prev_value = load_flag(flag);
   val == 0 ? m_eflags &= ~(1ul << flag) : m_eflags |= 1ul << flag;
+  transitions.push_back(
+    prev_value == val
+      ? ""
+      : format_register_change(name_flag(flag), prev_value, val));
+}
+
+std::string RegisterBank::name_seg(const uint32_t &index) {
+  return m_seg_registers[index].name;
 }
 
 uint16_t RegisterBank::load_seg(const uint32_t &index) {
   return m_seg_registers[index].value;
 }
 
-void RegisterBank::set_seg(const uint32_t &index, const uint16_t value) {
+void RegisterBank::set_seg(std::string &transition, const uint32_t &index,
+                           const uint16_t value) {
+  uint16_t prev_value = load_seg(index);
   m_seg_registers[index].value = value;
-}
-
-std::string RegisterBank::name_seg(const uint32_t &index) {
-  return m_seg_registers[index].name;
+  transition = format_register_change(name_seg(index), prev_value, value);
 }
 
 uint64_t RegisterBank::load_eip() { return m_eip.value; }

@@ -11,32 +11,32 @@
 
 struct Snapshot {
   std::string instruction;
-  std::string reg_change;
-  std::string flag_change;
+  std::string reg_transition;
+  std::string mem_transition;
+  std::list<std::string> flag_transitions;
 };
 
-struct Argument {
+struct Instruction {
   uint8_t opcode;
   uint8_t prefixes[MAX_PREFIX_COUNT];
   unsigned int prefixes_count : MAX_PREFIX_COUNT;
+  Snapshot snapshot;
 };
 
 struct State {
   Scanner &scanner;
   RegisterBank &reg_bank;
   Memory &memory;
-  Argument args;
+  Instruction args;
   std::list<Snapshot> snapshots;
 };
 
 using Handler = void (*)(State &args);
 
 void set_snapshot(State &state, const std::string &ins_name,
-                  uint32_t reg_before, uint32_t reg_after,
-                  const std::string &dest_reg,
-                  const std::string &source_reg = "");
+                  const std::string &dest, const std::string &source = "");
 
-void set_common_arithmetic_flags(RegisterBank &reg_bank, OperandSize msb,
-                                 uint64_t op1, uint64_t op2, uint64_t res);
+void set_common_arithmetic_flags(State &state, OperandSize msb, uint64_t op1,
+                                 uint64_t op2, uint64_t res);
 
 #endif

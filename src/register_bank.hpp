@@ -1,6 +1,9 @@
 #ifndef REGISTER_BANK_H
 #define REGISTER_BANK_H
 
+#include "utils.hpp"
+#include <list>
+#include <map>
 #include <string>
 
 enum OperandSize { OPERAND_8, OPERAND_16, OPERAND_32, OPERAND_64 };
@@ -83,11 +86,15 @@ public:
   uint32_t load32(const uint32_t &index);
   uint64_t load64(const uint32_t &index);
   uint64_t load(const uint32_t &index, const OperandSize &size);
-  void set8(const uint32_t &index, const uint8_t value);
-  void set16(const uint32_t &index, const uint16_t value);
-  void set32(const uint32_t &index, const uint32_t value);
-  void set64(const uint32_t &index, const uint64_t value);
-  void set(const uint32_t &index, const uint64_t value,
+  void set8(std::string &transition, const uint32_t &index,
+            const uint8_t value);
+  void set16(std::string &transition, const uint32_t &index,
+             const uint16_t value);
+  void set32(std::string &transition, const uint32_t &index,
+             const uint32_t value);
+  void set64(std::string &transition, const uint32_t &index,
+             const uint64_t value);
+  void set(std::string &transition, const uint32_t &index, const uint64_t value,
            const OperandSize &size);
   std::string name8(const uint32_t &index);
   std::string name16(const uint32_t &index);
@@ -95,9 +102,11 @@ public:
   std::string name64(const uint32_t &index);
   std::string name(const uint32_t &index, const OperandSize &size);
   uint8_t load_flag(const FLAG &flag);
-  void set_flag(const FLAG &flag, uint8_t val);
+  void set_flag(std::list<std::string> &transitions, const FLAG &flag,
+                uint8_t val);
   uint16_t load_seg(const uint32_t &index);
-  void set_seg(const uint32_t &index, const uint16_t value);
+  void set_seg(std::string &transition, const uint32_t &index,
+               const uint16_t value);
   std::string name_seg(const uint32_t &index);
   uint64_t load_eip();
   void set_eip(const uint64_t value, const OperandSize &size);
