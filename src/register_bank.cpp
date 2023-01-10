@@ -6,34 +6,42 @@
 #define MASK_H8 (MASK_16 | 255)
 
 RegisterBank::RegisterBank() {
-  m_registers[RAX] =
-    Register({0xbf8db144, "%rax", "%eax", "%ax", "%ah", "%al"});
-  m_registers[RCX] =
-    Register({0x88c5cffb, "%rcx", "%ecx", "%cx", "%ch", "%cl"});
-  m_registers[RDX] = Register({0x1, "%rdx", "%edx", "%dx", "%dh", "%dl"});
-  m_registers[RBX] = Register({0xae5ff4, "%rbx", "%ebx", "%bx", "%bh", "%bl"});
-  m_registers[RSP] = Register({0xbf8db0bc, "%rsp", "%esp", "%sp"});
-  m_registers[RBP] = Register({0xbf8db118, "%rbp", "%ebp", "%bp"});
-  m_registers[RSI] = Register({0x9a0ca0, "%rsi", "%esi", "%si"});
-  m_registers[RDI] = Register({0x0, "%rdi", "%edi", "%di"});
+  m_gp_registers[RAX] =
+    GPRegister({0xbf8db144, "%rax", "%eax", "%ax", "%ah", "%al"});
+  m_gp_registers[RCX] =
+    GPRegister({0x88c5cffb, "%rcx", "%ecx", "%cx", "%ch", "%cl"});
+  m_gp_registers[RDX] = GPRegister({0x1, "%rdx", "%edx", "%dx", "%dh", "%dl"});
+  m_gp_registers[RBX] =
+    GPRegister({0xae5ff4, "%rbx", "%ebx", "%bx", "%bh", "%bl"});
+  m_gp_registers[RSP] = GPRegister({0xbf8db0bc, "%rsp", "%esp", "%sp"});
+  m_gp_registers[RBP] = GPRegister({0xbf8db118, "%rbp", "%ebp", "%bp"});
+  m_gp_registers[RSI] = GPRegister({0x9a0ca0, "%rsi", "%esi", "%si"});
+  m_gp_registers[RDI] = GPRegister({0x0, "%rdi", "%edi", "%di"});
+
+  m_seg_registers[CS] = SegRegister({0x73, "%cs"});
+  m_seg_registers[SS] = SegRegister({0x7b, "%ss"});
+  m_seg_registers[DS] = SegRegister({0x7b, "%ds"});
+  m_seg_registers[ES] = SegRegister({0x7b, "%es"});
+  m_seg_registers[FS] = SegRegister({0x0, "%fs"});
+  m_seg_registers[GS] = SegRegister({0x33, "%gs"});
 }
 
 std::string RegisterBank::name8(const uint32_t &index) {
   if (index > 3)
-    return m_registers[index % 4].name8_h;
-  return m_registers[index].name8_l;
+    return m_gp_registers[index % 4].name8_h;
+  return m_gp_registers[index].name8_l;
 }
 
 std::string RegisterBank::name16(const uint32_t &index) {
-  return m_registers[index].name16;
+  return m_gp_registers[index].name16;
 }
 
 std::string RegisterBank::name32(const uint32_t &index) {
-  return m_registers[index].name32;
+  return m_gp_registers[index].name32;
 }
 
 std::string RegisterBank::name64(const uint32_t &index) {
-  return m_registers[index].name64;
+  return m_gp_registers[index].name64;
 }
 
 std::string RegisterBank::name(const uint32_t &index, const OperandSize &size) {
@@ -51,21 +59,21 @@ std::string RegisterBank::name(const uint32_t &index, const OperandSize &size) {
 
 uint8_t RegisterBank::load8(const uint32_t &index) {
   if (index > 3)
-    return m_registers[index % 4].value >> 8;
+    return m_gp_registers[index % 4].value >> 8;
   else
-    return m_registers[index].value;
+    return m_gp_registers[index].value;
 }
 
 uint16_t RegisterBank::load16(const uint32_t &index) {
-  return m_registers[index].value;
+  return m_gp_registers[index].value;
 }
 
 uint32_t RegisterBank::load32(const uint32_t &index) {
-  return m_registers[index].value;
+  return m_gp_registers[index].value;
 }
 
 uint64_t RegisterBank::load64(const uint32_t &index) {
-  return m_registers[index].value;
+  return m_gp_registers[index].value;
 }
 
 uint64_t RegisterBank::load(const uint32_t &index, const OperandSize &size) {
@@ -83,22 +91,23 @@ uint64_t RegisterBank::load(const uint32_t &index, const OperandSize &size) {
 
 void RegisterBank::set8(const uint32_t &index, const uint8_t value) {
   if (index > 3)
-    m_registers[index % 4].value =
-      (m_registers[index % 4].value & MASK_H8) | value;
+    m_gp_registers[index % 4].value =
+      (m_gp_registers[index % 4].value & MASK_H8) | value;
   else
-    m_registers[index].value = (m_registers[index].value & MASK_L8) | value;
+    m_gp_registers[index].value =
+      (m_gp_registers[index].value & MASK_L8) | value;
 }
 
 void RegisterBank::set16(const uint32_t &index, const uint16_t value) {
-  m_registers[index].value = (m_registers[index].value & MASK_16) | value;
+  m_gp_registers[index].value = (m_gp_registers[index].value & MASK_16) | value;
 }
 
 void RegisterBank::set32(const uint32_t &index, const uint32_t value) {
-  m_registers[index].value = (m_registers[index].value & MASK_32) | value;
+  m_gp_registers[index].value = (m_gp_registers[index].value & MASK_32) | value;
 }
 
 void RegisterBank::set64(const uint32_t &index, const uint64_t value) {
-  m_registers[index].value = value;
+  m_gp_registers[index].value = value;
 }
 
 void RegisterBank::set(const uint32_t &index, const uint64_t value,
