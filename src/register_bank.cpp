@@ -24,6 +24,8 @@ RegisterBank::RegisterBank() {
   m_seg_registers[ES] = SegRegister({0x7b, "%es"});
   m_seg_registers[FS] = SegRegister({0x0, "%fs"});
   m_seg_registers[GS] = SegRegister({0x33, "%gs"});
+
+  m_eip = InstructionPointer({0x8048354, "%rip", "%eip", "%ip"});
 }
 
 std::string RegisterBank::name8(const uint32_t &index) {
@@ -142,4 +144,31 @@ void RegisterBank::set_seg(const uint32_t &index, const uint16_t value) {
 
 std::string RegisterBank::name_seg(const uint32_t &index) {
   return m_seg_registers[index].name;
+}
+
+uint64_t RegisterBank::load_eip() { return m_eip.value; }
+
+void RegisterBank::set_eip(const uint64_t value, const OperandSize &size) {
+  switch (size) {
+  case OPERAND_16:
+    m_eip.value = (m_eip.value & MASK_16) | value;
+    break;
+  case OPERAND_32:
+    m_eip.value = (m_eip.value & MASK_32) | value;
+    break;
+  case OPERAND_64:
+    m_eip.value = value;
+    break;
+  }
+}
+
+std::string RegisterBank::name_eip(const OperandSize &size) {
+  switch (size) {
+  case OPERAND_16:
+    return m_eip.name16;
+  case OPERAND_32:
+    return m_eip.name32;
+  case OPERAND_64:
+    return m_eip.name64;
+  }
 }

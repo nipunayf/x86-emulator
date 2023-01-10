@@ -67,12 +67,14 @@ struct SegRegister {
 };
 
 typedef uint32_t EFLAGSRegister;
+typedef GPRegister InstructionPointer;
 
 class RegisterBank {
 private:
   GPRegister m_gp_registers[8];
   SegRegister m_seg_registers[6];
   EFLAGSRegister m_eflags = 0x246;
+  InstructionPointer m_eip;
 
 public:
   RegisterBank();
@@ -97,6 +99,9 @@ public:
   uint16_t load_seg(const uint32_t &index);
   void set_seg(const uint32_t &index, const uint16_t value);
   std::string name_seg(const uint32_t &index);
+  uint64_t load_eip();
+  void set_eip(const uint64_t value, const OperandSize &size);
+  std::string name_eip(const OperandSize &size);
 };
 
 #endif
