@@ -109,8 +109,6 @@ void process_modrm(State &state, ModRMAttribute &rm_args,
     rm_args.val = register_indirect(state, rm, rm_args);
     break;
   case ONE_BYTE_DISPLACEMENT:
-    rm_args.val = indirect_nbyte_displacement(state, mode, rm, rm_args);
-    break;
   case TWO_OR_FOUR_BYTE_DISPLACEMENT:
     rm_args.val = indirect_nbyte_displacement(state, mode, rm, rm_args);
     break;
