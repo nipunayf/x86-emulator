@@ -4,7 +4,21 @@
 
 #define INC_TEST_PATH (TEST_PATH + "inc/")
 
-TEST(OpcodeTest, Inc40x) {
+#define INCREMENT(file_name, dest, expected)                                   \
+  {                                                                            \
+    Scanner scanner(INC_TEST_PATH + file_name);                                \
+    RegisterBank reg_bank;                                                     \
+    Memory memory;                                                             \
+    State state{scanner, reg_bank, memory};                                    \
+                                                                               \
+    RegisterBank original_reg_bank = reg_bank;                                 \
+    parse(state);                                                              \
+                                                                               \
+    ASSERT_EQ(dest, expected);                                                 \
+    ASSERT_EQ(state.snapshots.size(), 1);                                      \
+  }
+
+TEST(IncTest, Inc40x) {
   Scanner scanner(INC_TEST_PATH + "inc40.txt");
   RegisterBank reg_bank;
   Memory memory;
@@ -23,4 +37,13 @@ TEST(OpcodeTest, Inc40x) {
   ASSERT_EQ(reg_bank.load32(ESP), original_reg_bank.load32(ESP) + 1);
 
   ASSERT_EQ(state.snapshots.size(), 11);
+}
+
+// inc al
+TEST(IncTest, IncFE){
+  INCREMENT("incFE.txt", reg_bank.load8(AL), original_reg_bank.load8(AL) + 1)}
+
+// inc ebx
+TEST(IncTest, IncFF) {
+  INCREMENT("incFF.txt", reg_bank.load8(EBX), original_reg_bank.load8(EBX) + 1)
 }
