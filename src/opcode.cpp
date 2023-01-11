@@ -2,18 +2,22 @@
 #include "opcodes/add.hpp"
 #include "opcodes/extension.hpp"
 #include "opcodes/inc.hpp"
+#include "opcodes/pop.hpp"
 #include "opcodes/push.hpp"
 #include "utils.hpp"
 
 std::map<uint8_t, Handler> handler_map{
-  {0x05, add05},      {0x03, add03},      {0x40, inc4x},  {0x41, inc4x},
-  {0x42, inc4x},      {0x43, inc4x},      {0x44, inc4x},  {0x45, inc4x},
-  {0x46, inc4x},      {0x47, inc4x},      {0x50, push5x}, {0x51, push5x},
-  {0x52, push5x},     {0x53, push5x},     {0x54, push5x}, {0x55, push5x},
-  {0x56, push5x},     {0x57, push5x},     {0x6A, push6A}, {0x68, push68},
-  {0x0E, push0E},     {0x16, push16},     {0x1E, push1E}, {0x06, push06},
-  {0x0FA0, push0FA0}, {0x0FA8, push0FA8}, {0x80, ext80},  {0x81, ext81},
-  {0x83, ext83},      {0xFF, extFF}};
+  {0x05, add05},      {0x03, add03},      {0x40, inc4x},     {0x41, inc4x},
+  {0x42, inc4x},      {0x43, inc4x},      {0x44, inc4x},     {0x45, inc4x},
+  {0x46, inc4x},      {0x47, inc4x},      {0x50, push5x},    {0x51, push5x},
+  {0x52, push5x},     {0x53, push5x},     {0x54, push5x},    {0x55, push5x},
+  {0x56, push5x},     {0x57, push5x},     {0x6A, push6A},    {0x68, push68},
+  {0x0E, push0E},     {0x16, push16},     {0x1E, push1E},    {0x06, push06},
+  {0x0FA0, push0FA0}, {0x0FA8, push0FA8}, {0x58, pop5x},     {0x59, pop5x},
+  {0x5A, pop5x},      {0x5B, pop5x},      {0x5C, pop5x},     {0x5D, pop5x},
+  {0x5E, pop5x},      {0x5F, pop5x},      {0x1F, pop1F},     {0x07, pop07},
+  {0x17, pop17},      {0x0FA1, pop0FA1},  {0x0FA9, pop0FA9}, {0x80, ext80},
+  {0x81, ext81},      {0x83, ext83},      {0xFF, extFF},     {0x8F, ext8F}};
 
 static void set_prefix(Instruction &args, Scanner &scanner, int &index,
                        uint8_t &next_byte) {
