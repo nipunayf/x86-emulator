@@ -1,4 +1,5 @@
 #include "extension.hpp"
+#include "adc.hpp"
 #include "add.hpp"
 #include "dec.hpp"
 #include "inc.hpp"
@@ -22,6 +23,10 @@ void ext8x(State &state, OperandSize reg_type, OperandSize imm_type) {
   case 0:
     operation = "add";
     res = perform_add<T>(state, reg_type, (T)rm_args.val, immediate);
+    break;
+  case 2:
+    operation = "adc";
+    res = perform_adc<T>(state, reg_type, (T)rm_args.val, immediate);
     break;
   default:
     print_error_and_exit("Instruction %d / %d not yet implemented",
