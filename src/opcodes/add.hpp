@@ -4,9 +4,11 @@
 #include "../handler.hpp"
 #include "../modrm.hpp"
 
-int32_t perform_add(State &state, OperandSize op_size, int32_t op1,
-                    int32_t op2);
+void add00(State &state);
+void add01(State &state);
+void add02(State &state);
 void add03(State &state);
+void add04(State &state);
 void add05(State &state);
 
 #endif

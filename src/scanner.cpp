@@ -24,3 +24,5 @@ uint32_t Scanner::next_nbytes(unsigned short num_bytes) {
     val |= next_byte() << (8 * i);
   return val;
 }
+
+bool Scanner::is_eof() { return m_file.peek() == EOF; }
