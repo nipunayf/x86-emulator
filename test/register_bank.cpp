@@ -30,4 +30,6 @@ TEST(RegisterBankTest, AddFlags) {
   ASSERT_EQ(reg_bank.load_flag(SF), 0);
   ASSERT_EQ(reg_bank.load_flag(ZF), 0);
   ASSERT_EQ(reg_bank.load_flag(OF), 1);
+  ASSERT_EQ(reg_bank.load_flag(AF), 0);
+  ASSERT_EQ(reg_bank.load_flag(CF), 1);
 }
