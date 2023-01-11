@@ -21,8 +21,8 @@ void adc12(State &state) {
 
 void adc13(State &state) {
   MODRM_OPCODE(state, OPERAND_32,
-               perform_adc<int32_t>(state, OPERAND_32, (int32_t)rm_args.val,
-                                    (int32_t)reg_args.val),
+               perform_adc<int32_t>(state, OPERAND_32, (int32_t)reg_args.val,
+                                    (int32_t)rm_args.val),
                reg_args, ADC_INS, reg_args.notation, rm_args.notation)
 }
 
