@@ -2,7 +2,7 @@
 
 void perform_push(State &state, uint32_t val, std::string notation) {
   uint32_t sp = state.reg_bank.load32(ESP);
-  state.memory.store(state.ins.snapshot.mem_transition, sp, val);
+  state.memory.store32(state.ins.snapshot.mem_transition, sp, val);
   state.reg_bank.set32(state.ins.snapshot.reg_transition, ESP, sp - 4);
   set_snapshot(state, "push", notation);
 }

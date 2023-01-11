@@ -2,7 +2,8 @@
 #define MODRM_H
 
 #include "handler.hpp"
-#include "register_bank.hpp"
+#include "operand.hpp"
+#include <string>
 
 #define MEM_ADDR_DEFAULT 0
 #define REG_UNSET        32

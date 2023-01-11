@@ -13,7 +13,7 @@
     uint32_t initial_esp = reg_bank.load32(ESP);                               \
     parse(state);                                                              \
                                                                                \
-    ASSERT_EQ(memory.read(initial_esp), expected);                             \
+    ASSERT_EQ(memory.load32(initial_esp), expected);                           \
     ASSERT_EQ(reg_bank.load32(ESP), initial_esp - 4);                          \
   }
 
