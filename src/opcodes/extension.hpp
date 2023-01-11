@@ -8,5 +8,6 @@ void ext80(State &state);
 void ext81(State &state);
 void ext83(State &state);
 void extFF(State &state);
+void ext8F(State &state);
 
 #endif
