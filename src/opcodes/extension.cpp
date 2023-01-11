@@ -5,6 +5,7 @@
 #include "inc.hpp"
 #include "pop.hpp"
 #include "push.hpp"
+#include "sbb.hpp"
 #include "sub.hpp"
 #include <cmath>
 #include <iostream>
@@ -28,6 +29,10 @@ void ext8x(State &state, OperandSize reg_type, OperandSize imm_type) {
   case 2:
     operation = ADC_INS;
     res = perform_adc<T>(state, reg_type, (T)rm_args.val, immediate);
+    break;
+  case 3:
+    operation = SBB_INS;
+    res = perform_sbb<T>(state, reg_type, (T)rm_args.val, immediate);
     break;
   case 5:
     operation = SUB_INS;

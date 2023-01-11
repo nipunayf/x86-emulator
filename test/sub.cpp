@@ -26,9 +26,9 @@ TEST(SubTest, Sub28){SUBTRACTION("sub28.txt", (int8_t)reg_bank.load8(BL),
                                    (int8_t)original_reg_bank.load8(AL))}
 
 // sub edi, ecx
-TEST(SubTest, Sub29){SUBTRACTION("sub29.txt", (int32_t)reg_bank.load32(ECX),
-                                 (int32_t)original_reg_bank.load32(ECX) -
-                                   (int32_t)original_reg_bank.load32(EDI))}
+TEST(SubTest, Sub29){SUBTRACTION("sub29.txt", (int32_t)reg_bank.load32(EDI),
+                                 (int32_t)original_reg_bank.load32(EDI) -
+                                   (int32_t)original_reg_bank.load32(ECX))}
 
 // sub al, bl
 TEST(SubTest, Sub2A){SUBTRACTION("sub2A.txt", (int8_t)reg_bank.load8(AL),
