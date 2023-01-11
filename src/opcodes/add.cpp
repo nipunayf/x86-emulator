@@ -1,67 +1,39 @@
 #include "add.hpp"
 
 void add00(State &state) {
-  ModRMAttribute rm_args{OPERAND_8}, reg_args{OPERAND_8};
-  process_modrm(state, rm_args, reg_args);
-
-  auto output = perform_add<int8_t>(state, OPERAND_8, (int8_t)rm_args.val,
-                                    (int8_t)reg_args.val);
-  set_value(state, rm_args, output);
-
-  set_snapshot(state, "add", rm_args.notation, reg_args.notation);
+  MODRM_DEST_OPCODE(state, OPERAND_8, "add",
+                    perform_add<int8_t>(state, OPERAND_8, (int8_t)rm_args.val,
+                                        (int8_t)reg_args.val))
 }
 
 void add01(State &state) {
-  ModRMAttribute rm_args{OPERAND_32}, reg_args{OPERAND_32};
-  process_modrm(state, rm_args, reg_args);
-
-  auto output = perform_add<int32_t>(state, OPERAND_32, (int32_t)rm_args.val,
-                                     (int32_t)reg_args.val);
-  set_value(state, rm_args, output);
-
-  set_snapshot(state, "add", rm_args.notation, reg_args.notation);
+  MODRM_DEST_OPCODE(state, OPERAND_32, "add",
+                    perform_add<int32_t>(state, OPERAND_32,
+                                         (int32_t)rm_args.val,
+                                         (int32_t)reg_args.val));
 }
 
 void add02(State &state) {
-  ModRMAttribute rm_args{OPERAND_32}, reg_args{OPERAND_32};
-  process_modrm(state, rm_args, reg_args);
-
-  auto output = perform_add<int8_t>(state, OPERAND_32, (int8_t)reg_args.val,
-                                    (int8_t)rm_args.val);
-  set_value(state, reg_args, output);
-
-  set_snapshot(state, "add", reg_args.notation, rm_args.notation);
+  MODRM_SRC_OPCODE(state, OPERAND_8, "add",
+                   perform_add<int8_t>(state, OPERAND_8, (int8_t)reg_args.val,
+                                       (int8_t)rm_args.val));
 }
 
 void add03(State &state) {
-  ModRMAttribute rm_args{OPERAND_32}, reg_args{OPERAND_32};
-  process_modrm(state, rm_args, reg_args);
-
-  auto output = perform_add<int32_t>(state, OPERAND_32, (int32_t)rm_args.val,
-                                     (int32_t)reg_args.val);
-  set_value(state, reg_args, output);
-
-  set_snapshot(state, "add", reg_args.notation, rm_args.notation);
+  MODRM_OPCODE(state, OPERAND_32,
+               perform_add<int32_t>(state, OPERAND_32, (int32_t)rm_args.val,
+                                    (int32_t)reg_args.val),
+               reg_args, "add", reg_args.notation, rm_args.notation)
 }
 
 void add04(State &state) {
-  auto reg = (int32_t)state.reg_bank.load8(AL);
-  auto displace = (int32_t)state.scanner.next_nbytes(1);
-
-  auto output = perform_add<int8_t>(state, OPERAND_8, reg, displace);
-  state.reg_bank.set8(state.ins.snapshot.reg_transition, AL, output);
-
-  set_snapshot(state, "add", format_immediate(displace),
-               state.reg_bank.name32(AL));
+  REGISTER_DISPLACEMENT_OPCODE(
+    state, int8_t, OPERAND_8, AL, 1, "add",
+    perform_add<int8_t>(state, OPERAND_8, reg_val, displace))
 }
 
 void add05(State &state) {
-  auto reg = (int32_t)state.reg_bank.load32(EAX);
-  auto displace = (int32_t)state.scanner.next_nbytes(4);
-
-  auto output = perform_add<int32_t>(state, OPERAND_32, reg, displace);
-  state.reg_bank.set32(state.ins.snapshot.reg_transition, EAX, output);
-
-  set_snapshot(state, "add", format_immediate(displace),
-               state.reg_bank.name32(EAX));
+  REGISTER_DISPLACEMENT_OPCODE(
+    state, int32_t, OPERAND_32, EAX, 4, "add",
+    perform_add<int32_t>(state, OPERAND_32, reg_val, displace))
 }

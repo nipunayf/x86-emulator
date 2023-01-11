@@ -39,4 +39,27 @@ void set_snapshot(State &state, const std::string &ins_name,
 void set_common_arithmetic_flags(State &state, OperandSize msb, uint64_t op1,
                                  uint64_t op2, uint64_t res);
 
+#define MODRM_OPCODE(state, op_size, output, dest, ins_name, dest_name,        \
+                     src_name)                                                 \
+  ModRMAttribute rm_args{op_size}, reg_args{op_size};                          \
+  process_modrm(state, rm_args, reg_args);                                     \
+  set_value(state, dest, output);                                              \
+  set_snapshot(state, ins_name, dest_name, src_name);
+
+#define MODRM_DEST_OPCODE(state, op_size, ins_name, output)                    \
+  MODRM_OPCODE(state, op_size, output, rm_args, ins_name, rm_args.notation,    \
+               reg_args.notation)
+
+#define MODRM_SRC_OPCODE(state, op_size, ins_name, output)                     \
+  MODRM_OPCODE(state, op_size, output, reg_args, ins_name, reg_args.notation,  \
+               rm_args.notation)
+
+#define REGISTER_DISPLACEMENT_OPCODE(state, op_type, op_size, reg,             \
+                                     displace_bytes, ins_name, output)         \
+  auto reg_val = (op_type)state.reg_bank.load(reg, op_size);                   \
+  auto displace = (op_type)state.scanner.next_nbytes(displace_bytes);          \
+  state.reg_bank.set(state.ins.snapshot.reg_transition, reg, output, op_size); \
+  set_snapshot(state, ins_name, state.reg_bank.name(reg, op_size),             \
+               format_immediate(displace));
+
 #endif
