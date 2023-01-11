@@ -1,12 +1,12 @@
-#ifndef OPCODE_INC_H
-#define OPCODE_INC_H
+#ifndef OPCODE_DEC_H
+#define OPCODE_DEC_H
 
 #include "../handler.hpp"
 
-void inc4x(State &state);
+void dec4x(State &state);
 
-template <typename T> T perform_inc(State &state, OperandSize op_size, T op) {
-  T res = op + 1;
+template <typename T> T perform_dec(State &state, OperandSize op_size, T op) {
+  T res = op - 1;
   set_common_arithmetic_flags(state, op_size, op, 1, res);
 
   // Set overflow flag (OF)
@@ -15,10 +15,10 @@ template <typename T> T perform_inc(State &state, OperandSize op_size, T op) {
                           read_msb(op_size, op) != read_msb(op_size, res));
 
   // Set auxiliary carry flag (AF)
-  // When the lower nibble of the operand generates a carry
-  // Adding 1111 + 1 generates a carry from the lower nibble
+  // When a borrow is fed to the lower nibble
+  // Subtracting 0000 - 1 generates a borrow for the lower nibble
   state.reg_bank.set_flag(state.ins.snapshot.flag_transitions, AF,
-                          (op & (T)15) == 15);
+                          (op & (T)15) == 0);
 
   return res;
 }
