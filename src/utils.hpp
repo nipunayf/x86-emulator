@@ -3,6 +3,8 @@
 
 #include <string>
 
+#define MASK8 255
+
 std::string format_hex_string(uint32_t byte);
 
 std::string format_instruction(const std::string &operand,

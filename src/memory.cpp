@@ -1,7 +1,5 @@
 #include "memory.hpp"
 
-#define MASK8 255
-
 void Memory::store(std::string &transition, const uint32_t &address,
                    const uint32_t &data, const OperandSize &size) {
   uint32_t prev_value = load(address, size);
