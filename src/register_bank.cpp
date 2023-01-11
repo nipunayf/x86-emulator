@@ -2,8 +2,8 @@
 
 #define MASK_32 4294967295 << 32
 #define MASK_16 (MASK_32 | (65535 << 16))
-#define MASK_L8 (MASK_16 | (255 << 8))
-#define MASK_H8 (MASK_16 | 255)
+#define MASK_L8 (MASK_16 | (MASK8 << 8))
+#define MASK_H8 (MASK_16 | MASK8)
 
 std::map<FLAG, std::string> flag_name_map = {
   {CF, "CF"}, {PF, "PF"}, {AF, "AF"},   {ZF, "ZF"},     {SF, "SF"}, {TF, "TF"},

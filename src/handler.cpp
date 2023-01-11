@@ -16,7 +16,7 @@ void set_common_arithmetic_flags(State &state, OperandSize op_size,
   // Set parity flag (PF)
   // Check if the least-significant byte of result contains even number of 1s
   state.reg_bank.set_flag(state.ins.snapshot.flag_transitions, PF,
-                          !__builtin_parity(res & 255));
+                          !__builtin_parity(res & MASK8));
 
   // Set sign flag (SF)
   // This bit corresponds to the msb of the result
