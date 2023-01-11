@@ -11,7 +11,7 @@ void pop5x(State &state) {
   auto dest = (Register32)(state.ins.opcode - 0x58);
   uint32_t val = perform_pop(state);
   state.reg_bank.set32(state.ins.snapshot.reg_transition, dest, val);
-  set_snapshot(state, "pop", state.reg_bank.name32(dest));
+  set_snapshot(state, POP_INS, state.reg_bank.name32(dest));
 }
 
 void pop_seg_register(State &state, RegisterSeg dest) {
@@ -19,7 +19,7 @@ void pop_seg_register(State &state, RegisterSeg dest) {
   uint16_t val = state.memory.load16(sp);
   state.reg_bank.set32(state.ins.snapshot.reg_transition, ESP, sp + 2);
   state.reg_bank.set_seg(state.ins.snapshot.reg_transition, dest, val);
-  set_snapshot(state, "pop", state.reg_bank.name_seg(dest));
+  set_snapshot(state, POP_INS, state.reg_bank.name_seg(dest));
 }
 
 void pop1F(State &state) { pop_seg_register(state, DS); }

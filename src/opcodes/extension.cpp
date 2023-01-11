@@ -21,11 +21,11 @@ void ext8x(State &state, OperandSize reg_type, OperandSize imm_type) {
   T res = 0;
   switch (reg_args.reg) {
   case 0:
-    operation = "add";
+    operation = ADD_INS;
     res = perform_add<T>(state, reg_type, (T)rm_args.val, immediate);
     break;
   case 2:
-    operation = "adc";
+    operation = ADC_INS;
     res = perform_adc<T>(state, reg_type, (T)rm_args.val, immediate);
     break;
   default:
@@ -51,10 +51,10 @@ void extFE(State &state) {
   switch (reg_args.reg) {
   case 0:
     res = perform_inc<int8_t>(state, OPERAND_8, (int8_t)rm_args.val);
-    operation = "inc";
+    operation = INC_INS;
     break;
   case 1:
-    operation = "dec";
+    operation = DEC_INS;
     res = perform_dec<int8_t>(state, OPERAND_8, (int8_t)rm_args.val);
     break;
   default:
@@ -71,11 +71,11 @@ void extFF(State &state) {
   int32_t res = 0;
   switch (reg_args.reg) {
   case 0:
-    operation = "inc";
+    operation = INC_INS;
     res = perform_inc<int32_t>(state, OPERAND_32, (int32_t)rm_args.val);
     break;
   case 1:
-    operation = "dec";
+    operation = DEC_INS;
     res = perform_dec<int32_t>(state, OPERAND_32, (int32_t)rm_args.val);
     break;
   case 6:
@@ -97,7 +97,7 @@ void ext8F(State &state) {
   uint32_t output = 0;
   switch (reg_args.reg) {
   case 0:
-    operation = "pop";
+    operation = POP_INS;
     output = perform_pop(state);
     break;
   default:

@@ -3,6 +3,8 @@
 
 #include "../handler.hpp"
 
+#define INC_INS "inc"
+
 void inc4x(State &state);
 
 template <typename T> T perform_inc(State &state, OperandSize op_size, T op) {

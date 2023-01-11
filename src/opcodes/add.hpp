@@ -4,6 +4,8 @@
 #include "../handler.hpp"
 #include "../modrm.hpp"
 
+#define ADD_INS "add"
+
 void add00(State &state);
 void add01(State &state);
 void add02(State &state);

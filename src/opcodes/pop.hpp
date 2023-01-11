@@ -4,6 +4,8 @@
 #include "../handler.hpp"
 #include "../modrm.hpp"
 
+#define POP_INS "pop"
+
 uint32_t perform_pop(State &state);
 void pop5x(State &state);
 void pop1F(State &state);
