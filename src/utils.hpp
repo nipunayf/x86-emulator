@@ -25,11 +25,11 @@ std::string format_base_index(const std::string &base,
 std::string format_sib(const std::string &base, const std::string &index,
                        const uint8_t &scale, uint32_t displacement);
 
-std::string format_indirect_register(const std::string reg);
+std::string format_indirect_register(const std::string& reg);
 
 std::string format_memory_address(uint32_t memory_addr);
 
-std::string format_indirect_with_displacement(const std::string reg,
+std::string format_indirect_with_displacement(const std::string& reg,
                                               uint32_t memory_addr);
 
 void print_error_and_exit(const std::string &format, ...);
