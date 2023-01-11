@@ -18,7 +18,8 @@ std::map<uint8_t, Handler> handler_map{
   {0x5A, pop5x},      {0x5B, pop5x},      {0x5C, pop5x},     {0x5D, pop5x},
   {0x5E, pop5x},      {0x5F, pop5x},      {0x1F, pop1F},     {0x07, pop07},
   {0x17, pop17},      {0x0FA1, pop0FA1},  {0x0FA9, pop0FA9}, {0x80, ext80},
-  {0x81, ext81},      {0x83, ext83},      {0xFF, extFF},     {0x8F, ext8F}};
+  {0x81, ext81},      {0x83, ext83},      {0xFE, extFE},     {0xFF, extFF},
+  {0x8F, ext8F}};
 
 static void set_prefix(Instruction &args, Scanner &scanner, int &index,
                        uint8_t &next_byte) {
@@ -28,7 +29,6 @@ static void set_prefix(Instruction &args, Scanner &scanner, int &index,
 }
 
 int parse(State &state) {
-
   Instruction ins{};
   uint8_t next_byte = state.scanner.next_byte();
   int prefix_index = 0;

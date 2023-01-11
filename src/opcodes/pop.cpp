@@ -8,7 +8,7 @@ uint32_t perform_pop(State &state) {
 }
 
 void pop5x(State &state) {
-  Register32 dest = (Register32)(state.ins.opcode - 0x58);
+  auto dest = (Register32)(state.ins.opcode - 0x58);
   uint32_t val = perform_pop(state);
   state.reg_bank.set32(state.ins.snapshot.reg_transition, dest, val);
   set_snapshot(state, "pop", state.reg_bank.name32(dest));
