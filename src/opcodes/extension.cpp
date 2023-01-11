@@ -1,5 +1,6 @@
 #include "extension.hpp"
 #include "add.hpp"
+#include "dec.hpp"
 #include "inc.hpp"
 #include "pop.hpp"
 #include "push.hpp"
@@ -49,7 +50,7 @@ void extFE(State &state) {
     break;
   case 1:
     operation = "dec";
-    // TODO: Implement DEC instruction
+    res = perform_dec<int8_t>(state, OPERAND_8, (int8_t)rm_args.val);
     break;
   default:
     print_error_and_exit("Invalid reg code %s for '0xfe' opcode", reg_args.reg);
@@ -65,8 +66,12 @@ void extFF(State &state) {
   int32_t res = 0;
   switch (reg_args.reg) {
   case 0:
-    res = perform_inc<int32_t>(state, OPERAND_32, (int32_t)rm_args.val);
     operation = "inc";
+    res = perform_inc<int32_t>(state, OPERAND_32, (int32_t)rm_args.val);
+    break;
+  case 1:
+    operation = "dec";
+    res = perform_dec<int32_t>(state, OPERAND_32, (int32_t)rm_args.val);
     break;
   case 6:
     perform_push(state, rm_args.val, rm_args.notation);

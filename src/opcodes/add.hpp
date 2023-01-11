@@ -35,10 +35,8 @@ T perform_add(State &state, OperandSize op_size, T op1, T op2) {
 
   // Set auxiliary carry flag (AF)
   // When the lower nibble of the both operands generates a carry
-  uint8_t op1_lower_nibble = op1 & (T)15;
-  uint8_t op2_lower_nibble = op2 & (T)15;
   state.reg_bank.set_flag(state.ins.snapshot.flag_transitions, AF,
-                          op1_lower_nibble + op2_lower_nibble > 15);
+                          (op1 & (T)15) + (op2 & (T)15) > 15);
 
   return res;
 }

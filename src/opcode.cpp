@@ -1,5 +1,6 @@
 #include "opcode.hpp"
 #include "opcodes/add.hpp"
+#include "opcodes/dec.hpp"
 #include "opcodes/extension.hpp"
 #include "opcodes/inc.hpp"
 #include "opcodes/pop.hpp"
@@ -10,7 +11,9 @@ std::map<uint8_t, Handler> handler_map{
   {0x00, add00},      {0x01, add01},      {0x02, add02},     {0x03, add03},
   {0x04, add04},      {0x05, add05},      {0x40, inc4x},     {0x41, inc4x},
   {0x42, inc4x},      {0x43, inc4x},      {0x44, inc4x},     {0x45, inc4x},
-  {0x46, inc4x},      {0x47, inc4x},      {0x50, push5x},    {0x51, push5x},
+  {0x46, inc4x},      {0x47, inc4x},      {0x48, dec4x},     {0x49, dec4x},
+  {0x4a, dec4x},      {0x4b, dec4x},      {0x4c, dec4x},     {0x4d, dec4x},
+  {0x4e, dec4x},      {0x4f, dec4x},      {0x50, push5x},    {0x51, push5x},
   {0x52, push5x},     {0x53, push5x},     {0x54, push5x},    {0x55, push5x},
   {0x56, push5x},     {0x57, push5x},     {0x6A, push6A},    {0x68, push68},
   {0x0E, push0E},     {0x16, push16},     {0x1E, push1E},    {0x06, push06},
