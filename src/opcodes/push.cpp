@@ -18,7 +18,7 @@ void push6A(State &state) {
 }
 
 void push68(State &state) {
-  uint16_t imm = state.scanner.next_nbytes(4);
+  uint32_t imm = state.scanner.next_nbytes(4);
   perform_push(state, imm, format_immediate(imm));
 }
 
