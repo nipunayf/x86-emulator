@@ -17,17 +17,17 @@
     ASSERT_EQ(reg_bank.load32(ESP), initial_esp - 4);                          \
   }
 
-TEST(OpcodeTest, Push50){PUSH("push50.txt", reg_bank.load32(EAX))}
+TEST(PushTest, Push50){PUSH("push50.txt", reg_bank.load32(EAX))}
 
-TEST(OpcodeTest, Push53){PUSH("push53.txt", reg_bank.load32(EBX))}
+TEST(PushTest, Push53){PUSH("push53.txt", reg_bank.load32(EBX))}
 
-TEST(OpcodeTest, Push6A){PUSH("push6A.txt", 0x12)}
+TEST(PushTest, Push6A){PUSH("push6A.txt", 0x12)}
 
-TEST(OpcodeTest, Push68){PUSH("push68.txt", 0x78563412)}
+TEST(PushTest, Push68){PUSH("push68.txt", 0x78563412)}
 
-TEST(OpcodeTest, Push16) {
+TEST(PushTest, Push16) {
   PUSH("push16.txt", reg_bank.load_seg(SS))
 }
 
 // Enable the test when two byte opcodes are supported
-// TEST(OpcodeTest, Push0FA8){PUSH("push0FA8.txt", reg_bank.load_seg(GS))}
+// TEST(PushTest, Push0FA8){PUSH("push0FA8.txt", reg_bank.load_seg(GS))}

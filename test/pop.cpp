@@ -19,16 +19,16 @@
     ASSERT_EQ(reg_bank.load32(ESP), initial_esp + (1 << increment));           \
   }
 
-TEST(OpcodeTest, Pop58){POP("pop58.txt", reg_bank.load32(EAX), OPERAND_32)}
+TEST(PopTest, Pop58){POP("pop58.txt", reg_bank.load32(EAX), OPERAND_32)}
 
-TEST(OpcodeTest, Pop53){POP("pop5A.txt", reg_bank.load32(EDX), OPERAND_32)}
+TEST(PopTest, Pop53){POP("pop5A.txt", reg_bank.load32(EDX), OPERAND_32)}
 
-TEST(OpcodeTest, Pop1F){POP("pop1F.txt", reg_bank.load_seg(DS), OPERAND_16)}
+TEST(PopTest, Pop1F){POP("pop1F.txt", reg_bank.load_seg(DS), OPERAND_16)}
 
-TEST(OpcodeTest, Pop8F) {
+TEST(PopTest, Pop8F) {
   POP("pop8F.txt", reg_bank.load32(EAX), OPERAND_32)
 }
 
 // Enable the test when two byte opcodes are supported
-// TEST(OpcodeTest, Pop0FA9){POP("pop0FA9.txt", reg_bank.load_seg(GS),
+// TEST(PopTest, Pop0FA9){POP("pop0FA9.txt", reg_bank.load_seg(GS),
 // OPERAND_16)}

@@ -21,39 +21,43 @@
   }
 
 // add bl, al
-TEST(OpcodeTest, Add00){ADDITION("add00.txt", (int8_t)reg_bank.load8(BL),
-                                 (int8_t)original_reg_bank.load8(AL) +
-                                   (int8_t)original_reg_bank.load8(BL))}
+TEST(AddTest, Add00){ADDITION("add00.txt", (int8_t)reg_bank.load8(BL),
+                              (int8_t)original_reg_bank.load8(AL) +
+                                (int8_t)original_reg_bank.load8(BL))}
 
 // add edi, ecx
-TEST(OpcodeTest, Add01){ADDITION("add01.txt", (int32_t)reg_bank.load32(ECX),
-                                 (int32_t)original_reg_bank.load32(EDI) +
-                                   (int32_t)original_reg_bank.load32(ECX))}
+TEST(AddTest, Add01){ADDITION("add01.txt", (int32_t)reg_bank.load32(ECX),
+                              (int32_t)original_reg_bank.load32(EDI) +
+                                (int32_t)original_reg_bank.load32(ECX))}
 
 // add al, bl
-TEST(OpcodeTest, Add02){ADDITION("add02.txt", (int8_t)reg_bank.load8(AL),
-                                 (int8_t)original_reg_bank.load8(BL) +
-                                   (int8_t)original_reg_bank.load8(AL))}
+TEST(AddTest, Add02){ADDITION("add02.txt", (int8_t)reg_bank.load8(AL),
+                              (int8_t)original_reg_bank.load8(BL) +
+                                (int8_t)original_reg_bank.load8(AL))}
 
-TEST(OpcodeTest, Add03){ADDITION("add03.txt", reg_bank.load32(EAX),
-                                 original_reg_bank.load32(EAX) + 0x01a11001)}
+// add eax, dword ptr [0x10200]
+TEST(AddTest, Add03){ADDITION("add03.txt", reg_bank.load32(EAX),
+                              original_reg_bank.load32(EAX) + 0x01a11001)}
 
-TEST(OpcodeTest, Add05){ADDITION("add05.txt", reg_bank.load32(EAX),
-                                 original_reg_bank.load32(EAX) + 0x10050301)}
-
-TEST(OpcodeTest, Add04){
+// add al, 1
+TEST(AddTest, Add04){
   ADDITION("add04.txt", reg_bank.load8(AL), original_reg_bank.load8(AL) + 0x01)}
 
-TEST(OpcodeTest, Add80){
+// add eax, 0x10050301
+TEST(AddTest, Add05){ADDITION("add05.txt", reg_bank.load32(EAX),
+                              original_reg_bank.load32(EAX) + 0x10050301)}
+
+// add al, 1
+TEST(AddTest, Add80){
   ADDITION("add80.txt", reg_bank.load8(AL), original_reg_bank.load8(AL) + 0x01)}
 
 // add ebx, 0x1001000
-TEST(OpcodeTest, Add81){
+TEST(AddTest, Add81){
   ADDITION("add81.txt", (int32_t)reg_bank.load32(EBX),
            (int32_t)original_reg_bank.load32(EBX) + (int32_t)0x1001000)}
 
 // add ebx, 0x1
-TEST(OpcodeTest, Add83) {
+TEST(AddTest, Add83) {
   ADDITION("add83.txt", reg_bank.load32(EBX),
            original_reg_bank.load32(EBX) + 0x1)
 }
