@@ -64,11 +64,11 @@ std::string format_base_index(const std::string &base,
   return addr;
 }
 
-std::string format_indirect_register(const std::string& reg) {
+std::string format_indirect_register(const std::string &reg) {
   return "[" + reg + "]";
 }
 
-std::string format_indirect_with_displacement(const std::string& reg,
+std::string format_indirect_with_displacement(const std::string &reg,
                                               uint32_t memory_addr) {
   return "[" + reg.substr(1, reg.size() - 2) + "+" +
          format_hex_string(memory_addr) + "]";

@@ -15,6 +15,7 @@ public:
 
   uint8_t next_byte();
   uint32_t next_nbytes(unsigned short num_bytes);
+  bool is_eof();
 };
 
 #endif
