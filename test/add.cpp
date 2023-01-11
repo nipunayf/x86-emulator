@@ -11,7 +11,7 @@
     Memory memory;                                                             \
     State state{scanner, reg_bank, memory};                                    \
     std::string memory_change;                                                 \
-    memory.store(memory_change, 0x00010200, 0x01a11001);                       \
+    memory.store32(memory_change, 0x00010200, 0x01a11001);                     \
                                                                                \
     RegisterBank original_reg_bank = reg_bank;                                 \
     parse(state);                                                              \

@@ -79,7 +79,7 @@ uint32_t register_indirect(State &state, const uint8_t &reg,
       indirect_32bit_addressing(state, reg, args);
     }
   }
-  return state.memory.read(args.mem_addr);
+  return state.memory.load(args.mem_addr, args.type);
 }
 
 uint32_t indirect_nbyte_displacement(State &state, const uint8_t &mode,
@@ -94,7 +94,7 @@ uint32_t indirect_nbyte_displacement(State &state, const uint8_t &mode,
   }
   args.notation =
     format_indirect_with_displacement(args.notation, displacement);
-  return state.memory.read(args.mem_addr + displacement);
+  return state.memory.load(args.mem_addr + displacement, args.type);
 }
 
 void process_modrm(State &state, ModRMAttribute &rm_args,
@@ -124,5 +124,6 @@ void set_value(State &state, ModRMAttribute &args, uint32_t value) {
     state.reg_bank.set(state.ins.snapshot.reg_transition, args.reg, value,
                        args.type);
   else
-    state.memory.store(state.ins.snapshot.mem_transition, args.mem_addr, value);
+    state.memory.store(state.ins.snapshot.mem_transition, args.mem_addr, value,
+                       args.type);
 }

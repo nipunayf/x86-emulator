@@ -1,12 +1,11 @@
 #ifndef REGISTER_BANK_H
 #define REGISTER_BANK_H
 
+#include "operand.hpp"
 #include "utils.hpp"
 #include <list>
 #include <map>
 #include <string>
-
-enum OperandSize { OPERAND_8, OPERAND_16, OPERAND_32, OPERAND_64 };
 
 enum Register8 { AL, CL, DL, BL, AH, CH, DH, BH };
 
