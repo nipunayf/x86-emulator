@@ -5,6 +5,8 @@
 #include "../modrm.hpp"
 #include "add.hpp"
 
+#define ADC_INS "adc"
+
 void adc10(State &state);
 void adc11(State &state);
 void adc12(State &state);

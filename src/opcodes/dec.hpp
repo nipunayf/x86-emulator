@@ -3,6 +3,8 @@
 
 #include "../handler.hpp"
 
+#define DEC_INS "dec"
+
 void dec4x(State &state);
 
 template <typename T> T perform_dec(State &state, OperandSize op_size, T op) {

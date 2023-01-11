@@ -4,7 +4,10 @@
 #include "../handler.hpp"
 #include "../modrm.hpp"
 
+#define PUSH_INS "push"
+
 void perform_push(State &state, uint32_t val, std::string notation);
+
 void push5x(State &state);
 void push6A(State &state);
 void push68(State &state);

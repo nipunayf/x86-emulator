@@ -7,5 +7,5 @@ void dec4x(State &state) {
                                   (int32_t)state.reg_bank.load32(reg));
   state.reg_bank.set32(state.ins.snapshot.reg_transition, reg, res);
 
-  set_snapshot(state, "inc", state.reg_bank.name32(reg));
+  set_snapshot(state, DEC_INS, state.reg_bank.name32(reg));
 }
