@@ -4,6 +4,9 @@
 #include "../handler.hpp"
 #include "../modrm.hpp"
 
+template <typename T>
+T perform_add(State &state, OperandSize op_size, T op1, T op2);
+
 void add00(State &state);
 void add01(State &state);
 void add02(State &state);
