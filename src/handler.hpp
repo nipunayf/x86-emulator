@@ -2,6 +2,7 @@
 #define HANDLER_H
 
 #include "memory.hpp"
+#include "operand.hpp"
 #include "register_bank.hpp"
 #include "scanner.hpp"
 #include "utils.hpp"
@@ -17,18 +18,21 @@ struct Snapshot {
 };
 
 struct Instruction {
-  uint8_t opcode;
+  uint16_t opcode;
   uint8_t prefixes[MAX_PREFIX_COUNT];
   unsigned int prefixes_count : MAX_PREFIX_COUNT;
   Snapshot snapshot;
 };
 
+// Default mode is 32 bit and this can be changed to 16 bit with instruction
+// prefixes "0x66"
 struct State {
   Scanner &scanner;
   RegisterBank &reg_bank;
   Memory &memory;
   Instruction ins;
   std::list<Snapshot> snapshots;
+  OperandSize mode = OPERAND_32;
 };
 
 using Handler = void (*)(State &args);
