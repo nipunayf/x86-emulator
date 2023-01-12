@@ -39,7 +39,7 @@ std::string format_register_change(const std::string &reg_name,
 }
 
 std::string format_immediate(uint32_t immediate) {
-  return std::to_string(immediate);
+  return format_hex_string(immediate);
 }
 
 std::string format_sib(const std::string &base, const std::string &index,
