@@ -11,10 +11,8 @@ void mov8A(State &state);
 void mov8B(State &state);
 void mov8C(State &state);
 void mov8E(State &state);
-void movA0(State &state);
-void movA1(State &state);
-void movA2(State &state);
-void movA3(State &state);
+void movA0_A1(State &state);
+void movA2_A3(State &state);
 void movBx(State &state);
 void movCx(State &state);
 
