@@ -1,6 +1,7 @@
 #include "extension.hpp"
 #include "adc.hpp"
 #include "add.hpp"
+#include "cmp.hpp"
 #include "dec.hpp"
 #include "inc.hpp"
 #include "pop.hpp"
@@ -37,12 +38,17 @@ void ext8x(State &state, OperandSize reg_type, OperandSize imm_type) {
     operation = SUB_INS;
     res = perform_sub<T>(state, reg_type, (T)rm_args.val, immediate);
     break;
+  case 7:
+    operation = CMP_INS;
+    perform_sub<T>(state, reg_type, (T)rm_args.val, immediate);
+    break;
   default:
     print_error_and_exit("Instruction %d / %d not yet implemented",
                          format_hex_string(state.ins.opcode).c_str(),
                          reg_args.reg);
   }
-  set_value(state, rm_args, res);
+  if (reg_args.val != 7)
+    set_value(state, rm_args, res);
   set_snapshot(state, operation, rm_args.notation, format_immediate(immediate));
 }
 
