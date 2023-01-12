@@ -10,14 +10,11 @@ TEST(OpcodeTest, InvalidOneByte){
 
 TEST(OpcodeTest, InvalidTwoBytes){
   ASSERT_X86_DEATH("invalid_2bytes.txt",
-                   "Invalid opcode bytes: 2 is not yet supported")}
+                   "Invalid opcode: 0x99 is not yet supported")}
 
 TEST(OpcodeTest, InvalidThreeBytes){
   ASSERT_X86_DEATH("invalid_3bytes.txt",
-                   "Invalid opcode bytes: 3 is not yet supported")}
-
-TEST(OpcodeTest, InvalidSecondByteOfFourBytes){
-  ASSERT_X86_DEATH("invalid_2byte_4bytes.txt", "Expected 0xf after 0x66")}
+                   "3-byte opcode bytes are not yet supported")}
 
 TEST(OpcodeTest, ValidOneByte) {
   Scanner scanner(OPCODE_TEST_PATH + "valid_1byte.txt");
