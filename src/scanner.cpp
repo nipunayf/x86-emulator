@@ -13,7 +13,7 @@ Scanner::~Scanner() { m_file.close(); }
 uint8_t Scanner::next_byte(RegisterBank &reg_bank, OperandSize mode) {
   uint16_t byte;
   if (m_file >> byte) {
-    reg_bank.set_eip(reg_bank.load_eip() + 0x10, mode);
+    reg_bank.set_eip(reg_bank.load_eip() + 1, mode);
     return (uint8_t)byte;
   }
   return 0;
