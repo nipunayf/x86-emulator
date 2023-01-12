@@ -7,11 +7,9 @@
 #include "push.hpp"
 #include "sbb.hpp"
 #include "sub.hpp"
-#include <cmath>
-#include <iostream>
 
 uint32_t read_immediate(Scanner &scanner, OperandSize type) {
-  return scanner.next_nbytes((unsigned char)pow(2, type));
+  return scanner.next_nbytes((unsigned char)(1 << type));
 }
 
 template <typename T>

@@ -51,12 +51,12 @@ void set_common_arithmetic_flags(State &state, OperandSize msb, uint64_t op1,
   set_snapshot(state, ins_name, dest_name, src_name);
 
 #define MODRM_DEST_OPCODE(state, op_size, ins_name, output)                    \
-  MODRM_OPCODE(state, op_size, output, rm_args, ins_name, rm_args.notation,    \
-               reg_args.notation)
+  MODRM_OPCODE(state, op_size, output, rm_args, ins_name, reg_args.notation,   \
+               rm_args.notation)
 
 #define MODRM_SRC_OPCODE(state, op_size, ins_name, output)                     \
-  MODRM_OPCODE(state, op_size, output, reg_args, ins_name, reg_args.notation,  \
-               rm_args.notation)
+  MODRM_OPCODE(state, op_size, output, reg_args, ins_name, rm_args.notation,   \
+               reg_args.notation)
 
 #define REGISTER_DISPLACEMENT_OPCODE(state, op_type, op_size, reg,             \
                                      displace_bytes, ins_name, output)         \

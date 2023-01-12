@@ -3,8 +3,12 @@
 
 #include "../handler.hpp"
 
-void mov88_9(State &state);
-void mov8A_B(State &state);
+#define MOV_INS "mov"
+
+void mov88(State &state);
+void mov89(State &state);
+void mov8A(State &state);
+void mov8B(State &state);
 void mov8C(State &state);
 void mov8E(State &state);
 void movA0(State &state);

@@ -1,12 +1,10 @@
 #include "handler.hpp"
-#include <iostream>
 void set_snapshot(State &state, const std::string &ins_name,
                   const std::string &dest, const std::string &source) {
 
   state.ins.snapshot.instruction =
     source.empty() ? format_instruction(ins_name, dest)
                    : format_instruction(ins_name, source, dest);
-  std::cout << state.ins.snapshot.instruction << std::endl;
   state.snapshots.push_back(state.ins.snapshot);
   state.ins = {};
 }

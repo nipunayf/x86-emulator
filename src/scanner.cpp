@@ -1,6 +1,5 @@
 #include "scanner.hpp"
 #include "utils.hpp"
-#include <iostream>
 
 Scanner::Scanner(const std::string &file_path) {
   m_file.open(file_path);
