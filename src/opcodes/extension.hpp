@@ -12,5 +12,7 @@ void extFF(State &state);
 void ext8F(State &state);
 void extC6(State &state);
 void extC7(State &state);
+void extF6(State &state);
+void extF7(State &state);
 
 #endif

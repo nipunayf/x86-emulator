@@ -8,6 +8,7 @@
 #include "push.hpp"
 #include "sbb.hpp"
 #include "sub.hpp"
+#include "test.hpp"
 
 uint32_t read_immediate(State &state, OperandSize type) {
   return state.scanner.next_nbytes((unsigned char)(1 << type), state.reg_bank,
@@ -123,3 +124,25 @@ void ext8F(State &state) {
   set_value(state, rm_args, output);
   set_snapshot(state, operation, rm_args.notation);
 }
+
+template <typename T> void extFx(State &state, OperandSize size) {
+  ModRMAttribute rm_args{size}, reg_args{size};
+  process_modrm(state, rm_args, reg_args);
+  T immediate = read_immediate(state.scanner, size);
+  std::string operation;
+  switch (reg_args.reg) {
+  case 0:
+    operation = TEST_INS;
+    perform_test(state, size, rm_args.val, immediate);
+    break;
+  default:
+    print_error_and_exit("Instruction %s / %d not yet implemented",
+                         format_hex_string(state.ins.opcode).c_str(),
+                         reg_args.reg);
+  }
+  set_snapshot(state, operation, rm_args.notation, format_immediate(immediate));
+}
+
+void extF6(State &state) { extFx<int8_t>(state, OPERAND_8); }
+
+void extF7(State &state) { extFx<int32_t>(state, OPERAND_32); }
