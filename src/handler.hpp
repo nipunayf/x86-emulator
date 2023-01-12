@@ -14,6 +14,7 @@ struct Snapshot {
   std::string instruction;
   std::string reg_transition;
   std::string mem_transition;
+  std::string eip_transition;
   std::list<std::string> flag_transitions;
 };
 
@@ -21,6 +22,7 @@ struct Instruction {
   uint16_t opcode;
   uint8_t prefixes[MAX_PREFIX_COUNT];
   unsigned int prefixes_count : MAX_PREFIX_COUNT;
+  uint32_t start_eip;
   Snapshot snapshot;
 };
 

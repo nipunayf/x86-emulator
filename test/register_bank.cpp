@@ -43,10 +43,16 @@ TEST(RegisterBankTest, InstructionPointer) {
   State state1{scanner1, reg_bank, memory};
   parse(state1);
   ASSERT_EQ(reg_bank.load_eip(), prev_eip + 0x90);
+  auto snapshot1 = state1.snapshots.begin();
+  ASSERT_STREQ(snapshot1->eip_transition.c_str(),
+               "%eip(0x8048354) -> (0x80483e4)");
 
   prev_eip = reg_bank.load_eip();
   Scanner scanner2(REGISTER_BANK_TEST_PATH + "add_flags.txt");
   State state2{scanner2, reg_bank, memory};
   parse(state2);
   ASSERT_EQ(reg_bank.load_eip(), prev_eip + 0x50);
+  auto snapshot2 = state2.snapshots.begin();
+  ASSERT_STREQ(snapshot2->eip_transition.c_str(),
+               "%eip(0x80483e4) -> (0x8048434)");
 }
