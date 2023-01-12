@@ -65,7 +65,7 @@ int parse(State &state) {
   // Repeat until the end of the file is reached
   while (!state.scanner.is_eof()) {
     ins = {};
-    ins.start_eip = state.reg_bank.load_eip() - 0x10;
+    ins.start_eip = state.reg_bank.load_eip() - 1;
     prefix_index = 0;
 
     // Check for additional prefixes for opcodes > 1-byte
