@@ -2,22 +2,16 @@
 #include "../modrm.hpp"
 
 void mov88(State &state) {
-  MODRM_DEST_OPCODE(state, OPERAND_8, MOV_INS,
-                    state.reg_bank.load8(reg_args.reg))
+  MODRM_DEST_OPCODE(OPERAND_8, MOV_INS, state.reg_bank.load8(reg_args.reg))
 }
 
 void mov89(State &state) {
-  MODRM_DEST_OPCODE(state, OPERAND_32, MOV_INS,
-                    state.reg_bank.load32(reg_args.reg))
+  MODRM_DEST_OPCODE(OPERAND_32, MOV_INS, state.reg_bank.load32(reg_args.reg))
 }
 
-void mov8A(State &state) {
-  MODRM_SRC_OPCODE(state, OPERAND_8, MOV_INS, rm_args.val)
-}
+void mov8A(State &state) { MODRM_SRC_OPCODE(OPERAND_8, MOV_INS, rm_args.val) }
 
-void mov8B(State &state) {
-  MODRM_SRC_OPCODE(state, OPERAND_32, MOV_INS, rm_args.val)
-}
+void mov8B(State &state) { MODRM_SRC_OPCODE(OPERAND_32, MOV_INS, rm_args.val) }
 
 void mov8C(State &state) {
   // Operation Mode can be changed to 16 bit here from prefixes
