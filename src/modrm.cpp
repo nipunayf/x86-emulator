@@ -1,6 +1,5 @@
 #include "modrm.hpp"
 #include "sib.hpp"
-#include <iostream>
 #include <string>
 
 void indirect_16bit_addressing(RegisterBank &reg_bank, uint32_t index,
@@ -47,7 +46,7 @@ void indirect_32bit_addressing(State &state, uint32_t reg,
     uint8_t sib = state.scanner.next_byte();
     args.mem_addr = process_sib(sib, state.reg_bank, args.notation);
   } else {
-    args.mem_addr = state.reg_bank.load(reg, args.type);
+    args.mem_addr = state.reg_bank.load32(reg);
     args.notation = format_indirect_register(state.reg_bank.name32(reg));
   }
 }
@@ -93,7 +92,8 @@ uint32_t indirect_nbyte_displacement(State &state, const uint8_t &mode,
   }
   args.notation =
     format_indirect_with_displacement(args.notation, displacement);
-  return state.memory.load(args.mem_addr + displacement, args.type);
+  args.mem_addr += displacement;
+  return state.memory.load(args.mem_addr, args.type);
 }
 
 void process_modrm(State &state, ModRMAttribute &rm_args,

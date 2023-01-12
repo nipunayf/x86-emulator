@@ -1,5 +1,4 @@
 #include "sib.hpp"
-#include <iostream>
 
 uint32_t get_scaled_index(const uint8_t &scale, const uint8_t &index,
                           RegisterBank &reg_bank) {

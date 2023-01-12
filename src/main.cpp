@@ -1,5 +1,4 @@
 #include "opcode.hpp"
-#include <iostream>
 
 int main(int argc, char *argv[]) {
   std::string file_name = argc > 1 ? argv[1] : "";
