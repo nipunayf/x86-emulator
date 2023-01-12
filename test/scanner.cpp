@@ -5,10 +5,11 @@
 TEST(ScannerTest, BasicScanning) {
   Scanner scanner(TEST_PATH + "scanner/simple_input.txt");
   uint8_t expected_arr[4] = {0x8d, 0x4c, 0x24, 0};
+  RegisterBank reg_bank;
 
   uint8_t byte;
   for (uint8_t i : expected_arr) {
-    byte = scanner.next_byte();
+    byte = scanner.next_byte(reg_bank, OPERAND_32);
     ASSERT_EQ(byte, i);
   }
 }

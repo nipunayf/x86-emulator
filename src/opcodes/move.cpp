@@ -39,7 +39,7 @@ void mov8E(State &state) {
 
 void movA0_A1(State &state) {
   OperandSize size = state.ins.opcode == 0xA0 ? OPERAND_8 : OPERAND_32;
-  uint32_t offset = state.scanner.next_nbytes(4);
+  uint32_t offset = state.scanner.next_nbytes(4, state.reg_bank, state.mode);
   uint32_t output = state.memory.load(offset, size);
   state.reg_bank.set(state.ins.snapshot.reg_transition, EAX, output, size);
   set_snapshot(state, MOV_INS, format_memory_address(offset),
@@ -48,7 +48,7 @@ void movA0_A1(State &state) {
 
 void movA2_A3(State &state) {
   OperandSize size = state.ins.opcode == 0xA2 ? OPERAND_8 : OPERAND_32;
-  uint32_t addr = state.scanner.next_nbytes(4);
+  uint32_t addr = state.scanner.next_nbytes(4, state.reg_bank, state.mode);
   uint32_t output = state.reg_bank.load(EAX, size);
   state.memory.store(state.ins.snapshot.mem_transition, addr, output, size);
   set_snapshot(state, MOV_INS, state.reg_bank.name(EAX, size),
@@ -58,7 +58,8 @@ void movA2_A3(State &state) {
 void movBx(State &state) {
   OperandSize size = state.ins.opcode > 0xB7 ? OPERAND_32 : OPERAND_8;
   uint8_t reg = state.ins.opcode - (state.ins.opcode > 0xB7 ? 0xB8 : 0xB0);
-  uint32_t imm = state.scanner.next_nbytes(1 << size);
+  uint32_t imm =
+    state.scanner.next_nbytes(1 << size, state.reg_bank, state.mode);
   state.reg_bank.set(state.ins.snapshot.reg_transition, reg, imm, size);
   set_snapshot(state, MOV_INS, format_immediate(imm),
                state.reg_bank.name(reg, size));
@@ -68,7 +69,8 @@ void movCx(State &state) {
   OperandSize size = state.ins.opcode == 0xC6 ? OPERAND_8 : OPERAND_32;
   ModRMAttribute rm_args{size}, reg_args{size};
   process_modrm(state, rm_args, reg_args);
-  uint32_t imm = state.scanner.next_nbytes((1 << size));
+  uint32_t imm =
+    state.scanner.next_nbytes((1 << size), state.reg_bank, state.mode);
   set_value(state, rm_args, imm);
   set_snapshot(state, MOV_INS, format_immediate(imm), rm_args.notation);
 }

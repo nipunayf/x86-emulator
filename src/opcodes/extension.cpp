@@ -8,15 +8,16 @@
 #include "sbb.hpp"
 #include "sub.hpp"
 
-uint32_t read_immediate(Scanner &scanner, OperandSize type) {
-  return scanner.next_nbytes((unsigned char)(1 << type));
+uint32_t read_immediate(State &state, OperandSize type) {
+  return state.scanner.next_nbytes((unsigned char)(1 << type), state.reg_bank,
+                                   state.mode);
 }
 
 template <typename T>
 void ext8x(State &state, OperandSize reg_type, OperandSize imm_type) {
   ModRMAttribute rm_args{reg_type}, reg_args{reg_type};
   process_modrm(state, rm_args, reg_args);
-  T immediate = read_immediate(state.scanner, imm_type);
+  T immediate = read_immediate(state, imm_type);
   std::string operation;
   T res = 0;
   switch (reg_args.reg) {

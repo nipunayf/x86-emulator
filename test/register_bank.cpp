@@ -33,3 +33,20 @@ TEST(RegisterBankTest, AddFlags) {
   ASSERT_EQ(reg_bank.load_flag(AF), 0);
   ASSERT_EQ(reg_bank.load_flag(CF), 1);
 }
+
+TEST(RegisterBankTest, InstructionPointer) {
+  RegisterBank reg_bank;
+  Memory memory;
+
+  uint32_t prev_eip = reg_bank.load_eip();
+  Scanner scanner1(REGISTER_BANK_TEST_PATH + "nop.txt");
+  State state1{scanner1, reg_bank, memory};
+  parse(state1);
+  ASSERT_EQ(reg_bank.load_eip(), prev_eip + 0x90);
+
+  prev_eip = reg_bank.load_eip();
+  Scanner scanner2(REGISTER_BANK_TEST_PATH + "add_flags.txt");
+  State state2{scanner2, reg_bank, memory};
+  parse(state2);
+  ASSERT_EQ(reg_bank.load_eip(), prev_eip + 0x50);
+}
