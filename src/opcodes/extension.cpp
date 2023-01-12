@@ -128,7 +128,7 @@ void ext8F(State &state) {
 template <typename T> void extFx(State &state, OperandSize size) {
   ModRMAttribute rm_args{size}, reg_args{size};
   process_modrm(state, rm_args, reg_args);
-  T immediate = read_immediate(state.scanner, size);
+  T immediate = read_immediate(state, size);
   std::string operation;
   switch (reg_args.reg) {
   case 0:
