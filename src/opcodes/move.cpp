@@ -37,36 +37,22 @@ void mov8E(State &state) {
   set_snapshot(state, MOV_INS, rm_args.notation, reg_args.notation);
 }
 
-void movA0(State &state) {
-  uint32_t offset = state.scanner.next_nbytes(1 << state.mode);
-  uint8_t output = state.memory.load8(offset);
-  state.reg_bank.set8(state.ins.snapshot.reg_transition, AL, output);
+void movA0_A1(State &state) {
+  OperandSize size = state.ins.opcode == 0xA0 ? OPERAND_8 : OPERAND_32;
+  uint32_t offset = state.scanner.next_nbytes(4);
+  uint32_t output = state.memory.load(offset, size);
+  state.reg_bank.set(state.ins.snapshot.reg_transition, EAX, output, size);
   set_snapshot(state, MOV_INS, format_memory_address(offset),
-               state.reg_bank.name8(AL));
+               state.reg_bank.name(EAX, size));
 }
 
-void movA1(State &state) {
-  uint32_t offset = state.scanner.next_nbytes(1 << state.mode);
-  uint32_t output = state.memory.load32(offset);
-  state.reg_bank.set32(state.ins.snapshot.reg_transition, EAX, output);
-  set_snapshot(state, MOV_INS, format_memory_address(offset),
-               state.reg_bank.name32(EAX));
-}
-
-void movA2(State &state) {
+void movA2_A3(State &state) {
+  OperandSize size = state.ins.opcode == 0xA2 ? OPERAND_8 : OPERAND_32;
   uint32_t addr = state.scanner.next_nbytes(4);
-  uint8_t output = state.reg_bank.load8(AL);
-  state.memory.store8(state.ins.snapshot.mem_transition, addr, output);
-  set_snapshot(state, MOV_INS, state.reg_bank.name8(AL),
+  uint32_t output = state.reg_bank.load(EAX, size);
+  state.memory.store(state.ins.snapshot.mem_transition, addr, output, size);
+  set_snapshot(state, MOV_INS, state.reg_bank.name(EAX, size),
                format_memory_address(addr));
-}
-
-void movA3(State &state) {
-  uint32_t addr = state.scanner.next_nbytes(1 << state.mode);
-  uint32_t output = state.reg_bank.load32(EAX);
-  state.memory.store32(state.ins.snapshot.mem_transition, addr, output);
-  set_snapshot(state, MOV_INS, format_memory_address(addr),
-               state.reg_bank.name32(EAX));
 }
 
 void movBx(State &state) {
