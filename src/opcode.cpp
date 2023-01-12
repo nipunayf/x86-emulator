@@ -9,6 +9,7 @@
 #include "opcodes/push.hpp"
 #include "opcodes/sbb.hpp"
 #include "opcodes/sub.hpp"
+#include "opcodes/xchg.hpp"
 #include "utils.hpp"
 
 std::map<uint16_t, Handler> handler_map{
@@ -37,7 +38,9 @@ std::map<uint16_t, Handler> handler_map{
   {0xB9, movBx},     {0xBA, movBx},    {0xBB, movBx},      {0xBC, movBx},
   {0xBD, movBx},     {0xBE, movBx},    {0xBF, movBx},      {0xC6, movCx},
   {0xC7, movCx},     {0x80, ext80},    {0x81, ext81},      {0x83, ext83},
-  {0xFE, extFE},     {0xFF, extFF},    {0x8F, ext8F}};
+  {0xFE, extFE},     {0xFF, extFF},    {0x8F, ext8F},      {0x86, xchg86_87},
+  {0x87, xchg86_87}, {0x91, xchg9x},   {0x92, xchg9x},     {0x93, xchg9x},
+  {0x94, xchg9x},    {0x95, xchg9x},   {0x96, xchg9x},     {0x97, xchg9x}};
 
 static void set_prefix(Instruction &args, Scanner &scanner, int &index,
                        uint8_t &next_byte) {
