@@ -49,16 +49,16 @@ std::map<uint16_t, Handler> two_handler_map = {{0x1F, nop0F1F},
                                                {0xA8, push0FA8},
                                                {0xA9, pop0FA9}};
 
-static void set_prefix(Instruction &args, Scanner &scanner, int &index,
+static void set_prefix(Instruction &args, State &state, int &index,
                        uint8_t &next_byte) {
   args.prefixes[index] = next_byte;
   index = index + 1;
-  next_byte = scanner.next_byte();
+  next_byte = state.scanner.next_byte(state.reg_bank, state.mode);
 }
 
 int parse(State &state) {
   Instruction ins{};
-  uint8_t next_byte = state.scanner.next_byte();
+  uint8_t next_byte = state.scanner.next_byte(state.reg_bank, state.mode);
   int prefix_index = 0;
   std::map<uint16_t, Handler> handler_map = one_handler_map;
 
@@ -69,11 +69,11 @@ int parse(State &state) {
 
     // Check for additional prefixes for opcodes > 1-byte
     if (next_byte == 0x66 || next_byte == 0xf2 || next_byte == 0xf3)
-      set_prefix(ins, state.scanner, prefix_index, next_byte);
+      set_prefix(ins, state, prefix_index, next_byte);
 
     // Check for opcodes > 1-byte
     if (next_byte == 0x0f) {
-      set_prefix(ins, state.scanner, prefix_index, next_byte);
+      set_prefix(ins, state, prefix_index, next_byte);
       handler_map = two_handler_map;
 
       // Check for 3-byte opcode
@@ -92,7 +92,7 @@ int parse(State &state) {
       print_error_and_exit("Invalid opcode: %s is not yet supported",
                            format_hex_string(ins.opcode).c_str());
 
-    next_byte = state.scanner.next_byte();
+    next_byte = state.scanner.next_byte(state.reg_bank, state.mode);
     handler_map = one_handler_map;
   }
 

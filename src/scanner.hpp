@@ -1,6 +1,7 @@
 #ifndef SCANNER_H
 #define SCANNER_H
 
+#include "register_bank.hpp"
 #include <fstream>
 #include <string>
 
@@ -13,8 +14,9 @@ public:
 
   ~Scanner();
 
-  uint8_t next_byte();
-  uint32_t next_nbytes(unsigned short num_bytes);
+  uint8_t next_byte(RegisterBank &reg_bank, OperandSize mode);
+  uint32_t next_nbytes(unsigned short num_bytes, RegisterBank &reg_bank,
+                       OperandSize mode);
   bool is_eof();
 };
 

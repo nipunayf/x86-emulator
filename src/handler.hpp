@@ -61,7 +61,8 @@ void set_common_arithmetic_flags(State &state, OperandSize msb, uint64_t op1,
 #define REGISTER_DISPLACEMENT_OPCODE(state, op_type, op_size, reg,             \
                                      displace_bytes, ins_name, output)         \
   auto reg_val = (op_type)state.reg_bank.load(reg, op_size);                   \
-  auto displace = (op_type)state.scanner.next_nbytes(displace_bytes);          \
+  auto displace = (op_type)state.scanner.next_nbytes(                          \
+    displace_bytes, state.reg_bank, state.mode);                               \
   state.reg_bank.set(state.ins.snapshot.reg_transition, reg, output, op_size); \
   set_snapshot(state, ins_name, state.reg_bank.name(reg, op_size),             \
                format_immediate(displace));
