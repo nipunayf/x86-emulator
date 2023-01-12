@@ -2,25 +2,24 @@
 #include "test_utils.hpp"
 #include <gtest/gtest.h>
 
-#define CMP_TEST_PATH (TEST_PATH + "cmp/")
+#define TEST_OP_TEST_PATH (TEST_PATH + "test/")
 
-#define CMP(file_name, zf_flag)                                                \
+#define TEST_OP(file_name, zf_flag, sf_flag)                                   \
   {                                                                            \
-    Scanner scanner(CMP_TEST_PATH + file_name);                                \
+    Scanner scanner(TEST_OP_TEST_PATH + file_name);                            \
     RegisterBank reg_bank;                                                     \
     Memory memory;                                                             \
     State state{scanner, reg_bank, memory};                                    \
     parse(state);                                                              \
                                                                                \
     ASSERT_EQ(reg_bank.load_flag(ZF), zf_flag);                                \
+    ASSERT_EQ(reg_bank.load_flag(SF), sf_flag);                                \
   }
 
-TEST(CmpTest, Cmp3C){CMP("cmp3C.txt", 1)}
+TEST(Test_Op_Test, TestA9){TEST_OP("testA9.txt", 0, 0)}
 
-TEST(CmpTest, Cmp3D){CMP("cmp3D.txt", 0)}
+TEST(Test_Op_Test, TestF7){TEST_OP("testF7.txt", 0, 1)}
 
-TEST(CmpTest, Cmp39){CMP("cmp39.txt", 1)}
-
-TEST(CmpTest, Cmp83) {
-  CMP("cmp83.txt", 0)
+TEST(Test_Op_Test, Test85) {
+  TEST_OP("test85.txt", 1, 0)
 }
