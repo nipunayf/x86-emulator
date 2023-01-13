@@ -5,9 +5,10 @@
 #define XOR_TEST_PATH (TEST_PATH + "xor/")
 
 #define XOR(file_name, dest, expected)                                         \
-  Scanner scanner(XOR_TEST_PATH + file_name);                                  \
   RegisterBank reg_bank;                                                       \
   Memory memory;                                                               \
+  store_program(XOR_TEST_PATH + file_name, reg_bank, memory);                  \
+  Scanner scanner(reg_bank, memory, OPERAND_32);                               \
   State state{scanner, reg_bank, memory};                                      \
   RegisterBank org_reg_bank;                                                   \
   parse(state);                                                                \

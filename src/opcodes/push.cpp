@@ -13,12 +13,12 @@ void push5x(State &state) {
 }
 
 void push6A(State &state) {
-  uint16_t imm = state.scanner.next_nbytes(2, state.reg_bank, state.mode);
+  uint16_t imm = state.scanner.next_nbytes(2);
   perform_push(state, imm, format_immediate(imm));
 }
 
 void push68(State &state) {
-  uint32_t imm = state.scanner.next_nbytes(4, state.reg_bank, state.mode);
+  uint32_t imm = state.scanner.next_nbytes(4);
   perform_push(state, imm, format_immediate(imm));
 }
 

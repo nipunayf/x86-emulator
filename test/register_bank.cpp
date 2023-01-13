@@ -18,9 +18,10 @@ TEST(RegisterBankTest, FlagTest) {
 }
 
 TEST(RegisterBankTest, AddFlags) {
-  Scanner scanner(REGISTER_BANK_TEST_PATH + "add_flags.txt");
   RegisterBank reg_bank;
   Memory memory;
+  store_program(REGISTER_BANK_TEST_PATH + "add_flags.txt", reg_bank, memory);
+  Scanner scanner(reg_bank, memory, OPERAND_32);
   State state{scanner, reg_bank, memory};
 
   parse(state);
@@ -37,22 +38,22 @@ TEST(RegisterBankTest, AddFlags) {
 TEST(RegisterBankTest, InstructionPointer) {
   RegisterBank reg_bank;
   Memory memory;
+  Scanner scanner(reg_bank, memory, OPERAND_32);
 
+  store_program(REGISTER_BANK_TEST_PATH + "nop.txt", reg_bank, memory);
   uint32_t prev_eip = reg_bank.load_eip();
-  Scanner scanner1(REGISTER_BANK_TEST_PATH + "nop.txt");
-  State state1{scanner1, reg_bank, memory};
-  parse(state1);
-  ASSERT_EQ(reg_bank.load_eip(), prev_eip + 0x9);
-  auto snapshot1 = state1.snapshots.begin();
+  State state{scanner, reg_bank, memory};
+  parse(state);
+  ASSERT_EQ(reg_bank.load_eip(), prev_eip + 10);
+  auto snapshot1 = state.snapshots.begin();
   ASSERT_STREQ(snapshot1->eip_transition.c_str(),
                "%eip(0x8048354) -> (0x804835d)");
 
+  store_program(REGISTER_BANK_TEST_PATH + "add_flags.txt", reg_bank, memory);
   prev_eip = reg_bank.load_eip();
-  Scanner scanner2(REGISTER_BANK_TEST_PATH + "add_flags.txt");
-  State state2{scanner2, reg_bank, memory};
-  parse(state2);
-  ASSERT_EQ(reg_bank.load_eip(), prev_eip + 0x5);
-  auto snapshot2 = state2.snapshots.begin();
+  parse(state);
+  ASSERT_EQ(reg_bank.load_eip(), prev_eip + 6);
+  auto snapshot2 = state.snapshots.begin();
   ASSERT_STREQ(snapshot2->eip_transition.c_str(),
-               "%eip(0x804835d) -> (0x8048362)");
+               "%eip(0x8048354) -> (0x804835d)");
 }

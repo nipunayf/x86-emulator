@@ -5,9 +5,10 @@
 #define LEA_TEST_PATH (TEST_PATH + "lea/")
 
 #define LEA(file_name, dest, expected)                                         \
-  Scanner scanner(LEA_TEST_PATH + file_name);                                  \
   RegisterBank reg_bank;                                                       \
   Memory memory;                                                               \
+  store_program(LEA_TEST_PATH + file_name, reg_bank, memory);                  \
+  Scanner scanner(reg_bank, memory, OPERAND_32);                               \
   State state{scanner, reg_bank, memory};                                      \
   parse(state);                                                                \
                                                                                \

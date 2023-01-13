@@ -43,7 +43,7 @@ void indirect_16bit_addressing(RegisterBank &reg_bank, uint32_t index,
 void indirect_32bit_addressing(State &state, uint32_t reg,
                                ModRMAttribute &args) {
   if (reg == ESP) {
-    uint8_t sib = state.scanner.next_byte(state.reg_bank, state.mode);
+    uint8_t sib = state.scanner.next_byte();
     args.mem_addr = process_sib(sib, state.reg_bank, args.notation);
   } else {
     args.mem_addr = state.reg_bank.load32(reg);
@@ -62,8 +62,7 @@ uint32_t register_indirect(State &state, const uint8_t &reg,
                            ModRMAttribute &args) {
   if (state.mode == OPERAND_16) {
     if (reg == 6) {
-      uint32_t displacement =
-        state.scanner.next_nbytes(2, state.reg_bank, state.mode);
+      uint32_t displacement = state.scanner.next_nbytes(2);
       args.mem_addr = displacement;
       args.notation = format_memory_address(displacement);
     } else {
@@ -71,8 +70,7 @@ uint32_t register_indirect(State &state, const uint8_t &reg,
     }
   } else {
     if (reg == EBP) {
-      uint32_t displacement =
-        state.scanner.next_nbytes(4, state.reg_bank, state.mode);
+      uint32_t displacement = state.scanner.next_nbytes(4);
       args.mem_addr = displacement;
       args.notation = format_memory_address(displacement);
     } else {
@@ -87,11 +85,10 @@ uint32_t indirect_nbyte_displacement(State &state, const uint8_t &mode,
   uint32_t displacement = 0;
   if (state.mode == OPERAND_16) {
     indirect_16bit_addressing(state.reg_bank, reg, args);
-    displacement = state.scanner.next_nbytes(mode, state.reg_bank, state.mode);
+    displacement = state.scanner.next_nbytes(mode);
   } else {
     indirect_32bit_addressing(state, reg, args);
-    displacement =
-      state.scanner.next_nbytes(mode == 1 ? 1 : 4, state.reg_bank, state.mode);
+    displacement = state.scanner.next_nbytes(mode == 1 ? 1 : 4);
   }
   args.notation =
     format_indirect_with_displacement(args.notation, displacement);
@@ -101,7 +98,7 @@ uint32_t indirect_nbyte_displacement(State &state, const uint8_t &mode,
 
 void process_modrm(State &state, ModRMAttribute &rm_args,
                    ModRMAttribute &reg_args) {
-  const uint8_t byte = state.scanner.next_byte(state.reg_bank, state.mode);
+  const uint8_t byte = state.scanner.next_byte();
   const auto mode = static_cast<const AddressingMode>(byte >> 6);
   const uint8_t rm = byte & 0x07;
   const uint8_t reg = (byte >> 3) & 0x07;

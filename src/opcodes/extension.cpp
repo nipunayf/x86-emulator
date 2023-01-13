@@ -14,8 +14,7 @@
 #include "xor.hpp"
 
 uint32_t read_immediate(State &state, OperandSize type) {
-  return state.scanner.next_nbytes((unsigned char)(1 << type), state.reg_bank,
-                                   state.mode);
+  return state.scanner.next_nbytes(1 << type);
 }
 
 template <typename T>
