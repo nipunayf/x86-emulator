@@ -8,9 +8,10 @@
 // clc
 // cmc
 TEST(FlagTest, FlagCF) {
-  Scanner scanner(FLAGS_TEST_PATH + "cf.txt");
   RegisterBank reg_bank;
   Memory memory;
+  store_program(FLAGS_TEST_PATH + "cf.txt", reg_bank, memory);
+  Scanner scanner(reg_bank, memory, OPERAND_32);
   State state{scanner, reg_bank, memory};
   parse(state);
 

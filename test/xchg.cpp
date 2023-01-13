@@ -5,9 +5,10 @@
 #define XCHG_TEST_PATH (TEST_PATH + "xchg/")
 
 #define XCHG(file_name, dest1, expected1, dest2, expected2)                    \
-  Scanner scanner(XCHG_TEST_PATH + file_name);                                 \
   RegisterBank reg_bank;                                                       \
   Memory memory;                                                               \
+  store_program(XCHG_TEST_PATH + file_name, reg_bank, memory);                 \
+  Scanner scanner(reg_bank, memory, OPERAND_32);                               \
   State state{scanner, reg_bank, memory};                                      \
   parse(state);                                                                \
   RegisterBank original_reg_bank;                                              \

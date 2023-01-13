@@ -5,9 +5,10 @@
 #define MOV_TEST_PATH (TEST_PATH + "mov/")
 
 #define MOV(file_name, dest, expected)                                         \
-  Scanner scanner(MOV_TEST_PATH + file_name);                                  \
   RegisterBank reg_bank;                                                       \
   Memory memory;                                                               \
+  store_program(MOV_TEST_PATH + file_name, reg_bank, memory);                  \
+  Scanner scanner(reg_bank, memory, OPERAND_32);                               \
   State state{scanner, reg_bank, memory};                                      \
   parse(state);                                                                \
                                                                                \

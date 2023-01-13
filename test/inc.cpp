@@ -6,9 +6,10 @@
 
 #define INCREMENT(file_name, dest, expected)                                   \
   {                                                                            \
-    Scanner scanner(INC_TEST_PATH + file_name);                                \
     RegisterBank reg_bank;                                                     \
     Memory memory;                                                             \
+    store_program(INC_TEST_PATH + file_name, reg_bank, memory);                \
+    Scanner scanner(reg_bank, memory, OPERAND_32);                             \
     State state{scanner, reg_bank, memory};                                    \
                                                                                \
     RegisterBank original_reg_bank = reg_bank;                                 \
@@ -19,9 +20,10 @@
   }
 
 TEST(IncTest, Inc40x) {
-  Scanner scanner(INC_TEST_PATH + "inc40.txt");
   RegisterBank reg_bank;
   Memory memory;
+  store_program(INC_TEST_PATH + "inc40.txt", reg_bank, memory);
+  Scanner scanner(reg_bank, memory, OPERAND_32);
   State state{scanner, reg_bank, memory};
 
   RegisterBank original_reg_bank = reg_bank;

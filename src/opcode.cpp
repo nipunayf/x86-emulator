@@ -70,12 +70,12 @@ static void set_prefix(Instruction &args, State &state, int &index,
                        uint8_t &next_byte) {
   args.prefixes[index] = next_byte;
   index = index + 1;
-  next_byte = state.scanner.next_byte(state.reg_bank, state.mode);
+  next_byte = state.scanner.next_byte();
 }
 
 int parse(State &state) {
   Instruction ins{};
-  uint8_t next_byte = state.scanner.next_byte(state.reg_bank, state.mode);
+  uint8_t next_byte = state.scanner.next_byte();
   int prefix_index = 0;
   std::map<uint16_t, Handler> handler_map = one_handler_map;
 
@@ -110,7 +110,7 @@ int parse(State &state) {
       print_error_and_exit("Invalid opcode: %s is not yet supported",
                            format_hex_string(ins.opcode).c_str());
 
-    next_byte = state.scanner.next_byte(state.reg_bank, state.mode);
+    next_byte = state.scanner.next_byte();
     handler_map = one_handler_map;
   }
 

@@ -5,9 +5,10 @@
 #define SHIFT_TEST_PATH (TEST_PATH + "shift/")
 
 #define SHIFT(file_name, dest, expected, cf_flag)                              \
-  Scanner scanner(SHIFT_TEST_PATH + file_name);                                \
   RegisterBank reg_bank;                                                       \
   Memory memory;                                                               \
+  store_program(SHIFT_TEST_PATH + file_name, reg_bank, memory);                \
+  Scanner scanner(reg_bank, memory, OPERAND_32);                               \
   State state{scanner, reg_bank, memory};                                      \
   uint32_t initial_esp = reg_bank.load32(ESP);                                 \
   parse(state);                                                                \

@@ -4,6 +4,14 @@
 
 #define OPCODE_TEST_PATH (TEST_PATH + "opcode/")
 
+#define ASSERT_X86_DEATH(file_name, err_msg)                                   \
+  RegisterBank reg_bank;                                                       \
+  Memory memory;                                                               \
+  store_program(OPCODE_TEST_PATH + file_name, reg_bank, memory);               \
+  Scanner scanner(reg_bank, memory, OPERAND_32);                               \
+  State state{scanner, reg_bank, memory};                                      \
+  ASSERT_DEATH({ parse(state); }, err_msg);
+
 TEST(OpcodeTest, InvalidOneByte){
   ASSERT_X86_DEATH("invalid_1byte.txt",
                    "Invalid opcode: 0x99 is not yet supported")}
@@ -17,9 +25,10 @@ TEST(OpcodeTest, InvalidThreeBytes){
                    "3-byte opcode bytes are not yet supported")}
 
 TEST(OpcodeTest, ValidOneByte) {
-  Scanner scanner(OPCODE_TEST_PATH + "valid_1byte.txt");
   RegisterBank reg_bank;
   Memory memory;
+  store_program(OPCODE_TEST_PATH + "valid_1byte.txt", reg_bank, memory);
+  Scanner scanner(reg_bank, memory, OPERAND_32);
   State state{scanner, reg_bank, memory};
   ASSERT_FALSE(parse(state));
 }

@@ -6,9 +6,10 @@
 
 #define TEST_OP(file_name, zf_flag, sf_flag)                                   \
   {                                                                            \
-    Scanner scanner(TEST_OP_TEST_PATH + file_name);                            \
     RegisterBank reg_bank;                                                     \
     Memory memory;                                                             \
+    store_program(TEST_OP_TEST_PATH + file_name, reg_bank, memory);            \
+    Scanner scanner(reg_bank, memory, OPERAND_32);                             \
     State state{scanner, reg_bank, memory};                                    \
     parse(state);                                                              \
                                                                                \

@@ -22,8 +22,7 @@ void shiftD2(State &state) {
 }
 
 void shiftC0(State &state) {
-  MODRM_SHIFT(OPERAND_8, uint8_t, int8_t,
-              state.scanner.next_byte(state.reg_bank, state.mode),
+  MODRM_SHIFT(OPERAND_8, uint8_t, int8_t, state.scanner.next_byte(),
               format_immediate(count))
 }
 
@@ -37,7 +36,6 @@ void shiftD3(State &state) {
 }
 
 void shiftC1(State &state) {
-  MODRM_SHIFT(OPERAND_32, uint32_t, int32_t,
-              state.scanner.next_byte(state.reg_bank, state.mode),
+  MODRM_SHIFT(OPERAND_32, uint32_t, int32_t, state.scanner.next_byte(),
               format_immediate(count))
 }

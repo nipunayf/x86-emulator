@@ -8,7 +8,7 @@
 
 class Memory {
 private:
-  std::map<uint32_t, uint8_t> buffer;
+  std::map<uint32_t, uint8_t> m_buffer;
 
 public:
   void store(std::string &transition, const uint32_t &address,
@@ -23,6 +23,7 @@ public:
   uint8_t load8(const uint32_t &address);
   uint16_t load16(const uint32_t &address);
   uint32_t load32(const uint32_t &address);
+  bool is_allocated(const uint32_t &address);
 };
 
 #endif
