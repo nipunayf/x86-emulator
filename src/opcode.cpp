@@ -10,6 +10,7 @@
 #include "opcodes/pop.hpp"
 #include "opcodes/push.hpp"
 #include "opcodes/sbb.hpp"
+#include "opcodes/shift.hpp"
 #include "opcodes/sub.hpp"
 #include "opcodes/test.hpp"
 #include "opcodes/xchg.hpp"
@@ -46,7 +47,8 @@ std::map<uint16_t, Handler> one_handler_map{
   {0xFF, extFF},     {0x8F, ext8F},     {0xF6, extF6},     {0xF7, extF7},
   {0x86, xchg86_87}, {0x87, xchg86_87}, {0x91, xchg9x},    {0x92, xchg9x},
   {0x93, xchg9x},    {0x94, xchg9x},    {0x95, xchg9x},    {0x96, xchg9x},
-  {0x97, xchg9x}};
+  {0x97, xchg9x},    {0xD0, shiftD0},   {0xD1, shiftD1},   {0xD3, shiftD3},
+  {0xC0, shiftC0},   {0xC1, shiftC1}};
 
 std::map<uint16_t, Handler> two_handler_map = {{0x1F, nop0F1F},
                                                {0xA0, push0FA0},

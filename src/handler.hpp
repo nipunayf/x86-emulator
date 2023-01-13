@@ -42,8 +42,8 @@ using Handler = void (*)(State &args);
 void set_snapshot(State &state, const std::string &ins_name,
                   const std::string &dest = "", const std::string &source = "");
 
-void set_common_arithmetic_flags(State &state, OperandSize msb, uint64_t op1,
-                                 uint64_t op2, uint64_t res);
+void set_common_arithmetic_flags(State &state, OperandSize op_size,
+                                 uint64_t res);
 
 #define MODRM_OPCODE(op_size, output, dest, ins_name, dest_name, src_name)     \
   ModRMAttribute rm_args{op_size}, reg_args{op_size};                          \

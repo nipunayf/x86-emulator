@@ -20,7 +20,7 @@ void set_snapshot(State &state, const std::string &ins_name,
 }
 
 void set_common_arithmetic_flags(State &state, OperandSize op_size,
-                                 uint64_t op1, uint64_t op2, uint64_t res) {
+                                 uint64_t res) {
   // Set parity flag (PF)
   // Check if the least-significant byte of result contains even number of 1s
   state.reg_bank.set_flag(state.ins.snapshot.flag_transitions, PF,
