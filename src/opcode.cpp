@@ -6,6 +6,7 @@
 #include "opcodes/extension.hpp"
 #include "opcodes/flags.hpp"
 #include "opcodes/inc.hpp"
+#include "opcodes/lea.hpp"
 #include "opcodes/move.hpp"
 #include "opcodes/nop.hpp"
 #include "opcodes/pop.hpp"
@@ -50,7 +51,7 @@ std::map<uint16_t, Handler> one_handler_map{
   {0x87, xchg86_87}, {0x91, xchg9x},    {0x92, xchg9x},    {0x93, xchg9x},
   {0x94, xchg9x},    {0x95, xchg9x},    {0x96, xchg9x},    {0x97, xchg9x},
   {0xD0, shiftD0},   {0xD1, shiftD1},   {0xD3, shiftD3},   {0xC0, shiftC0},
-  {0xC1, shiftC1}};
+  {0xC1, shiftC1},   {0x8D, lea8D}};
 
 std::map<uint16_t, Handler> two_handler_map = {{0x1F, nop0F1F},
                                                {0xA0, push0FA0},
