@@ -1,6 +1,7 @@
 #include "extension.hpp"
 #include "adc.hpp"
 #include "add.hpp"
+#include "and.hpp"
 #include "cmp.hpp"
 #include "dec.hpp"
 #include "inc.hpp"
@@ -34,6 +35,10 @@ void ext8x(State &state, OperandSize reg_type, OperandSize imm_type) {
   case 3:
     operation = SBB_INS;
     res = perform_sbb<T>(state, reg_type, (T)rm_args.val, immediate);
+    break;
+  case 4:
+    operation = AND_INS;
+    res = perform_and<T>(state, reg_type, (T)rm_args.val, immediate);
     break;
   case 5:
     operation = SUB_INS;
