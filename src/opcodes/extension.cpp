@@ -10,6 +10,7 @@
 #include "sbb.hpp"
 #include "sub.hpp"
 #include "test.hpp"
+#include "xor.hpp"
 
 uint32_t read_immediate(State &state, OperandSize type) {
   return state.scanner.next_nbytes((unsigned char)(1 << type), state.reg_bank,
@@ -43,6 +44,10 @@ void ext8x(State &state, OperandSize reg_type, OperandSize imm_type) {
   case 5:
     operation = SUB_INS;
     res = perform_sub<T>(state, reg_type, (T)rm_args.val, immediate);
+    break;
+  case 6:
+    operation = XOR_INS;
+    res = perform_xor<T>(state, reg_type, (T)rm_args.val, immediate);
     break;
   case 7:
     operation = CMP_INS;

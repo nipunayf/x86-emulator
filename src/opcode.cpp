@@ -18,6 +18,7 @@
 #include "opcodes/sub.hpp"
 #include "opcodes/test.hpp"
 #include "opcodes/xchg.hpp"
+#include "opcodes/xor.hpp"
 #include "utils.hpp"
 
 std::map<uint16_t, Handler> one_handler_map{
@@ -56,7 +57,8 @@ std::map<uint16_t, Handler> one_handler_map{
   {0xC1, shiftC1},   {0x8D, lea8D},     {0x24, and24},     {0x25, and25},
   {0x20, and20},     {0x21, and21},     {0x22, and22},     {0x23, and23},
   {0x0C, or0C},      {0x0D, or0D},      {0x08, or08},      {0x09, or09},
-  {0x0A, or0A},      {0x0B, or0B}};
+  {0x0A, or0A},      {0x0B, or0B},      {0x34, xor34},     {0x35, xor35},
+  {0x30, xor30},     {0x31, xor31},     {0x32, xor32},     {0x33, xor33}};
 
 std::map<uint16_t, Handler> two_handler_map = {{0x1F, nop0F1F},
                                                {0xA0, push0FA0},
