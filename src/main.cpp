@@ -28,6 +28,7 @@ int main(int argc, char *argv[]) {
 
   InstructionFetcher ins_fetcher(reg_bank, memory, OPERAND_32);
   State state{ins_fetcher, reg_bank, memory};
+  parse(state);
 
   return 0;
 }
