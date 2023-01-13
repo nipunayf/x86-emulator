@@ -14,6 +14,10 @@ void and22(State &state);
 void and23(State &state);
 
 template <typename T>
-T perform_and(State &state, OperandSize size, T op1, T op2);
+T perform_and(State &state, OperandSize size, T op1, T op2) {
+  T res = op1 & op2;
+  set_logical_flags(state, size, res);
+  return res;
+}
 
 #endif

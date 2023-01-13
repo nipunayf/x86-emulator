@@ -5,6 +5,7 @@
 #include "cmp.hpp"
 #include "dec.hpp"
 #include "inc.hpp"
+#include "or.hpp"
 #include "pop.hpp"
 #include "push.hpp"
 #include "sbb.hpp"
@@ -28,6 +29,10 @@ void ext8x(State &state, OperandSize reg_type, OperandSize imm_type) {
   case 0:
     operation = ADD_INS;
     res = perform_add<T>(state, reg_type, (T)rm_args.val, immediate);
+    break;
+  case 1:
+    operation = OR_INS;
+    res = perform_or<T>(state, reg_type, (T)rm_args.val, immediate);
     break;
   case 2:
     operation = ADC_INS;
@@ -139,13 +144,13 @@ template <typename T> void extFx(State &state, OperandSize size) {
   ModRMAttribute rm_args{size}, reg_args{size};
   process_modrm(state, rm_args, reg_args);
   switch (reg_args.reg) {
-  case 0:
-    T immediate = read_immediate(state, size);
-    perform_test(state, size, rm_args.val, immediate);
-    set_snapshot(state, TEST_INS, rm_args.notation,
-                 format_immediate(immediate));
+  case 0: {
+    T imm = read_immediate(state, size);
+    perform_test(state, size, rm_args.val, imm);
+    set_snapshot(state, TEST_INS, rm_args.notation, format_immediate(imm));
     break;
-  case 4:
+  }
+  case 2:
     set_value(state, rm_args, ~rm_args.val);
     set_snapshot(state, "not", rm_args.notation);
     break;

@@ -14,6 +14,10 @@ void xor32(State &state);
 void xor33(State &state);
 
 template <typename T>
-T perform_xor(State &state, OperandSize size, uint32_t op1, uint32_t op2);
+T perform_xor(State &state, OperandSize size, T op1, T op2) {
+  T res = op1 ^ op2;
+  set_logical_flags(state, size, res);
+  return res;
+}
 
 #endif
