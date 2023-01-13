@@ -68,4 +68,11 @@ void set_common_arithmetic_flags(State &state, OperandSize op_size,
   set_snapshot(state, ins_name, state.reg_bank.name(reg, op_size),             \
                format_immediate(displace));
 
+#define IMM_EAX_OPCODE(op_size, T, ins_name, output)                           \
+  T imm = state.scanner.next_nbytes(1 << op_size, state.reg_bank, state.mode); \
+  T reg_val = state.reg_bank.load(EAX, op_size);                               \
+  state.reg_bank.set(state.ins.snapshot.reg_transition, EAX, output, op_size); \
+  set_snapshot(state, ins_name, format_immediate(imm),                         \
+               state.reg_bank.name(EAX, op_size));
+
 #endif

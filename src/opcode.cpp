@@ -10,6 +10,7 @@
 #include "opcodes/lea.hpp"
 #include "opcodes/move.hpp"
 #include "opcodes/nop.hpp"
+#include "opcodes/or.hpp"
 #include "opcodes/pop.hpp"
 #include "opcodes/push.hpp"
 #include "opcodes/sbb.hpp"
@@ -52,8 +53,10 @@ std::map<uint16_t, Handler> one_handler_map{
   {0x87, xchg86_87}, {0x91, xchg9x},    {0x92, xchg9x},    {0x93, xchg9x},
   {0x94, xchg9x},    {0x95, xchg9x},    {0x96, xchg9x},    {0x97, xchg9x},
   {0xD0, shiftD0},   {0xD1, shiftD1},   {0xD3, shiftD3},   {0xC0, shiftC0},
-  {0xC1, shiftC1},   {0x8D, lea8D},     {0x24, and24_25},  {0x25, and24_25},
-  {0x20, and20},     {0x21, and21},     {0x22, and22},     {0x23, and23}};
+  {0xC1, shiftC1},   {0x8D, lea8D},     {0x24, and24},     {0x25, and25},
+  {0x20, and20},     {0x21, and21},     {0x22, and22},     {0x23, and23},
+  {0x0C, or0C},      {0x0D, or0D},      {0x08, or08},      {0x09, or09},
+  {0x0A, or0A},      {0x0B, or0B}};
 
 std::map<uint16_t, Handler> two_handler_map = {{0x1F, nop0F1F},
                                                {0xA0, push0FA0},

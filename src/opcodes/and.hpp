@@ -6,7 +6,8 @@
 
 #define AND_INS "and"
 
-void and24_25(State &state);
+void and24(State &state);
+void and25(State &state);
 void and20(State &state);
 void and21(State &state);
 void and22(State &state);
