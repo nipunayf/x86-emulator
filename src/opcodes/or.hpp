@@ -14,6 +14,6 @@ void or0A(State &state);
 void or0B(State &state);
 
 template <typename T>
-T perform_or(State &state, OperandSize size, uint32_t op1, uint32_t op2);
+T perform_or(State &state, OperandSize size, T op1, T op2);
 
 #endif

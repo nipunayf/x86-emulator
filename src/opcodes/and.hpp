@@ -14,6 +14,6 @@ void and22(State &state);
 void and23(State &state);
 
 template <typename T>
-T perform_and(State &state, OperandSize size, uint32_t op1, uint32_t op2);
+T perform_and(State &state, OperandSize size, T op1, T op2);
 
 #endif

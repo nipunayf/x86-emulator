@@ -3,9 +3,7 @@
 template <typename T>
 T perform_or(State &state, OperandSize size, T op1, T op2) {
   T res = op1 | op2;
-  set_common_arithmetic_flags(state, size, res);
-  state.reg_bank.set_flag(state.ins.snapshot.flag_transitions, OF, 0);
-  state.reg_bank.set_flag(state.ins.snapshot.flag_transitions, CF, 0);
+  set_common_logical_flags(state, size, res);
   return res;
 }
 

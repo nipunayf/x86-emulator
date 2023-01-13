@@ -35,3 +35,9 @@ void set_common_arithmetic_flags(State &state, OperandSize op_size,
   // Set if the result is 0
   state.reg_bank.set_flag(state.ins.snapshot.flag_transitions, ZF, res == 0);
 }
+
+void set_common_logical_flags(State &state, OperandSize op_size, uint64_t res) {
+  set_common_arithmetic_flags(state, op_size, res);
+  state.reg_bank.set_flag(state.ins.snapshot.flag_transitions, OF, 0);
+  state.reg_bank.set_flag(state.ins.snapshot.flag_transitions, CF, 0);
+}
