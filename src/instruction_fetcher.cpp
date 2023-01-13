@@ -5,7 +5,7 @@ InstructionFetcher::InstructionFetcher(RegisterBank &reg_bank, Memory &memory,
                                        OperandSize mode)
   : m_reg_bank(reg_bank), m_memory(memory), m_mode(mode) {}
 
-uint8_t InstructionFetcher::fetch_instruction(uint32_t offset) {
+uint8_t InstructionFetcher::fetch_instruction(int32_t offset) {
   uint32_t current_eip = m_reg_bank.load_eip();
   uint8_t byte = m_memory.load8(current_eip + offset);
   m_reg_bank.set_eip(current_eip + offset + 1, m_mode);
@@ -21,7 +21,7 @@ uint32_t InstructionFetcher::next_nbytes(unsigned short num_bytes) {
   return val;
 }
 
-void InstructionFetcher::jump_byte(uint32_t offset) {
+void InstructionFetcher::jump_byte(int32_t offset) {
   fetch_instruction(offset - 1);
 }
 
