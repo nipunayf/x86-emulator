@@ -8,8 +8,8 @@
   RegisterBank reg_bank;                                                       \
   Memory memory;                                                               \
   store_program(OPCODE_TEST_PATH + file_name, reg_bank, memory);               \
-  Scanner scanner(reg_bank, memory, OPERAND_32);                               \
-  State state{scanner, reg_bank, memory};                                      \
+  InstructionFetcher ins_fetcher(reg_bank, memory, OPERAND_32);                \
+  State state{ins_fetcher, reg_bank, memory};                                  \
   ASSERT_DEATH({ parse(state); }, err_msg);
 
 TEST(OpcodeTest, InvalidOneByte){
@@ -28,7 +28,7 @@ TEST(OpcodeTest, ValidOneByte) {
   RegisterBank reg_bank;
   Memory memory;
   store_program(OPCODE_TEST_PATH + "valid_1byte.txt", reg_bank, memory);
-  Scanner scanner(reg_bank, memory, OPERAND_32);
-  State state{scanner, reg_bank, memory};
+  InstructionFetcher ins_fetcher(reg_bank, memory, OPERAND_32);
+  State state{ins_fetcher, reg_bank, memory};
   ASSERT_FALSE(parse(state));
 }
