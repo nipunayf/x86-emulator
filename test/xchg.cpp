@@ -8,8 +8,8 @@
   RegisterBank reg_bank;                                                       \
   Memory memory;                                                               \
   store_program(XCHG_TEST_PATH + file_name, reg_bank, memory);                 \
-  Scanner scanner(reg_bank, memory, OPERAND_32);                               \
-  State state{scanner, reg_bank, memory};                                      \
+  InstructionFetcher ins_fetcher(reg_bank, memory, OPERAND_32);                \
+  State state{ins_fetcher, reg_bank, memory};                                  \
   parse(state);                                                                \
   RegisterBank original_reg_bank;                                              \
                                                                                \

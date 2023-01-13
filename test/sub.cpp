@@ -9,8 +9,8 @@
     RegisterBank reg_bank;                                                     \
     Memory memory;                                                             \
     store_program(SUB_TEST_PATH + file_name, reg_bank, memory);                \
-    Scanner scanner(reg_bank, memory, OPERAND_32);                             \
-    State state{scanner, reg_bank, memory};                                    \
+    InstructionFetcher ins_fetcher(reg_bank, memory, OPERAND_32);              \
+    State state{ins_fetcher, reg_bank, memory};                                \
     std::string memory_change;                                                 \
     memory.store32(memory_change, 0x00010200, 0x01a11001);                     \
                                                                                \

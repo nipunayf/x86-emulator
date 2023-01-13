@@ -14,7 +14,7 @@ void perform_test(State &state, OperandSize op_size, uint32_t op1,
 
 void testA8_A9(State &state) {
   OperandSize size = state.ins.opcode == 0xA8 ? OPERAND_8 : OPERAND_32;
-  uint32_t imm = state.scanner.next_nbytes(1 << size);
+  uint32_t imm = state.ins_fetcher.next_nbytes(1 << size);
   perform_test(state, size, imm, state.reg_bank.load(EAX, size));
   set_snapshot(state, TEST_INS, format_immediate(imm),
                state.reg_bank.name(EAX, size));

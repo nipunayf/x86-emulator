@@ -11,8 +11,8 @@ TEST(FlagTest, FlagCF) {
   RegisterBank reg_bank;
   Memory memory;
   store_program(FLAGS_TEST_PATH + "cf.txt", reg_bank, memory);
-  Scanner scanner(reg_bank, memory, OPERAND_32);
-  State state{scanner, reg_bank, memory};
+  InstructionFetcher ins_fetcher(reg_bank, memory, OPERAND_32);
+  State state{ins_fetcher, reg_bank, memory};
   parse(state);
 
   std::string operations[] = {"stc", "clc", "cmc"};

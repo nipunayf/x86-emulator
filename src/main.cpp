@@ -26,8 +26,8 @@ int main(int argc, char *argv[]) {
     eip++;
   }
 
-  Scanner scanner(reg_bank, memory, OPERAND_32);
-  State state{scanner, reg_bank, memory};
+  InstructionFetcher ins_fetcher(reg_bank, memory, OPERAND_32);
+  State state{ins_fetcher, reg_bank, memory};
 
   return 0;
 }

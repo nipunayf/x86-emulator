@@ -1,10 +1,10 @@
 #ifndef HANDLER_H
 #define HANDLER_H
 
+#include "instruction_fetcher.hpp"
 #include "memory.hpp"
 #include "operand.hpp"
 #include "register_bank.hpp"
-#include "scanner.hpp"
 #include "utils.hpp"
 #include <list>
 
@@ -29,7 +29,7 @@ struct Instruction {
 // Default mode is 32 bit and this can be changed to 16 bit with instruction
 // prefixes "0x66"
 struct State {
-  Scanner &scanner;
+  InstructionFetcher &ins_fetcher;
   RegisterBank &reg_bank;
   Memory &memory;
   Instruction ins;
@@ -64,13 +64,13 @@ void set_logical_flags(State &state, OperandSize op_size, uint64_t res);
 #define REGISTER_DISPLACEMENT_OPCODE(op_type, op_size, reg, displace_bytes,    \
                                      ins_name, output)                         \
   auto reg_val = (op_type)state.reg_bank.load(reg, op_size);                   \
-  auto displace = (op_type)state.scanner.next_nbytes(displace_bytes);          \
+  auto displace = (op_type)state.ins_fetcher.next_nbytes(displace_bytes);      \
   state.reg_bank.set(state.ins.snapshot.reg_transition, reg, output, op_size); \
   set_snapshot(state, ins_name, state.reg_bank.name(reg, op_size),             \
                format_immediate(displace));
 
 #define IMM_EAX_OPCODE(op_size, T, ins_name, output)                           \
-  T imm = state.scanner.next_nbytes(1 << op_size);                             \
+  T imm = state.ins_fetcher.next_nbytes(1 << op_size);                         \
   T reg_val = state.reg_bank.load(EAX, op_size);                               \
   state.reg_bank.set(state.ins.snapshot.reg_transition, EAX, output, op_size); \
   set_snapshot(state, ins_name, format_immediate(imm),                         \
