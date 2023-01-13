@@ -44,15 +44,17 @@ std::string format_immediate(uint32_t immediate) {
 
 std::string format_sib(const std::string &base, const std::string &index,
                        const uint8_t &scale, const uint32_t displacement) {
-  std::string optional;
+  std::string optional = "";
+  if (!index.empty())
+    optional += "+" + index;
   if (scale > 1)
-    optional = "*" + std::to_string(scale);
+    optional += "*" + std::to_string(scale);
   if (displacement)
-    optional = "+" + std::to_string(displacement);
+    optional += "+" + std::to_string(displacement);
   const unsigned short len =
     base.length() + index.length() + optional.length() + 6;
   char addr[len];
-  sprintf(addr, "[%s+%s%s]", base.c_str(), index.c_str(), optional.c_str());
+  sprintf(addr, "[%s%s]", base.c_str(), optional.c_str());
   return addr;
 }
 
