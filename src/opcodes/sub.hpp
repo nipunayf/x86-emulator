@@ -16,7 +16,7 @@ void sub2D(State &state);
 template <typename T>
 T perform_sub(State &state, OperandSize op_size, T op1, T op2) {
   T res = op1 - op2;
-  set_common_arithmetic_flags(state, op_size, op1, op2, res);
+  set_common_arithmetic_flags(state, op_size, res);
 
   uint8_t op1_msb = read_msb(op_size, op1);
   uint8_t op2_msb = read_msb(op_size, op2);

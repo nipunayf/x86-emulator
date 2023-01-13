@@ -9,7 +9,7 @@ void inc4x(State &state);
 
 template <typename T> T perform_inc(State &state, OperandSize op_size, T op) {
   T res = op + 1;
-  set_common_arithmetic_flags(state, op_size, op, 1, res);
+  set_common_arithmetic_flags(state, op_size, res);
 
   // Set overflow flag (OF)
   // When the msb of the operand changes in the result
