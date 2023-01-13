@@ -9,15 +9,14 @@ T perform_and(State &state, OperandSize size, T op1, T op2) {
   return res;
 }
 
-void and24_25(State &state) {
-  OperandSize size = state.ins.opcode == 0x24 ? OPERAND_8 : OPERAND_32;
-  uint32_t imm =
-    state.scanner.next_nbytes(1 << size, state.reg_bank, state.mode);
-  uint32_t reg_val = state.reg_bank.load(EAX, size);
-  uint32_t res = perform_and<uint32_t>(state, size, reg_val, imm);
-  state.reg_bank.set(state.ins.snapshot.reg_transition, EAX, res, size);
-  set_snapshot(state, AND_INS, format_immediate(imm),
-               state.reg_bank.name(EAX, size));
+void and24(State &state) {
+  IMM_EAX_OPCODE(OPERAND_8, uint8_t, AND_INS,
+                 perform_and<uint32_t>(state, OPERAND_8, reg_val, imm))
+}
+
+void and25(State &state) {
+  IMM_EAX_OPCODE(OPERAND_32, uint32_t, AND_INS,
+                 perform_and<uint32_t>(state, OPERAND_32, reg_val, imm))
 }
 
 void and20(State &state) {
