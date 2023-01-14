@@ -4,6 +4,7 @@
 #include "memory.hpp"
 #include "register_bank.hpp"
 #include <fstream>
+#include <sstream>
 #include <string>
 
 class InstructionFetcher {
@@ -12,8 +13,7 @@ private:
   Memory &m_memory;
   OperandSize m_mode;
   uint32_t m_last_eip;
-
-  uint8_t fetch_instruction(int32_t offset);
+  std::stringstream m_byte_sequence;
 
 public:
   InstructionFetcher(RegisterBank &reg_bank, Memory &memory, OperandSize mode,
@@ -24,6 +24,7 @@ public:
   void jump_byte(int32_t offset);
   void set_last_eip(uint32_t last_eip);
   bool is_eof();
+  std::string get_byte_sequence();
 };
 
 #endif

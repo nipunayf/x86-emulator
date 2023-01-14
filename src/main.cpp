@@ -37,7 +37,7 @@ int main(int argc, char *argv[]) {
   memory.memory_dump();
   std::cout << "INSTRUCTIONS" << std::endl;
   for (Snapshot s : state.snapshots) {
-    std::cout << std::setw(12) << std::left << s.eip;
+    std::cout << std::setw(12) << std::left << s.byte_sequence;
     std::cout << s.instruction << std::endl;
   }
   std::cout << std::endl;
