@@ -21,6 +21,8 @@
 #include "opcodes/xchg.hpp"
 #include "opcodes/xor.hpp"
 #include "utils.hpp"
+#include <iomanip>
+#include <iostream>
 
 std::map<uint16_t, Handler> one_handler_map{
   {0x00, add00},     {0x01, add01},     {0x02, add02},     {0x03, add03},
@@ -77,7 +79,7 @@ static void set_prefix(Instruction &args, State &state, int &index,
   next_byte = state.ins_fetcher.next_byte();
 }
 
-int parse(State &state) {
+int parse(State &state, const bool &enable_step) {
   Instruction ins{};
 
   uint8_t next_byte;
@@ -86,7 +88,10 @@ int parse(State &state) {
 
   // Repeat until the end of the file is reached
   while (!state.ins_fetcher.is_eof()) {
+    if (enable_step)
+      getchar();
     ins = {};
+    ins.snapshot.eip = state.reg_bank.load_eip();
     next_byte = state.ins_fetcher.next_byte();
     handler_map = one_handler_map;
     ins.start_eip = state.reg_bank.load_eip() - 1;
@@ -116,6 +121,16 @@ int parse(State &state) {
     else
       print_error_and_exit("Invalid opcode: %s is not yet supported",
                            format_hex_string(ins.opcode).c_str());
+    if (enable_step) {
+      std::cout << std::setw(12) << std::left << state.ins.start_eip;
+      std::cout << state.ins.snapshot.instruction << std::endl;
+      if (!state.ins.snapshot.reg_transition.empty())
+        table_row_printer("reg", 5, state.ins.snapshot.reg_transition, 30);
+      if (!state.ins.snapshot.mem_transition.empty())
+        table_row_printer("mem", 5, state.ins.snapshot.mem_transition, 30);
+      for (std::string f : state.ins.snapshot.flag_transitions)
+        table_row_printer("flag", 5, f, 30);
+    }
   }
 
   return 0;

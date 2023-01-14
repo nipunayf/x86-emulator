@@ -16,7 +16,6 @@ void set_snapshot(State &state, const std::string &ins_name,
                         : format_instruction(ins_name, source, dest));
 
   state.snapshots.push_back(state.ins.snapshot);
-  state.ins = {};
 }
 
 void set_common_arithmetic_flags(State &state, OperandSize op_size,

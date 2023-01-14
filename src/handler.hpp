@@ -16,6 +16,7 @@ struct Snapshot {
   std::string mem_transition;
   std::string eip_transition;
   std::list<std::string> flag_transitions;
+  uint32_t eip;
 };
 
 struct Instruction {

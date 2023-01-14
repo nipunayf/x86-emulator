@@ -1,9 +1,14 @@
 #include "register_bank.hpp"
+#include <iomanip>
+#include <iostream>
 
-#define MASK_32 4294967295 << 32
-#define MASK_16 (MASK_32 | (65535 << 16))
-#define MASK_L8 (MASK_16 | (MASK8 << 8))
-#define MASK_H8 (MASK_16 | MASK8)
+#define MASK_32              4294967295 << 32
+#define MASK_16              (MASK_32 | (65535 << 16))
+#define MASK_L8              (MASK_16 | (MASK8 << 8))
+#define MASK_H8              (MASK_16 | MASK8)
+#define REG_TABLE_WIDTH      22
+#define REG_TABLE_VAL_WIDTH  12
+#define REG_TABLE_NAME_WIDTH 8
 
 std::map<FLAG, std::string> flag_name_map = {
   {CF, "CF"}, {PF, "PF"}, {AF, "AF"},   {ZF, "ZF"},     {SF, "SF"}, {TF, "TF"},
@@ -153,10 +158,11 @@ void RegisterBank::set_flag(std::list<std::string> &transitions,
                             const FLAG &flag, uint8_t val) {
   uint8_t prev_value = load_flag(flag);
   val == 0 ? m_eflags &= ~(1ul << flag) : m_eflags |= 1ul << flag;
-  transitions.push_back(
-    prev_value == val
-      ? ""
-      : format_register_change(name_flag(flag), prev_value, val));
+  transitions.push_back(prev_value == val
+                          ? ""
+                          : format_register_change(name_flag(flag),
+                                                   (uint16_t)prev_value,
+                                                   (uint16_t)val));
 }
 
 std::string RegisterBank::name_seg(const uint32_t &index) {
@@ -199,4 +205,30 @@ std::string RegisterBank::name_eip(const OperandSize &size) {
   case OPERAND_64:
     return m_eip.name64;
   }
+}
+
+void RegisterBank::register_dump() {
+  std::cout << "=====REGISTER DUMP====" << std::endl;
+
+  table_header_printer("Instruction Pointer", REG_TABLE_WIDTH, 2, 2);
+  table_row_printer(name_eip(OPERAND_32), REG_TABLE_NAME_WIDTH,
+                    format_hex_string(load_eip()), REG_TABLE_VAL_WIDTH);
+
+  table_header_printer("GP Register", REG_TABLE_WIDTH, 6, 6);
+  for (uint8_t reg = EAX; reg < EDI; reg++)
+    table_row_printer(name32(reg), REG_TABLE_NAME_WIDTH,
+                      format_hex_string(load32(reg)), REG_TABLE_VAL_WIDTH);
+
+  table_header_printer("Segment Register", REG_TABLE_WIDTH, 4, 3);
+  for (uint8_t reg = CS; reg < GS; reg++)
+    table_row_printer(name_seg(reg), REG_TABLE_NAME_WIDTH,
+                      format_hex_string(load_seg(reg)), REG_TABLE_VAL_WIDTH);
+
+  table_header_printer("EFLAGS Register", REG_TABLE_WIDTH, 4, 4);
+  for (auto const &flag : flag_name_map)
+    table_row_printer(flag.second, REG_TABLE_NAME_WIDTH,
+                      std::to_string((uint16_t)load_flag(flag.first)),
+                      REG_TABLE_VAL_WIDTH);
+
+  std::cout << std::endl;
 }

@@ -1,6 +1,7 @@
 #include "utils.hpp"
 #include <cstdarg>
 #include <cstdio>
+#include <iomanip>
 #include <iostream>
 #include <sstream>
 
@@ -94,4 +95,20 @@ void print_error_and_exit(const std::string &format, ...) {
 
 uint8_t read_msb(uint8_t op_size, uint64_t value) {
   return (value & (1ull << ((8 * (1 << op_size)) - 1))) > 0;
+}
+
+void table_header_printer(const std::string &heading, uint8_t col_width,
+                          uint8_t left_padding, uint8_t right_padding) {
+  std::cout << std::endl << std::left << std::setw(left_padding) << "|";
+  std::cout << heading << std::right << std::setw(right_padding) << "|"
+            << std::endl;
+  std::cout << "+" << std::setfill('-') << std::setw(col_width) << "+"
+            << std::endl;
+}
+
+void table_row_printer(const std::string &name, uint8_t name_width,
+                       const std::string &val, uint8_t val_width) {
+  std::cout << std::setfill(' ') << "|" << std::left << std::setw(name_width)
+            << name << "|";
+  std::cout << std::right << std::setw(val_width) << val << "|" << std::endl;
 }

@@ -23,6 +23,7 @@ public:
   uint8_t load8(const uint32_t &address);
   uint16_t load16(const uint32_t &address);
   uint32_t load32(const uint32_t &address);
+  void memory_dump();
 };
 
 #endif
