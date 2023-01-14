@@ -5,8 +5,8 @@
 
 #define TEST_PATH std::filesystem::current_path().string() + "/res/"
 
-void store_program(const std::string &file_path, RegisterBank &reg_bank,
-                   Memory &memory) {
+uint32_t store_program(const std::string &file_path, RegisterBank &reg_bank,
+                       Memory &memory) {
   // Open the provided file path
   std::ifstream m_file;
   m_file.open(file_path);
@@ -23,13 +23,14 @@ void store_program(const std::string &file_path, RegisterBank &reg_bank,
     memory.store8(transition, eip, (uint8_t)byte);
     eip++;
   }
+  return eip - 1;
 }
 
 #define INIT_STATE(test_path)                                                  \
   RegisterBank reg_bank;                                                       \
   Memory memory;                                                               \
-  store_program(test_path, reg_bank, memory);                                  \
-  InstructionFetcher ins_fetcher(reg_bank, memory, OPERAND_32);                \
+  uint32_t last_eip = store_program(test_path, reg_bank, memory);              \
+  InstructionFetcher ins_fetcher(reg_bank, memory, OPERAND_32, last_eip);      \
   State state{ins_fetcher, reg_bank, memory};
 
 #endif
