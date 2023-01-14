@@ -79,13 +79,16 @@ static void set_prefix(Instruction &args, State &state, int &index,
 
 int parse(State &state) {
   Instruction ins{};
-  uint8_t next_byte = state.ins_fetcher.next_byte();
-  int prefix_index = 0;
+
+  uint8_t next_byte;
+  int prefix_index;
   std::map<uint16_t, Handler> handler_map = one_handler_map;
 
   // Repeat until the end of the file is reached
   while (!state.ins_fetcher.is_eof()) {
     ins = {};
+    next_byte = state.ins_fetcher.next_byte();
+    handler_map = one_handler_map;
     ins.start_eip = state.reg_bank.load_eip() - 1;
     prefix_index = 0;
 
@@ -113,9 +116,6 @@ int parse(State &state) {
     else
       print_error_and_exit("Invalid opcode: %s is not yet supported",
                            format_hex_string(ins.opcode).c_str());
-
-    next_byte = state.ins_fetcher.next_byte();
-    handler_map = one_handler_map;
   }
 
   return 0;

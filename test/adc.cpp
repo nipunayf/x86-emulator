@@ -4,13 +4,6 @@
 
 #define ADC_TEST_PATH (TEST_PATH + "adc/")
 
-#define INIT_STATE(test_path)                                                  \
-  RegisterBank reg_bank;                                                       \
-  Memory memory;                                                               \
-  store_program(test_path, reg_bank, memory);                                  \
-  InstructionFetcher ins_fetcher(reg_bank, memory, OPERAND_32);                \
-  State state{ins_fetcher, reg_bank, memory};
-
 #define ADDITION_CARRY(file_name, dest, expected)                              \
   {                                                                            \
     INIT_STATE(ADC_TEST_PATH + file_name)                                      \

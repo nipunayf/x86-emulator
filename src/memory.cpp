@@ -27,7 +27,7 @@ void Memory::store32(std::string &transition, const uint32_t &address,
 
 uint32_t Memory::load(const uint32_t &address, const OperandSize &size) {
   uint8_t nbytes = 1 << size;
-  if (is_allocated(address)) {
+  if (m_buffer.count(address)) {
     uint32_t val = 0;
     for (uint8_t i = 0; i < nbytes; i++)
       val |= (m_buffer[address + i] << 8 * i);
@@ -46,8 +46,4 @@ uint16_t Memory::load16(const uint32_t &address) {
 
 uint32_t Memory::load32(const uint32_t &address) {
   return load(address, OPERAND_32);
-}
-
-bool Memory::is_allocated(const uint32_t &address) {
-  return m_buffer.count(address);
 }

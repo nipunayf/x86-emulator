@@ -26,7 +26,7 @@ int main(int argc, char *argv[]) {
     eip++;
   }
 
-  InstructionFetcher ins_fetcher(reg_bank, memory, OPERAND_32);
+  InstructionFetcher ins_fetcher(reg_bank, memory, OPERAND_32, eip - 1);
   State state{ins_fetcher, reg_bank, memory};
   parse(state);
 

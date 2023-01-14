@@ -35,15 +35,17 @@ TEST(RegisterBankTest, InstructionPointer) {
 
   uint32_t prev_eip = reg_bank.load_eip();
   parse(state);
-  ASSERT_EQ(reg_bank.load_eip(), prev_eip + 10);
+  ASSERT_EQ(reg_bank.load_eip(), prev_eip + 9);
   auto snapshot1 = state.snapshots.begin();
   ASSERT_STREQ(snapshot1->eip_transition.c_str(),
                "%eip(0x8048354) -> (0x804835d)");
 
-  store_program(REGISTER_BANK_TEST_PATH + "add_flags.txt", reg_bank, memory);
+  last_eip =
+    store_program(REGISTER_BANK_TEST_PATH + "add_flags.txt", reg_bank, memory);
+  ins_fetcher.set_last_eip(last_eip);
   prev_eip = reg_bank.load_eip();
   parse(state);
-  ASSERT_EQ(reg_bank.load_eip(), prev_eip + 6);
+  ASSERT_EQ(reg_bank.load_eip(), prev_eip + 5);
   auto snapshot2 = state.snapshots.begin();
   ASSERT_STREQ(snapshot2->eip_transition.c_str(),
                "%eip(0x8048354) -> (0x804835d)");
