@@ -1,4 +1,5 @@
 #include "memory.hpp"
+#include <iostream>
 
 void Memory::store(std::string &transition, const uint32_t &address,
                    const uint32_t &data, const OperandSize &size) {
@@ -46,4 +47,12 @@ uint16_t Memory::load16(const uint32_t &address) {
 
 uint32_t Memory::load32(const uint32_t &address) {
   return load(address, OPERAND_32);
+}
+
+void Memory::memory_dump() {
+  std::cout << "=======MEMORY DUMP========" << std::endl;
+  for (auto const &loc : m_buffer)
+    table_row_printer(format_hex_string(loc.second), 12,
+                      format_hex_string(loc.first), 12);
+  std::cout << std::endl;
 }

@@ -110,6 +110,7 @@ public:
   uint64_t load_eip();
   void set_eip(const uint64_t value, const OperandSize &size);
   std::string name_eip(const OperandSize &size);
+  void register_dump();
 };
 
 #endif
