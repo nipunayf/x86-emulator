@@ -6,11 +6,7 @@
 
 #define SUBTRACTION_BORROW(file_name, dest, expected)                          \
   {                                                                            \
-    RegisterBank reg_bank;                                                     \
-    Memory memory;                                                             \
-    store_program(SBB_TEST_PATH + file_name, reg_bank, memory);                \
-    InstructionFetcher ins_fetcher(reg_bank, memory, OPERAND_32);              \
-    State state{ins_fetcher, reg_bank, memory};                                \
+    INIT_STATE(SBB_TEST_PATH + file_name)                                      \
     std::string memory_change;                                                 \
     memory.store32(memory_change, 0x00010200, 0x01a11001);                     \
     std::list<std::string> flag_transitions;                                   \

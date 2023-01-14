@@ -25,4 +25,11 @@ void store_program(const std::string &file_path, RegisterBank &reg_bank,
   }
 }
 
+#define INIT_STATE(test_path)                                                  \
+  RegisterBank reg_bank;                                                       \
+  Memory memory;                                                               \
+  store_program(test_path, reg_bank, memory);                                  \
+  InstructionFetcher ins_fetcher(reg_bank, memory, OPERAND_32);                \
+  State state{ins_fetcher, reg_bank, memory};
+
 #endif

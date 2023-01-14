@@ -5,11 +5,7 @@
 #define XCHG_TEST_PATH (TEST_PATH + "xchg/")
 
 #define XCHG(file_name, dest1, expected1, dest2, expected2)                    \
-  RegisterBank reg_bank;                                                       \
-  Memory memory;                                                               \
-  store_program(XCHG_TEST_PATH + file_name, reg_bank, memory);                 \
-  InstructionFetcher ins_fetcher(reg_bank, memory, OPERAND_32);                \
-  State state{ins_fetcher, reg_bank, memory};                                  \
+  INIT_STATE(XCHG_TEST_PATH + file_name)                                       \
   parse(state);                                                                \
   RegisterBank original_reg_bank;                                              \
                                                                                \

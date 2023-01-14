@@ -5,12 +5,7 @@
 #define JMP_TEST_PATH (TEST_PATH + "jmp/")
 
 #define JUMP(file_name, snapshot_size)                                         \
-  RegisterBank reg_bank;                                                       \
-  Memory memory;                                                               \
-  store_program(JMP_TEST_PATH + file_name, reg_bank, memory);                  \
-  InstructionFetcher ins_fetcher(reg_bank, memory, OPERAND_32);                \
-  State state{ins_fetcher, reg_bank, memory};                                  \
-                                                                               \
+  INIT_STATE(JMP_TEST_PATH + file_name)                                        \
   uint32_t prev_value = reg_bank.load32(EAX);                                  \
   parse(state);                                                                \
                                                                                \

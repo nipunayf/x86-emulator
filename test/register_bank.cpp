@@ -18,12 +18,7 @@ TEST(RegisterBankTest, FlagTest) {
 }
 
 TEST(RegisterBankTest, AddFlags) {
-  RegisterBank reg_bank;
-  Memory memory;
-  store_program(REGISTER_BANK_TEST_PATH + "add_flags.txt", reg_bank, memory);
-  InstructionFetcher ins_fetcher(reg_bank, memory, OPERAND_32);
-  State state{ins_fetcher, reg_bank, memory};
-
+  INIT_STATE(REGISTER_BANK_TEST_PATH + "add_flags.txt")
   parse(state);
 
   // Result is 01111111 11111111 11111111 11111111
@@ -36,13 +31,9 @@ TEST(RegisterBankTest, AddFlags) {
 }
 
 TEST(RegisterBankTest, InstructionPointer) {
-  RegisterBank reg_bank;
-  Memory memory;
-  InstructionFetcher ins_fetcher(reg_bank, memory, OPERAND_32);
+  INIT_STATE(REGISTER_BANK_TEST_PATH + "nop.txt")
 
-  store_program(REGISTER_BANK_TEST_PATH + "nop.txt", reg_bank, memory);
   uint32_t prev_eip = reg_bank.load_eip();
-  State state{ins_fetcher, reg_bank, memory};
   parse(state);
   ASSERT_EQ(reg_bank.load_eip(), prev_eip + 10);
   auto snapshot1 = state.snapshots.begin();
