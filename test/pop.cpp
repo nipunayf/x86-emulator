@@ -7,11 +7,7 @@
 
 #define POP(file_name, expected, increment)                                    \
   {                                                                            \
-    RegisterBank reg_bank;                                                     \
-    Memory memory;                                                             \
-    store_program(POP_TEST_PATH + file_name, reg_bank, memory);                \
-    InstructionFetcher ins_fetcher(reg_bank, memory, OPERAND_32);              \
-    State state{ins_fetcher, reg_bank, memory};                                \
+    INIT_STATE(POP_TEST_PATH + file_name)                                      \
     uint32_t initial_esp = reg_bank.load32(ESP);                               \
     uint32_t initial_mem = memory.load(ESP, increment);                        \
     parse(state);                                                              \

@@ -6,11 +6,7 @@
 
 #define TEST_OP(file_name, zf_flag, sf_flag)                                   \
   {                                                                            \
-    RegisterBank reg_bank;                                                     \
-    Memory memory;                                                             \
-    store_program(TEST_OP_TEST_PATH + file_name, reg_bank, memory);            \
-    InstructionFetcher ins_fetcher(reg_bank, memory, OPERAND_32);              \
-    State state{ins_fetcher, reg_bank, memory};                                \
+    INIT_STATE(TEST_OP_TEST_PATH + file_name)                                  \
     parse(state);                                                              \
                                                                                \
     ASSERT_EQ(reg_bank.load_flag(ZF), zf_flag);                                \

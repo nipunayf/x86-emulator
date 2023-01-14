@@ -6,11 +6,7 @@
 
 #define NOP_CHECK(file_name)                                                   \
   {                                                                            \
-    RegisterBank reg_bank;                                                     \
-    Memory memory;                                                             \
-    store_program(NOP_TEST_PATH + file_name, reg_bank, memory);                \
-    InstructionFetcher ins_fetcher(reg_bank, memory, OPERAND_32);              \
-    State state{ins_fetcher, reg_bank, memory};                                \
+    INIT_STATE(NOP_TEST_PATH + file_name)                                      \
     parse(state);                                                              \
                                                                                \
     ASSERT_EQ(state.snapshots.size(), 1);                                      \

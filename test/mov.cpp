@@ -5,11 +5,7 @@
 #define MOV_TEST_PATH (TEST_PATH + "mov/")
 
 #define MOV(file_name, dest, expected)                                         \
-  RegisterBank reg_bank;                                                       \
-  Memory memory;                                                               \
-  store_program(MOV_TEST_PATH + file_name, reg_bank, memory);                  \
-  InstructionFetcher ins_fetcher(reg_bank, memory, OPERAND_32);                \
-  State state{ins_fetcher, reg_bank, memory};                                  \
+  INIT_STATE(MOV_TEST_PATH + file_name)                                        \
   parse(state);                                                                \
                                                                                \
   ASSERT_EQ(dest, expected);                                                   \

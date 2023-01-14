@@ -6,12 +6,7 @@
 
 #define INCREMENT(file_name, dest, expected)                                   \
   {                                                                            \
-    RegisterBank reg_bank;                                                     \
-    Memory memory;                                                             \
-    store_program(INC_TEST_PATH + file_name, reg_bank, memory);                \
-    InstructionFetcher ins_fetcher(reg_bank, memory, OPERAND_32);              \
-    State state{ins_fetcher, reg_bank, memory};                                \
-                                                                               \
+    INIT_STATE(INC_TEST_PATH + file_name)                                      \
     RegisterBank original_reg_bank = reg_bank;                                 \
     parse(state);                                                              \
                                                                                \
@@ -20,12 +15,7 @@
   }
 
 TEST(IncTest, Inc40x) {
-  RegisterBank reg_bank;
-  Memory memory;
-  store_program(INC_TEST_PATH + "inc40.txt", reg_bank, memory);
-  InstructionFetcher ins_fetcher(reg_bank, memory, OPERAND_32);
-  State state{ins_fetcher, reg_bank, memory};
-
+  INIT_STATE(INC_TEST_PATH + "inc40.txt")
   RegisterBank original_reg_bank = reg_bank;
   parse(state);
 
