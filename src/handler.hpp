@@ -12,6 +12,7 @@
 
 struct Snapshot {
   std::string instruction;
+  std::string byte_sequence;
   std::string reg_transition;
   std::string mem_transition;
   std::string eip_transition;
