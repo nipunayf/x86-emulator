@@ -122,7 +122,8 @@ int parse(State &state, const bool &enable_step) {
       print_error_and_exit("Invalid opcode: %s is not yet supported",
                            format_hex_string(ins.opcode).c_str());
     if (enable_step) {
-      std::cout << std::setw(12) << std::left << state.ins.start_eip;
+      std::cout << std::setw(12) << std::left
+                << state.ins.snapshot.byte_sequence;
       std::cout << state.ins.snapshot.instruction << std::endl;
       if (!state.ins.snapshot.reg_transition.empty())
         table_row_printer("reg", 5, state.ins.snapshot.reg_transition, 30);
