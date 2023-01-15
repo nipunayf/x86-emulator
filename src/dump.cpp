@@ -49,4 +49,5 @@ void step_transition(std::list<Snapshot> snapshots) {
     table_row_printer("eip", 5, snapshot.eip_transition, 30);
     std::cout << std::endl;
   }
+  getchar();
 }
