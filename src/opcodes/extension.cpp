@@ -67,11 +67,11 @@ void ext8x(State &state, OperandSize reg_type, OperandSize imm_type) {
   set_snapshot(state, operation, rm_args.notation, format_immediate(immediate));
 }
 
-void ext80(State &state) { ext8x<int8_t>(state, OPERAND_8, OPERAND_8); }
+void ext80(State &state) { ext8x<uint8_t>(state, OPERAND_8, OPERAND_8); }
 
-void ext81(State &state) { ext8x<int32_t>(state, OPERAND_32, OPERAND_32); }
+void ext81(State &state) { ext8x<uint32_t>(state, OPERAND_32, OPERAND_32); }
 
-void ext83(State &state) { ext8x<int32_t>(state, OPERAND_32, OPERAND_8); }
+void ext83(State &state) { ext8x<uint32_t>(state, OPERAND_32, OPERAND_8); }
 
 void extFE(State &state) {
   ModRMAttribute rm_args{OPERAND_8}, reg_args{OPERAND_8};
