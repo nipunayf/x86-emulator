@@ -1,7 +1,7 @@
 #include "dump.hpp"
 #include "parse.hpp"
+#include <cstring>
 #include <iostream>
-#include <string.h>
 
 int main(int argc, char *argv[]) {
   // Parse the input arguments
