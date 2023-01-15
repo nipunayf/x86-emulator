@@ -1,5 +1,5 @@
 #include "register_bank.hpp"
-#include "opcode.hpp"
+#include "parse.hpp"
 #include "test_utils.hpp"
 #include <gtest/gtest.h>
 #include <list>
