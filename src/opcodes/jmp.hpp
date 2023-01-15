@@ -15,17 +15,21 @@ void jbe76(State &state);
 void ja77(State &state);
 void jl7C(State &state);
 void jge7D(State &state);
+void jle7E(State &state);
 void jg7F(State &state);
 void jecxzE3(State &state);
 
-#define JUMP(bytes, ins_name, cond)                                            \
-  uint8_t displacement = state.ins_fetcher.next_nbytes(bytes);                 \
+#define JUMP(ins_name, cond)                                                   \
   if (cond)                                                                    \
     state.ins_fetcher.jump_byte(displacement);                                 \
   set_snapshot(state, ins_name, format_immediate(displacement));
 
-#define JUMP_REL8(ins_name, cond) JUMP(1, ins_name, cond)
+#define JUMP_REL8(ins_name, cond)                                              \
+  int8_t displacement = state.ins_fetcher.next_nbytes(1);                      \
+  JUMP(ins_name, cond)
 
-#define JUMP_REL32(ins_name, cond) JUMP(4, ins_name, cond)
+#define JUMP_REL32(ins_name, cond)                                             \
+  int32_t displacement = state.ins_fetcher.next_nbytes(4);                     \
+  JUMP(ins_name, cond)
 
 #endif

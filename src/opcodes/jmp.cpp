@@ -28,6 +28,12 @@ void jge7D(State &state) {
   JUMP_REL8("jge", state.reg_bank.load_flag(SF) == state.reg_bank.load_flag(OF))
 }
 
+void jle7E(State &state) {
+  JUMP_REL8("jle",
+            state.reg_bank.load_flag(ZF) == 1 ||
+              state.reg_bank.load_flag(SF) != state.reg_bank.load_flag(OF))
+}
+
 void jg7F(State &state) {
   JUMP_REL8("jg",
             state.reg_bank.load_flag(ZF) == 0 &&
