@@ -1,4 +1,5 @@
 #include "memory.hpp"
+#include "dump.hpp"
 #include <iostream>
 
 void Memory::store(std::string &transition, const uint32_t &address,
@@ -50,9 +51,9 @@ uint32_t Memory::load32(const uint32_t &address) {
 }
 
 void Memory::memory_dump() {
-  std::cout << "=======MEMORY DUMP========" << std::endl;
+  std::cout << "========MEMORY DUMP========" << std::endl;
   for (auto const &loc : m_buffer)
-    table_row_printer(format_hex_string(loc.second), 12,
-                      format_hex_string(loc.first), 12);
+    table_row_printer(format_hex_string(loc.first), 12,
+                      format_hex_string(loc.second), 12);
   std::cout << std::endl;
 }
