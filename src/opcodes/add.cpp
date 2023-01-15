@@ -2,8 +2,8 @@
 
 void add00(State &state) {
   MODRM_DEST_OPCODE(OPERAND_8, ADD_INS,
-                    perform_add<int8_t>(state, OPERAND_8, (int8_t)rm_args.val,
-                                        (int8_t)reg_args.val))
+                    perform_add<uint8_t>(state, OPERAND_8, (uint8_t)rm_args.val,
+                                         (uint8_t)reg_args.val))
 }
 
 void add01(State &state) {
@@ -15,8 +15,8 @@ void add01(State &state) {
 
 void add02(State &state) {
   MODRM_SRC_OPCODE(OPERAND_8, ADD_INS,
-                   perform_add<int8_t>(state, OPERAND_8, (int8_t)reg_args.val,
-                                       (int8_t)rm_args.val));
+                   perform_add<uint8_t>(state, OPERAND_8, (uint8_t)reg_args.val,
+                                        (uint8_t)rm_args.val));
 }
 
 void add03(State &state) {
@@ -28,8 +28,8 @@ void add03(State &state) {
 
 void add04(State &state) {
   REGISTER_DISPLACEMENT_OPCODE(
-    int8_t, OPERAND_8, AL, 1, ADD_INS,
-    perform_add<int8_t>(state, OPERAND_8, reg_val, displace))
+    uint8_t, OPERAND_8, AL, 1, ADD_INS,
+    perform_add<uint8_t>(state, OPERAND_8, reg_val, displace))
 }
 
 void add05(State &state) {
