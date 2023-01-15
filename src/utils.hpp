@@ -36,10 +36,4 @@ void print_error_and_exit(const std::string &format, ...);
 
 uint8_t read_msb(uint8_t op_size, uint64_t value);
 
-void table_header_printer(const std::string &heading, uint8_t col_width,
-                          uint8_t left_padding, uint8_t right_padding);
-
-void table_row_printer(const std::string &name, uint8_t name_width,
-                       const std::string &val, uint8_t val_width);
-
 #endif

@@ -3,6 +3,6 @@
 
 #include "handler.hpp"
 
-int parse(State &state, const bool &enable_step = false);
+int parse(State &state);
 
 #endif

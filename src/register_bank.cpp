@@ -1,5 +1,5 @@
 #include "register_bank.hpp"
-#include <iomanip>
+#include "dump.hpp"
 #include <iostream>
 
 #define MASK_32              4294967295 << 32
@@ -208,7 +208,7 @@ std::string RegisterBank::name_eip(const OperandSize &size) {
 }
 
 void RegisterBank::register_dump() {
-  std::cout << "=====REGISTER DUMP====" << std::endl;
+  std::cout << "=====REGISTER DUMP=====" << std::endl;
 
   table_header_printer("Instruction Pointer", REG_TABLE_WIDTH, 2, 2);
   table_row_printer(name_eip(OPERAND_32), REG_TABLE_NAME_WIDTH,

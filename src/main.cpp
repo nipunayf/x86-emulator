@@ -1,13 +1,12 @@
+#include "dump.hpp"
 #include "opcode.hpp"
-#include <iomanip>
 #include <iostream>
 #include <string.h>
 
 int main(int argc, char *argv[]) {
   // Parse the input arguments
   std::string file_path = argc > 1 ? argv[1] : "";
-  bool enable_step =
-    argc > 2 ? strcmp(argv[2], "--enable-step") ? false : true : false;
+  bool enable_step = argc > 2 && !strcmp(argv[2], "--step");
 
   // Initialize the memory
   RegisterBank reg_bank;
@@ -32,15 +31,12 @@ int main(int argc, char *argv[]) {
 
   InstructionFetcher ins_fetcher(reg_bank, memory, OPERAND_32, eip - 1);
   State state{ins_fetcher, reg_bank, memory};
-  parse(state, enable_step);
+  parse(state);
+  if (enable_step)
+    step_transition(state.snapshots);
   reg_bank.register_dump();
   memory.memory_dump();
-  std::cout << "INSTRUCTIONS" << std::endl;
-  for (Snapshot s : state.snapshots) {
-    std::cout << std::setw(12) << std::left << s.byte_sequence;
-    std::cout << s.instruction << std::endl;
-  }
-  std::cout << std::endl;
+  instruction_dump(state.snapshots);
 
   return 0;
 }

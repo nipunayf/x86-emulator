@@ -5,8 +5,9 @@ void set_snapshot(State &state, const std::string &ins_name,
 
   // Format the eip transition for the instruction
   uint32_t last_eip = state.reg_bank.load_eip();
-  state.ins.snapshot.eip_transition = format_register_change(
-    state.reg_bank.name_eip(state.mode), state.ins.start_eip, last_eip);
+  state.ins.snapshot.eip_transition =
+    format_register_change(state.reg_bank.name_eip(state.mode),
+                           state.ins.snapshot.start_eip, last_eip);
 
   // Format the assembly instruction
   state.ins.snapshot.instruction =

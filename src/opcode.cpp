@@ -79,7 +79,7 @@ static void set_prefix(Instruction &args, State &state, int &index,
   next_byte = state.ins_fetcher.next_byte();
 }
 
-int parse(State &state, const bool &enable_step) {
+int parse(State &state) {
   Instruction ins{};
 
   uint8_t next_byte;
@@ -88,13 +88,10 @@ int parse(State &state, const bool &enable_step) {
 
   // Repeat until the end of the file is reached
   while (!state.ins_fetcher.is_eof()) {
-    if (enable_step)
-      getchar();
     ins = {};
-    ins.snapshot.eip = state.reg_bank.load_eip();
+    ins.snapshot.start_eip = state.reg_bank.load_eip();
     next_byte = state.ins_fetcher.next_byte();
     handler_map = one_handler_map;
-    ins.start_eip = state.reg_bank.load_eip() - 1;
     prefix_index = 0;
 
     // Check for additional prefixes for opcodes > 1-byte
@@ -121,17 +118,6 @@ int parse(State &state, const bool &enable_step) {
     else
       print_error_and_exit("Invalid opcode: %s is not yet supported",
                            format_hex_string(ins.opcode).c_str());
-    if (enable_step) {
-      std::cout << std::setw(12) << std::left
-                << state.ins.snapshot.byte_sequence;
-      std::cout << state.ins.snapshot.instruction << std::endl;
-      if (!state.ins.snapshot.reg_transition.empty())
-        table_row_printer("reg", 5, state.ins.snapshot.reg_transition, 30);
-      if (!state.ins.snapshot.mem_transition.empty())
-        table_row_printer("mem", 5, state.ins.snapshot.mem_transition, 30);
-      for (std::string f : state.ins.snapshot.flag_transitions)
-        table_row_printer("flag", 5, f, 30);
-    }
   }
 
   return 0;
