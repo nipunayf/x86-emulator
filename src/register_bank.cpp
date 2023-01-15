@@ -115,21 +115,21 @@ void RegisterBank::set8(std::string &transition, const uint32_t &index,
 
 void RegisterBank::set16(std::string &transition, const uint32_t &index,
                          const uint16_t value) {
-  uint8_t prev_value = load16(index);
+  uint16_t prev_value = load16(index);
   m_gp_registers[index].value = (m_gp_registers[index].value & MASK_16) | value;
   transition = format_register_change(name16(index), prev_value, value);
 }
 
 void RegisterBank::set32(std::string &transition, const uint32_t &index,
                          const uint32_t value) {
-  uint8_t prev_value = load32(index);
+  uint32_t prev_value = load32(index);
   m_gp_registers[index].value = (m_gp_registers[index].value & MASK_32) | value;
   transition = format_register_change(name32(index), prev_value, value);
 }
 
 void RegisterBank::set64(std::string &transition, const uint32_t &index,
                          const uint64_t value) {
-  uint8_t prev_value = load64(index);
+  uint64_t prev_value = load64(index);
   m_gp_registers[index].value = value;
   transition = format_register_change(name64(index), prev_value, value);
 }
@@ -139,12 +139,16 @@ void RegisterBank::set(std::string &transition, const uint32_t &index,
   switch (size) {
   case OPERAND_8:
     set8(transition, index, value);
+    break;
   case OPERAND_16:
     set16(transition, index, value);
+    break;
   case OPERAND_32:
     set32(transition, index, value);
+    break;
   case OPERAND_64:
     set64(transition, index, value);
+    break;
   }
 }
 
