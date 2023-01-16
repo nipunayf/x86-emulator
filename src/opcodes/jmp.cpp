@@ -10,6 +10,8 @@ void jae73(State &state) { JUMP_REL8("jae", state.reg_bank.load_flag(CF) == 0) }
 
 void je74(State &state) { JUMP_REL8("je", state.reg_bank.load_flag(ZF) == 1) }
 
+void jne75(State &state) { JUMP_REL8("jne", state.reg_bank.load_flag(ZF) == 0) }
+
 void jbe76(State &state) {
   JUMP_REL8("jbe", state.reg_bank.load_flag(CF) == 1 &&
                      state.reg_bank.load_flag(ZF) == 1)

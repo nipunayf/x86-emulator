@@ -75,11 +75,8 @@ TEST(E2ETest, Sample) {
            ASSERT_EQ(reg_bank.load32(ECX), 0xbf8db0c0);, 10)
 }
 
-// int main() {
 //  int x = 100, y = -100;
 //  bool z = ((x ^ y) < 0);
-//  return 0;
-// }
 // push ebp
 // dec eax
 // mov ebp, esp
@@ -88,6 +85,28 @@ TEST(E2ETest, Sample) {
 // mov eax, dword ptr [ebp - 4]
 // xor eax, dword ptr [ebp - 8]
 // shr eax, 0x1f
-TEST(E2ETest, SignCheck) {
-  E2E_TEST("sign.txt", ASSERT_EQ(reg_bank.load32(EAX), 0x1), 9)
+TEST(E2ETest,
+     SignCheck){E2E_TEST("sign.txt", ASSERT_EQ(reg_bank.load32(EAX), 0x1), 9)}
+
+// int n = 32;
+// bool is_power = false;
+// if (n && (!(n & (n - 1)))) {
+// is_power = true;
+// }
+// push ebp
+// mov ebp, esp
+// mov dword ptr [ebp - 4], 0x20
+// mov byte ptr [ebp - 5], 0
+// cmp dword ptr [ebp - 4], 0
+// je 0x25
+// mov eax, dword ptr [ebp - 4]
+// sub eax, 1
+// and eax, dword ptr [ebp - 4]
+// test eax, eax
+// jne 0x25
+// mov byte ptr [ebp - 5], 1
+// mov eax, 0
+// pop ebp
+TEST(E2ETest, Pow2) {
+  E2E_TEST("pow2.txt", ASSERT_EQ(memory.load32(0xbf8db0b3), 0x1), 14)
 }

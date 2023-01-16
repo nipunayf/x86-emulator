@@ -11,6 +11,7 @@ void jmpE9(State &state);
 void jc72(State &state);
 void jae73(State &state);
 void je74(State &state);
+void jne75(State &state);
 void jbe76(State &state);
 void ja77(State &state);
 void jl7C(State &state);
