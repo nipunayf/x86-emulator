@@ -74,3 +74,20 @@ TEST(E2ETest, Sample) {
            ASSERT_EQ(reg_bank.load32(ESP), 0xbf8d00ac);
            ASSERT_EQ(reg_bank.load32(ECX), 0xbf8db0c0);, 10)
 }
+
+// int main() {
+//  int x = 100, y = -100;
+//  bool z = ((x ^ y) < 0);
+//  return 0;
+// }
+// push ebp
+// dec eax
+// mov ebp, esp
+// mov dword ptr [ebp - 4], 0x64
+// mov dword ptr [ebp - 8], 0xffffff9c
+// mov eax, dword ptr [ebp - 4]
+// xor eax, dword ptr [ebp - 8]
+// shr eax, 0x1f
+TEST(E2ETest, SignCheck) {
+  E2E_TEST("sign.txt", ASSERT_EQ(reg_bank.load32(EAX), 0x1), 9)
+}
