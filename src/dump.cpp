@@ -23,7 +23,7 @@ void instruction_dump(std::list<Snapshot> snapshots) {
   std::cout << "=======INSTRUCTIONS=======" << std::endl;
   for (Snapshot s : snapshots) {
     std::cout << std::setw(8) << std::right << std::hex << s.start_eip << ":";
-    std::cout << " " << std::setw(16) << std::left << s.byte_sequence;
+    std::cout << " " << std::setw(22) << std::left << s.byte_sequence;
     std::cout << s.instruction << std::endl;
   }
   std::cout << std::endl;
@@ -36,7 +36,7 @@ void step_transition(std::list<Snapshot> snapshots) {
     getchar();
     std::cout << std::setw(8) << std::right << std::hex << snapshot.start_eip
               << ":";
-    std::cout << " " << std::setw(16) << std::left << snapshot.byte_sequence;
+    std::cout << " " << std::setw(22) << std::left << snapshot.byte_sequence;
     std::cout << snapshot.instruction << std::endl;
     if (!snapshot.reg_transition.empty())
       table_row_printer("reg", 5, snapshot.reg_transition, 30);

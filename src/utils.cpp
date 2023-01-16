@@ -71,9 +71,9 @@ std::string format_indirect_register(const std::string &reg) {
 }
 
 std::string format_indirect_with_displacement(const std::string &reg,
-                                              uint32_t memory_addr) {
-  return "[" + reg.substr(1, reg.size() - 2) + "+" +
-         format_hex_string(memory_addr) + "]";
+                                              int32_t memory_addr) {
+  return "[" + reg.substr(1, reg.size() - 2) + (memory_addr < 0 ? "" : "+") +
+         std::to_string(memory_addr) + "]";
 }
 
 std::string format_memory_address(uint32_t memory_addr) {
