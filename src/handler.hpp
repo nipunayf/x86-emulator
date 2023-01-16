@@ -55,12 +55,12 @@ void set_logical_flags(State &state, OperandSize op_size, uint64_t res);
   set_snapshot(state, ins_name, dest_name, src_name);
 
 #define MODRM_DEST_OPCODE(op_size, ins_name, output)                           \
-  MODRM_OPCODE(op_size, output, rm_args, ins_name, reg_args.notation,          \
-               rm_args.notation)
+  MODRM_OPCODE(op_size, output, rm_args, ins_name, rm_args.notation,           \
+               reg_args.notation)
 
 #define MODRM_SRC_OPCODE(op_size, ins_name, output)                            \
-  MODRM_OPCODE(op_size, output, reg_args, ins_name, rm_args.notation,          \
-               reg_args.notation)
+  MODRM_OPCODE(op_size, output, reg_args, ins_name, reg_args.notation,         \
+               rm_args.notation)
 
 #define REGISTER_DISPLACEMENT_OPCODE(op_type, op_size, reg, displace_bytes,    \
                                      ins_name, output)                         \
@@ -74,7 +74,7 @@ void set_logical_flags(State &state, OperandSize op_size, uint64_t res);
   T imm = state.ins_fetcher.next_nbytes(1 << op_size);                         \
   T reg_val = state.reg_bank.load(EAX, op_size);                               \
   state.reg_bank.set(state.ins.snapshot.reg_transition, EAX, output, op_size); \
-  set_snapshot(state, ins_name, format_immediate(imm),                         \
-               state.reg_bank.name(EAX, op_size));
+  set_snapshot(state, ins_name, state.reg_bank.name(EAX, op_size),             \
+               format_immediate(imm));
 
 #endif
