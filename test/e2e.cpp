@@ -58,3 +58,19 @@ TEST(E2ETest, Arithmetic64Bit) {
   E2E_TEST("arithmetic_64bit.txt", ASSERT_EQ(reg_bank.load32(EAX), 0);
            ASSERT_EQ(reg_bank.load32(EBX), 0), 8)
 }
+
+// lea ecx, [esp + 4]
+// and esp, 0xfffffff0
+// push eax
+// sar eax, 2
+// xor al, 0x2e
+// mov ebp, esp
+// inc ebp
+// sub esp, 4
+// cmp [esp + 4], 0x81
+// pop ebp
+TEST(E2ETest, Sample) {
+  E2E_TEST("sample.txt", ASSERT_EQ(reg_bank.load32(EBP), 0x0);
+           ASSERT_EQ(reg_bank.load32(ESP), 0xbf8d00ac);
+           ASSERT_EQ(reg_bank.load32(ECX), 0xbf8db0c0);, 10)
+}
