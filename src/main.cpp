@@ -23,6 +23,7 @@ int main(int argc, char *argv[]) {
   // Store the byte stream in the memory
   std::string transition;
   uint32_t eip = reg_bank.load_eip();
+  uint32_t start_eip = eip;
   uint16_t byte;
   while (m_file >> byte) {
     memory.store8(transition, eip, (uint8_t)byte);
@@ -35,7 +36,7 @@ int main(int argc, char *argv[]) {
   if (enable_step)
     step_transition(state.snapshots);
   reg_bank.register_dump();
-  memory.memory_dump();
+  memory.memory_dump(start_eip, eip - 1);
   instruction_dump(state.snapshots);
 
   return 0;

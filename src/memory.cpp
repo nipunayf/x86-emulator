@@ -50,10 +50,12 @@ uint32_t Memory::load32(const uint32_t &address) {
   return load(address, OPERAND_32);
 }
 
-void Memory::memory_dump() {
+void Memory::memory_dump(uint32_t start_eip, uint32_t end_eip) {
   std::cout << "========MEMORY DUMP========" << std::endl;
-  for (auto const &loc : m_buffer)
-    table_row_printer(format_hex_string(loc.first), 12,
-                      format_hex_string(loc.second), 12);
+  for (auto const &loc : m_buffer) {
+    if (loc.first < start_eip || loc.first > end_eip)
+      table_row_printer(format_hex_string(loc.first), 12,
+                        format_hex_string(loc.second), 12);
+  }
   std::cout << std::endl;
 }
