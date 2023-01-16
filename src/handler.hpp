@@ -10,6 +10,9 @@
 
 #define MAX_PREFIX_COUNT 4
 
+/**
+ * Represents the state changes of a single instruction.
+ */
 struct Snapshot {
   std::string instruction;
   std::string byte_sequence;
@@ -20,48 +23,90 @@ struct Snapshot {
   uint32_t start_eip;
 };
 
+/**
+ * Represents an x86 instruction
+ *
+ */
 struct Instruction {
   uint16_t opcode;
   uint8_t prefixes[MAX_PREFIX_COUNT];
   unsigned int prefixes_count : MAX_PREFIX_COUNT;
   Snapshot snapshot;
+  OperandSize mode = OPERAND_32;
 };
 
-// Default mode is 32 bit and this can be changed to 16 bit with instruction
-// prefixes "0x66"
+/**
+ * Represents the current state of the emulator.
+ */
 struct State {
   InstructionFetcher &ins_fetcher;
   RegisterBank &reg_bank;
   Memory &memory;
   Instruction ins;
   std::list<Snapshot> snapshots;
-  OperandSize mode = OPERAND_32;
 };
 
+/**
+ * Represents the handler function for each opcode instruction.
+ */
 using Handler = void (*)(State &args);
 
+/**
+ * Add the snapshot to the queue after formatting the instruction.
+ *
+ * @param state current state
+ * @param ins_name x86 instruction name
+ * @param dest where the value is stored
+ * @param source where the value is retrieved
+ */
 void set_snapshot(State &state, const std::string &ins_name,
                   const std::string &dest = "", const std::string &source = "");
 
+/**
+ * Set the common EFLAGS for some arithmetic instructions.
+ *
+ * @param state current state
+ * @param op_size bit size
+ * @param res output of the operation
+ */
 void set_common_arithmetic_flags(State &state, OperandSize op_size,
                                  uint64_t res);
 
+/**
+ * Set the common EFLAGS for some logical instructions.
+ *
+ * @param state current state
+ * @param op_size bit size
+ * @param res output of the operation
+ */
 void set_logical_flags(State &state, OperandSize op_size, uint64_t res);
 
+/**
+ * A template code for operations that has the MODRM byte
+ */
 #define MODRM_OPCODE(op_size, output, dest, ins_name, dest_name, src_name)     \
   ModRMAttribute rm_args{op_size}, reg_args{op_size};                          \
   process_modrm(state, rm_args, reg_args);                                     \
   set_value(state, dest, output);                                              \
   set_snapshot(state, ins_name, dest_name, src_name);
 
+/**
+ * A template code when the r/m is the destination.
+ */
 #define MODRM_DEST_OPCODE(op_size, ins_name, output)                           \
   MODRM_OPCODE(op_size, output, rm_args, ins_name, rm_args.notation,           \
                reg_args.notation)
 
+/**
+ * A template code when the r/m is the source.
+ */
 #define MODRM_SRC_OPCODE(op_size, ins_name, output)                            \
   MODRM_OPCODE(op_size, output, reg_args, ins_name, reg_args.notation,         \
                rm_args.notation)
 
+/**
+ * A template code when there is a immediate displacement in the instruction.
+ */
 #define REGISTER_DISPLACEMENT_OPCODE(op_type, op_size, reg, displace_bytes,    \
                                      ins_name, output)                         \
   auto reg_val = (op_type)state.reg_bank.load(reg, op_size);                   \

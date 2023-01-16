@@ -60,7 +60,7 @@ uint32_t register_direct(RegisterBank &reg_bank, const uint8_t &reg,
 
 uint32_t register_indirect(State &state, const uint8_t &reg,
                            ModRMAttribute &args) {
-  if (state.mode == OPERAND_16) {
+  if (state.ins.mode == OPERAND_16) {
     if (reg == 6) {
       uint32_t displacement = state.ins_fetcher.next_nbytes(2);
       args.mem_addr = displacement;
@@ -83,7 +83,7 @@ uint32_t register_indirect(State &state, const uint8_t &reg,
 uint32_t indirect_nbyte_displacement(State &state, const uint8_t &mode,
                                      const uint8_t &reg, ModRMAttribute &args) {
   int32_t displacement = 0;
-  if (state.mode == OPERAND_16) {
+  if (state.ins.mode == OPERAND_16) {
     indirect_16bit_addressing(state.reg_bank, reg, args);
     displacement = state.ins_fetcher.next_nbytes(mode);
   } else {

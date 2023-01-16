@@ -77,6 +77,10 @@ int parse(State &state) {
     if (next_byte == 0x66 || next_byte == 0xf2 || next_byte == 0xf3)
       set_prefix(ins, state, prefix_index, next_byte);
 
+    // Default mode is 32 bit and this can be changed to 16 bit with instruction
+    // prefixes "0x66".
+    ins.mode = next_byte == 0x66 ? OPERAND_16 : OPERAND_32;
+
     // Check for opcodes > 1-byte
     if (next_byte == 0x0f) {
       set_prefix(ins, state, prefix_index, next_byte);
