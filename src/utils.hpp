@@ -30,7 +30,7 @@ std::string format_indirect_register(const std::string &reg);
 std::string format_memory_address(uint32_t memory_addr);
 
 std::string format_indirect_with_displacement(const std::string &reg,
-                                              uint32_t memory_addr);
+                                              int32_t memory_addr);
 
 void print_error_and_exit(const std::string &format, ...);
 

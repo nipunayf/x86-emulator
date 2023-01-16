@@ -21,7 +21,9 @@ template <typename T>
 void ext8x(State &state, OperandSize reg_type, OperandSize imm_type) {
   ModRMAttribute rm_args{reg_type}, reg_args{reg_type};
   process_modrm(state, rm_args, reg_args);
-  T immediate = read_immediate(state, imm_type);
+  T immediate = state.ins_fetcher.next_nbytes(1 << imm_type);
+  if (imm_type != reg_type && read_msb(imm_type, immediate))
+    immediate |= 0xffff << 16;
   std::string operation;
   T res = 0;
   switch (reg_args.reg) {
