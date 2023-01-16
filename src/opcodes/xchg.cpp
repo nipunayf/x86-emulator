@@ -7,8 +7,8 @@ void xchg9x(State &state) {
   state.reg_bank.set32(state.ins.snapshot.reg_transition, EAX,
                        state.reg_bank.load32(reg));
   state.reg_bank.set32(state.ins.snapshot.reg_transition, reg, temp);
-  set_snapshot(state, XCHG_INS, state.reg_bank.name32(EAX),
-               state.reg_bank.name32(reg));
+  set_snapshot(state, XCHG_INS, state.reg_bank.name32(reg),
+               state.reg_bank.name32(EAX));
 }
 
 void xchg86_87(State &state) {
@@ -17,5 +17,5 @@ void xchg86_87(State &state) {
   process_modrm(state, rm_args, reg_args);
   set_value(state, reg_args, rm_args.val);
   set_value(state, rm_args, reg_args.val);
-  set_snapshot(state, XCHG_INS, reg_args.notation, rm_args.notation);
+  set_snapshot(state, XCHG_INS, rm_args.notation, reg_args.notation);
 }

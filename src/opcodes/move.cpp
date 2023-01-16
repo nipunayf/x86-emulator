@@ -19,7 +19,7 @@ void mov8C(State &state) {
   process_modrm(state, rm_args, reg_args);
   reg_args.notation = state.reg_bank.name_seg(reg_args.reg);
   set_value(state, rm_args, state.reg_bank.load_seg(reg_args.reg));
-  set_snapshot(state, MOV_INS, reg_args.notation, rm_args.notation);
+  set_snapshot(state, MOV_INS, rm_args.notation, reg_args.notation);
 }
 
 void mov8E(State &state) {
@@ -28,7 +28,7 @@ void mov8E(State &state) {
   process_modrm(state, rm_args, reg_args);
   state.reg_bank.set_seg(state.ins.snapshot.reg_transition, reg_args.reg,
                          rm_args.val);
-  set_snapshot(state, MOV_INS, rm_args.notation, reg_args.notation);
+  set_snapshot(state, MOV_INS, reg_args.notation, rm_args.notation);
 }
 
 void movA0_A1(State &state) {
@@ -45,8 +45,8 @@ void movA2_A3(State &state) {
   uint32_t addr = state.ins_fetcher.next_nbytes(4);
   uint32_t output = state.reg_bank.load(EAX, size);
   state.memory.store(state.ins.snapshot.mem_transition, addr, output, size);
-  set_snapshot(state, MOV_INS, state.reg_bank.name(EAX, size),
-               format_memory_address(addr));
+  set_snapshot(state, MOV_INS, format_memory_address(addr),
+               state.reg_bank.name(EAX, size));
 }
 
 void movBx(State &state) {

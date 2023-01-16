@@ -16,8 +16,8 @@ void testA8_A9(State &state) {
   OperandSize size = state.ins.opcode == 0xA8 ? OPERAND_8 : OPERAND_32;
   uint32_t imm = state.ins_fetcher.next_nbytes(1 << size);
   perform_test(state, size, imm, state.reg_bank.load(EAX, size));
-  set_snapshot(state, TEST_INS, format_immediate(imm),
-               state.reg_bank.name(EAX, size));
+  set_snapshot(state, TEST_INS, state.reg_bank.name(EAX, size),
+               format_immediate(imm));
 }
 
 void test84_85(State &state) {
@@ -25,5 +25,5 @@ void test84_85(State &state) {
   ModRMAttribute rm_args{size}, reg_args{size};
   process_modrm(state, rm_args, reg_args);
   perform_test(state, size, rm_args.val, reg_args.val);
-  set_snapshot(state, TEST_INS, rm_args.notation, reg_args.notation);
+  set_snapshot(state, TEST_INS, reg_args.notation, rm_args.notation);
 }
