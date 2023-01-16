@@ -33,7 +33,7 @@
   }                                                                            \
   set_value(state, rm_args, res);                                              \
   set_shift_flags(state, op_size, operation, rm_args.val, res, count);         \
-  set_snapshot(state, operation, format_count, rm_args.notation);
+  set_snapshot(state, operation, rm_args.notation, format_count);
 
 void shiftD0(State &state);
 void shiftD1(State &state);
