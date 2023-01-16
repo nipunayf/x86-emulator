@@ -7,6 +7,7 @@
 
 x86 emulator to simulate basic operations
 Currently, the emulator supports the following instruction set,
+
 - Logical instructions (AND, OR. XOR, NOT)
 - Control transfer instructions (JMP, Jcc)
 - Stack instructions (PUSH, POP)
@@ -15,9 +16,6 @@ Currently, the emulator supports the following instruction set,
 - Comparative instructions (CMP, TEST)
 - Flag control instructions (STC, CLC, CMC)
 - Miscellaneous instructions (NOP, LEA)
-
-
-
 
 ## Installation
 
@@ -29,29 +27,43 @@ Install the root directory of the project execute following commands.
 ```
 
 ## Usage/Examples
+
 After following the installation instructions the executable generated will be inside the folder `build/src/`.
-To emulate an object file using the emulator while inside the parent directory of the project execute the following command.
+To emulate an object file using the emulator while inside the parent directory of the project execute the following
+command.
 
 ```bash
-  ./build/src/emulator <path-to-object-file>
-
+  ./build/src/emulator <path-to-object-file> [--step]
 ```
 
+The `--step` is an optional argument that allows you to view the state change of the registers, flags, and memory after
+each execution of an instruction.
+
+The object file should be a text file containing the x86 byte code. For instance, the input file should
+be `add eax, 0x10` to emulate the instruction `add eax, 0x10`
+
+After the complete execution, you can view the state of registers, flags, and the memory. Additionally, the emulator
+displays the instructions in the order of they were executed.
 
 ## Running Tests
 
-
-The test scripts are within the `test` directory in root and the executables for tests are inside the directory `build/test/`
+The test scripts are within the `test` directory in root and the executables for tests are inside the
+directory `build/test/`
 
 To run the entire test suite of the emulator,
+
 ```bash
   ctest --test-dir build --parallel
 ```
+
 To run a test execute the following command,
+
 ```bash
   ctest --test-dir build -R <test-name>
 ```
+
 To execute end to end tests runs,
+
 ```bash
   ctest --test-dir build -R E2E
 ```
