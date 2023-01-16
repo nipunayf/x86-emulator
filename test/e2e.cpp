@@ -107,6 +107,52 @@ TEST(E2ETest,
 // mov byte ptr [ebp - 5], 1
 // mov eax, 0
 // pop ebp
-TEST(E2ETest, Pow2) {
-  E2E_TEST("pow2.txt", ASSERT_EQ(memory.load32(0xbf8db0b3), 0x1), 14)
+TEST(E2ETest,
+     Pow2){E2E_TEST("pow2.txt", ASSERT_EQ(memory.load32(0xbf8db0b3), 0x1), 14)}
+
+// int n = 100;
+//   bool sparse = false;
+//   int prev;
+// if (n == 1)
+// 	sparse = true;
+// while (n > 0) {
+// 	prev = n & 1;
+// 	n = n >> 1;
+// 	int curr = n & 1;
+// 	if (prev == curr && prev == 1) {
+// 		sparse  = false;
+//           break;
+//       }
+// 	prev = curr;
+// }
+// push ebp
+// mov ebp, esp
+// mov [ebp - 4], 0x64
+// mov [ebp - 5], 0
+// cmp [ebp - 4], 1
+// jne 0x49
+// mov byte ptr [ebp - 5], 1
+// jmp 0x49
+// mov eax, [ebp - 4]
+// and eax, 1
+// mov [ebp - 0xc], eax
+// sar [ebp - 4], 1
+// mov eax, [ebp - 4]
+// and eax, 1
+// mov [ebp - 0x10], eax
+// mov eax, [ebp - 0xc]
+// cmp eax, [ebp - 0x10]
+// jne 0x43
+// cmp [ebp - 0xc], 1
+// jne 0x43
+// mov byte ptr [ebp - 5], 0
+// jmp 0x4f
+// mov eax, [ebp - 0x10]
+// mov [ebp - 0xc], eax
+// cmp [ebp - 4], 0
+// jg 0x1a
+// mov eax, 0
+// pop ebp
+TEST(E2ETest, Sparse) {
+  E2E_TEST("sparse.txt", ASSERT_EQ(memory.load32(0xbf8db0b3), 0x0), 10)
 }
