@@ -66,7 +66,7 @@ void ext8x(State &state, OperandSize reg_type, OperandSize imm_type) {
   }
   if (reg_args.val != 7)
     set_value(state, rm_args, res);
-  set_snapshot(state, operation, format_immediate(immediate), rm_args.notation);
+  set_snapshot(state, operation, rm_args.notation, format_immediate(immediate));
 }
 
 void ext80(State &state) { ext8x<uint8_t>(state, OPERAND_8, OPERAND_8); }

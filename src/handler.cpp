@@ -14,7 +14,7 @@ void set_snapshot(State &state, const std::string &ins_name,
     dest.empty()
       ? ins_name
       : (source.empty() ? format_instruction(ins_name, dest)
-                        : format_instruction(ins_name, source, dest));
+                        : format_instruction(ins_name, dest, source));
 
   // Set the byte sequence
   state.ins.snapshot.byte_sequence = state.ins_fetcher.get_byte_sequence();

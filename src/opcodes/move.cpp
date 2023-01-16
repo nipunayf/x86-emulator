@@ -36,8 +36,8 @@ void movA0_A1(State &state) {
   uint32_t offset = state.ins_fetcher.next_nbytes(4);
   uint32_t output = state.memory.load(offset, size);
   state.reg_bank.set(state.ins.snapshot.reg_transition, EAX, output, size);
-  set_snapshot(state, MOV_INS, format_memory_address(offset),
-               state.reg_bank.name(EAX, size));
+  set_snapshot(state, MOV_INS, state.reg_bank.name(EAX, size),
+               format_memory_address(offset));
 }
 
 void movA2_A3(State &state) {
@@ -54,8 +54,8 @@ void movBx(State &state) {
   uint8_t reg = state.ins.opcode - (state.ins.opcode > 0xB7 ? 0xB8 : 0xB0);
   uint32_t imm = state.ins_fetcher.next_nbytes(1 << size);
   state.reg_bank.set(state.ins.snapshot.reg_transition, reg, imm, size);
-  set_snapshot(state, MOV_INS, format_immediate(imm),
-               state.reg_bank.name(reg, size));
+  set_snapshot(state, MOV_INS, state.reg_bank.name(reg, size),
+               format_immediate(imm));
 }
 
 void movCx(State &state) {
@@ -64,5 +64,5 @@ void movCx(State &state) {
   process_modrm(state, rm_args, reg_args);
   uint32_t imm = state.ins_fetcher.next_nbytes(1 << size);
   set_value(state, rm_args, imm);
-  set_snapshot(state, MOV_INS, format_immediate(imm), rm_args.notation);
+  set_snapshot(state, MOV_INS, rm_args.notation, format_immediate(imm));
 }
