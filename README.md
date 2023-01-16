@@ -24,10 +24,8 @@ Currently, the emulator supports the following instruction set,
 Install the root directory of the project execute following commands.
 
 ```bash
-  mkdir build
-  cd build
-  cmake ..
-  make
+  cmake -B build
+  cmake --build build
 ```
 
 ## Usage/Examples
@@ -35,7 +33,7 @@ After following the installation instructions the executable generated will be i
 To emulate an object file using the emulator while inside the parent directory of the project execute the following command.
 
 ```bash
-./build/src/emulator <path-to-object-file>
+  ./build/src/emulator <path-to-object-file>
 
 ```
 
@@ -44,11 +42,16 @@ To emulate an object file using the emulator while inside the parent directory o
 
 
 The test scripts are within the `test` directory in root and the executables for tests are inside the directory `build/test/`
+
+To run the entire test suite of the emulator,
+```bash
+  ctest --test-dir build --parallel
+```
 To run a test execute the following command,
 ```bash
-  ./build/test/<test-name>
+  ctest --test-dir build -R <test-name>
 ```
 To execute end to end tests runs,
 ```bash
-  ./build/test/e2e
+  ctest --test-dir build -R E2E
 ```
